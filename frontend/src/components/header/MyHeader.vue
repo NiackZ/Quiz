@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import MyButton from "@/components/button/MyButton";
+import MyButton from "@/components/UI/MyButton.vue";
 export default {
-  components: {MyButton}
+  components: { MyButton }
 }
 </script>
 
