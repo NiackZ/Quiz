@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Main from "@/pages/Main.vue";
-import Admin from "@/pages/Admin/Admin.vue";
-import CreateTitle from "@/pages/Admin/CreateTitle.vue";
+import Main from "../pages/Main.vue";
+import Admin from "../pages/Admin/Admin.vue";
+import CreateTitle from "../pages/Admin/CreateTitle.vue";
 
 const routes = [
     {
@@ -20,7 +20,7 @@ const routes = [
 
 const router = createRouter({
     routes,
-    history: createWebHistory(process.env.BASE_URL)
+    history: createWebHistory(import.meta.env.BASE_URL)
 })
 
 export default router
