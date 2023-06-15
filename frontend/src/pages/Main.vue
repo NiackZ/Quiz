@@ -29,8 +29,6 @@
     <q-component-grid
         :row-count="3"
         :column-count="4"
-        cell-width="auto"
-        cell-height="500px"
     />
   </v-container>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-for="rowIndex in rowCount" :key="rowIndex">
     <v-col
         v-for="column in columnCount"
         :key="column"
@@ -10,7 +10,7 @@
           class="grid-cell"
           :style="{ width: cellWidth }"
       >
-        {{ row }} - {{ column }}
+        {{ rowIndex }} - {{ column }}
       </div>
     </v-col>
   </v-row>
@@ -22,8 +22,14 @@ export default {
   props: {
     rowCount: Number,
     columnCount: Number,
-    cellWidth: String,
-    cellHeight: String
+    cellWidth: {
+      type: String,
+      default: 'auto'
+    },
+    cellHeight: {
+      type: String,
+      default: '500px'
+    }
   }
 }
 </script>
@@ -33,7 +39,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border: 1px solid rgba(var(--v-theme-on-background));
+  border-radius: 4px;
   height: 100%;
 }
 </style>
