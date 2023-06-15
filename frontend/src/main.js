@@ -5,6 +5,7 @@ import myComponents from '../src/components'
 import router from "./router/router.js";
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@mdi/font/css/materialdesignicons.css'
+import './styles/custom.css'
 
 const app = createApp(App)
 

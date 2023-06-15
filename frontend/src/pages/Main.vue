@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <!--
     Some text
     <v-menu
         open-on-hover
@@ -24,12 +25,22 @@
         </v-list-item>
       </v-list>
     </v-menu>
+    -->
+    <q-component-grid
+        :row-count="3"
+        :column-count="4"
+        cell-width="auto"
+        cell-height="500px"
+    />
   </v-container>
 </template>
 
 <script>
 
+import QComponentGrid from "../components/QContentGrid/QContentGrid.vue";
+
 export default {
+  components: {QComponentGrid},
 
   data() {
     return {

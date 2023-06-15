@@ -2,13 +2,19 @@
   <v-app-bar fixed elevate-on-scroll scroll-target="#scrolling-techniques-7">
     <v-container class="d-flex align-center">
       <v-toolbar-title>Title</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
+      <v-text-field
+          class="w-100"
+          type="text"
+          :loading="false"
+          density="compact"
+          variant="outlined"
+          label="Поиск"
+          append-inner-icon="mdi-magnify"
+          single-line
+          hide-details
+          clearable
+          @click:append-inner="onClick"
+      />
       <v-btn icon @click="toggleTheme">
         <v-icon>{{theme.current.value.dark ? 'mdi-weather-night' : 'mdi-weather-sunny'}}</v-icon>
         <v-tooltip
@@ -36,6 +42,8 @@ export default {
   },
   data() {
     return {
+      loaded: false,
+      loading: !false,
       currentTheme: 1
     }
   },
@@ -44,10 +52,10 @@ export default {
       type: Array,
       default: () => {
         return [
-            {
-              path: "",
-              title: ""
-            }
+          {
+            path: "",
+            title: ""
+          }
         ]
       },
       required: false
@@ -56,21 +64,22 @@ export default {
   methods: {
     router() {
       return router
+    },
+    onClick () {
+      this.loading = true
+
+      setTimeout(() => {
+        this.loading = false
+        this.loaded = true
+      }, 2000)
     }
   }
 }
 </script>
 
 <style scoped>
-.navbar {
-  height: 50px;
-  background: deepskyblue;
-  box-shadow: 2px 2px 4px gray;
-  display: flex;
-  align-items: center;
-  padding: 15px;
-}
-.navbar_bnts{
-  margin-left: auto;
+.v-toolbar-title{
+  min-width: auto;
+  padding-right: 10px;
 }
 </style>
