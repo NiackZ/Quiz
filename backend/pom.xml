@@ -21,6 +21,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>RELEASE</version>
         </dependency>
 
         <dependency>
@@ -38,6 +39,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
