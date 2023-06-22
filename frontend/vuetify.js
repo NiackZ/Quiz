@@ -5,7 +5,7 @@ import { ru } from 'vuetify/locale'
 
 export const vuetify = createVuetify({
     theme: {
-        defaultTheme: 'light' // dark light
+        defaultTheme: 'dark' // dark light
     },
     locale: {
         locale: 'ru',

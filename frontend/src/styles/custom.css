@@ -1,3 +1,7 @@
 .v-container {
+    min-width: 400px;
     transition: max-width .3s;
+}
+.deep-purple {
+    color: #c8b6ff;
 }
