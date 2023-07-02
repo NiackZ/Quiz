@@ -28,7 +28,7 @@
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
-        <v-text-field* label="Название на русском" v-model="form.rusName" variant="underlined"/>
+        <v-text-field label="Название на русском" v-model="form.rusName" variant="underlined"/>
         <v-text-field label="Название на ромадзи" v-model="form.romName" variant="underlined"/>
         <v-autocomplete label="Тип"
                         v-model="form.type.value"
