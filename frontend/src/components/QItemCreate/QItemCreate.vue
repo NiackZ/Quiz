@@ -28,6 +28,8 @@
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
+        {{form.links}}
+        <q-link-field :links="form.links" @update:links="updateLinks"/>
         <v-text-field label="Название на русском" v-model="form.rusName" variant="underlined"/>
         <v-text-field label="Название на ромадзи" v-model="form.romName" variant="underlined"/>
         <v-autocomplete label="Тип"
@@ -60,8 +62,7 @@
         <v-text-field label="Количество эпизодов" v-model="form.duration.seriesCount" variant="underlined"/>
         <v-text-field label="Продолжительность эпизода" v-model="form.duration.seriesDuration" variant="underlined"/>
         <q-vue-date-picker :date="form.period" @update:date="updateDate" placeholder="Выберите период выпуска" />
-        {{form.links}}
-        <q-link-field :links="form.links" @update:links="updateLinks"/>
+
         <v-autocomplete label="Метки"
                         v-model="form.marks.value"
                         :items="form.marks.list"

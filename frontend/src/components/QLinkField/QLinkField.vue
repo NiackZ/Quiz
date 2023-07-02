@@ -45,10 +45,17 @@
                  :title="`${this.editedLink ? 'Редактирование': 'Добавление'} ссылки`"
       />
       <v-card-text>
-        <v-text-field variant="underlined" label="Название" v-model="linkName"/>
-        <v-text-field variant="underlined" label="URL" v-model="linkUrl"/>
+        <v-text-field variant="underlined"
+                      label="Название"
+                      v-model="linkName"
+                      :error-messages="v$.linkName.$errors.map(e => e.$message)"
+        />
+        <v-text-field variant="underlined"
+                      label="Ссылка"
+                      v-model="linkUrl"
+                      :error-messages="v$.linkUrl.$errors.map(e => e.$message)"
+        />
       </v-card-text>
-
       <v-card-actions class="justify-end">
         <v-btn color="pink-lighten-1" @click="cancelLink">Отмена</v-btn>
         <v-btn v-if="this.editedLink" color="primary" @click="editLink">Сохранить</v-btn>
@@ -58,6 +65,9 @@
   </v-dialog>
 </template>
 <script>
+import { useVuelidate } from '@vuelidate/core'
+import { required, url, minLength, helpers } from '@vuelidate/validators'
+
 export default {
   name:"QLinkField",
   props: {
@@ -69,6 +79,7 @@ export default {
       showModal: false,
       linkName: '',
       linkUrl: '',
+      v$: useVuelidate()
     };
   },
   methods: {
@@ -78,14 +89,19 @@ export default {
       this.linkUrl = item.value.url;
       this.showModal = true;
     },
-    addLink() {
+    async isValid(){
+      return await this.v$.$validate();
+    },
+    async addLink() {
+      if (!await this.isValid()) return;
       this.links.push({
         name: this.linkName,
         url: this.linkUrl
       });
       this.cancelLink();
     },
-    editLink() {
+    async editLink() {
+      if (!await this.isValid()) return;
       this.editedLink.value.name = this.linkName;
       this.editedLink.value.url = this.linkUrl;
       this.cancelLink();
@@ -95,8 +111,24 @@ export default {
       this.linkName = '';
       this.linkUrl = '';
       this.editedLink = null;
+      this.v$.$reset()
     }
   },
+  validations () {
+    return {
+      linkName: {
+        required: helpers.withMessage(`Поле должно быть заполнено.`, required),
+        minLength: helpers.withMessage(
+            ({$params,}) => `Поле должно быть больше ${$params.min} символов.`,
+            minLength(3)
+        )
+      },
+      linkUrl: {
+        required: helpers.withMessage(`Поле должно быть заполнено.`, required),
+        url: helpers.withMessage(`Некорректный URL-адрес.`, url)
+      }
+    }
+  }
 }
 </script>
 <style>
