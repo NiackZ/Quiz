@@ -1,9 +1,14 @@
 <template>
-  create title page
+  <v-container>
+    <q-item-create/>
+  </v-container>
 </template>
 
 <script>
+import QItemCreate from "../../components/QItemCreate/QItemCreate.vue";
+
 export default {
+  components: {QItemCreate}
 
 }
 </script>

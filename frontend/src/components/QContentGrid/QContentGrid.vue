@@ -1,4 +1,5 @@
 <template>
+  <router-link to="/admin/create/title">Создать</router-link>
   <v-row>
     <v-col v-for="(element, index) in elements"
            :key="index"

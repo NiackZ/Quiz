@@ -1,0 +1,33 @@
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$font-family: Arial, sans-serif;
+$font-size: 40px;
+
+// кнопки
+.jodit-toolbar__button {
+  background-color: $primary-color;
+  color: red;
+  border: 1px solid red;
+  font-family: $font-family;
+  font-size: $font-size;
+}
+
+// панель инструментов
+.jodit-toolbar {
+  background-color: $secondary-color !important;
+  font-family: $font-family;
+  font-size: $font-size;
+}
+
+// окно редактора
+.jodit-container {
+  font-family: $font-family;
+  font-size: $font-size;
+}
+
+.jodit_theme_summer {
+  --jd-color-background-default: gray;
+  --jd-color-border: #474025;
+  --jd-color-panel: #5fd3a2;
+  --jd-color-icon: #8b572a;
+}
