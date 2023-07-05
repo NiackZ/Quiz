@@ -1,8 +1,7 @@
 <template>
-  {{vueDatePicker.date}}
   <VueDatePicker :model-value="date"
                  :placeholder="placeholder"
-                 class="mb-3"
+                 :class="calcClasses"
                  locale="ru"
                  range
                  model-auto
@@ -29,6 +28,11 @@
       </div>
     </template>
   </VueDatePicker>
+  <v-messages :active="true"
+              :messages="errorMessages"
+              color="rgb(var(--v-theme-error))"
+              class="opacity-0 mb-1"
+  />
 </template>
 
 <script>
@@ -43,6 +47,10 @@ export default {
     placeholder: {
       type: String,
       default: "Выберите дату"
+    },
+    errorMessages: {
+      type: Array,
+      default: []
     }
   },
   data() {
@@ -53,11 +61,27 @@ export default {
         selectText: "Выбрать"
       }
     }
+  },
+  computed: {
+    calcClasses(){
+      console.dir(this.errorMessages)
+      const classes = ['mb-2'];
+      if (this.errorMessages.length !== 0) {
+        classes.push("error")
+      }
+      return classes.join(" ")
+    }
   }
 }
 </script>
 
 <style>
+.error .dp__input {
+  border-color: rgb(var(--v-theme-error));
+}
+.opacity-0 {
+  opacity: 1;
+}
 .action-row {
   display: flex;
   flex-direction: column;

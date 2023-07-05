@@ -43,7 +43,6 @@
                         :items="form.type.list"
                         item-value="id" item-title="name"
                         variant="underlined"
-                        clearable
                         :error-messages="v$.form.type.value.$errors.map(e => e.$message)"
         />
         <v-autocomplete label="Жанр"
@@ -51,7 +50,6 @@
                         :items="form.genre.list"
                         item-value="id" item-title="name"
                         variant="underlined"
-                        clearable
                         multiple
                         :error-messages="v$.form.genre.value.$errors.map(e => e.$message)"
         />
@@ -60,7 +58,6 @@
                         :items="form.studio.list"
                         item-value="id" item-title="name"
                         variant="underlined"
-                        clearable
                         multiple
                         :error-messages="v$.form.studio.value.$errors.map(e => e.$message)"
         />
@@ -69,7 +66,6 @@
                         :items="form.status.list"
                         item-value="id" item-title="name"
                         variant="underlined"
-                        clearable
                         :error-messages="v$.form.status.value.$errors.map(e => e.$message)"
         />
         <v-text-field label="Количество эпизодов"
@@ -82,8 +78,11 @@
                       variant="underlined"
                       :error-messages="v$.form.duration.seriesDuration.$errors.map(e => e.$message)"
         />
-        <q-vue-date-picker :date="form.period" @update:date="updateDate" placeholder="Выберите период выпуска" />
-        {{form.links}}
+        <q-vue-date-picker :date="form.period"
+                           @update:date="updateDate"
+                           placeholder="Выберите период выпуска"
+                           :error-messages="v$.form.period.$errors.map(e => e.$message)"
+        />
         <q-link-field :links="form.links" @update:links="updateLinks"/>
         <v-autocomplete label="Метки"
                         v-model="form.marks.value"
@@ -263,6 +262,9 @@ export default {
           seriesDuration: {
             required: helpers.withMessage(`Заполните продолжительность эпизода.`, required)
           }
+        },
+        period: {
+          required: helpers.withMessage(`Выберите период.`, required)
         }
       }
     }
