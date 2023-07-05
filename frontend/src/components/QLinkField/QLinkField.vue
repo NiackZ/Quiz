@@ -38,6 +38,7 @@
   <v-dialog v-model="showModal"
             max-width="500px"
             :scrim="'black'"
+            @keydown.enter.prevent="enterClick"
   >
     <v-card>
       <v-toolbar class="text-center"
@@ -49,6 +50,7 @@
                       label="Название"
                       v-model="linkName"
                       :error-messages="v$.linkName.$errors.map(e => e.$message)"
+                      :autofocus="showModal"
         />
         <v-text-field variant="underlined"
                       label="Ссылка"
@@ -83,6 +85,9 @@ export default {
     };
   },
   methods: {
+    enterClick(){
+      this.editedLink ? this.editLink() : this.addLink();
+    },
     appendIconClick(item) {
       this.editedLink = item;
       this.linkName = item.value.name;
@@ -90,7 +95,9 @@ export default {
       this.showModal = true;
     },
     async isValid(){
-      return await this.v$.$validate();
+      if (this.showModal)
+        return await this.v$.$validate();
+      return true;
     },
     async addLink() {
       if (!await this.isValid()) return;
@@ -119,7 +126,7 @@ export default {
       linkName: {
         required: helpers.withMessage(`Поле должно быть заполнено.`, required),
         minLength: helpers.withMessage(
-            ({$params,}) => `Поле должно быть больше ${$params.min} символов.`,
+            ({$params}) => `Поле должно быть больше ${$params.min} символов.`,
             minLength(3)
         )
       },

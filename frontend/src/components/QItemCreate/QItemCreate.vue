@@ -28,41 +28,63 @@
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
-        {{form.links}}
-        <q-link-field :links="form.links" @update:links="updateLinks"/>
-        <v-text-field label="Название на русском" v-model="form.rusName" variant="underlined"/>
-        <v-text-field label="Название на ромадзи" v-model="form.romName" variant="underlined"/>
+        <v-text-field label="Название на русском"
+                      v-model="form.rusName"
+                      variant="underlined"
+                      :error-messages="v$.form.rusName.$errors.map(e => e.$message)"
+        />
+        <v-text-field label="Название на ромадзи"
+                      v-model="form.romName"
+                      variant="underlined"
+                      :error-messages="v$.form.romName.$errors.map(e => e.$message)"
+        />
         <v-autocomplete label="Тип"
                         v-model="form.type.value"
                         :items="form.type.list"
                         item-value="id" item-title="name"
                         variant="underlined"
-                        clearable/>
+                        clearable
+                        :error-messages="v$.form.type.value.$errors.map(e => e.$message)"
+        />
         <v-autocomplete label="Жанр"
                         v-model="form.genre.value"
                         :items="form.genre.list"
                         item-value="id" item-title="name"
                         variant="underlined"
                         clearable
-                        multiple/>
+                        multiple
+                        :error-messages="v$.form.genre.value.$errors.map(e => e.$message)"
+        />
         <v-autocomplete label="Студия"
                         v-model="form.studio.value"
                         :items="form.studio.list"
                         item-value="id" item-title="name"
                         variant="underlined"
                         clearable
-                        multiple/>
+                        multiple
+                        :error-messages="v$.form.studio.value.$errors.map(e => e.$message)"
+        />
         <v-autocomplete label="Статус"
                         v-model="form.status.value"
                         :items="form.status.list"
                         item-value="id" item-title="name"
                         variant="underlined"
                         clearable
-                        multiple/>
-        <v-text-field label="Количество эпизодов" v-model="form.duration.seriesCount" variant="underlined"/>
-        <v-text-field label="Продолжительность эпизода" v-model="form.duration.seriesDuration" variant="underlined"/>
+                        :error-messages="v$.form.status.value.$errors.map(e => e.$message)"
+        />
+        <v-text-field label="Количество эпизодов"
+                      v-model="form.duration.seriesCount"
+                      variant="underlined"
+                      :error-messages="v$.form.duration.seriesCount.$errors.map(e => e.$message)"
+        />
+        <v-text-field label="Продолжительность эпизода"
+                      v-model="form.duration.seriesDuration"
+                      variant="underlined"
+                      :error-messages="v$.form.duration.seriesDuration.$errors.map(e => e.$message)"
+        />
         <q-vue-date-picker :date="form.period" @update:date="updateDate" placeholder="Выберите период выпуска" />
-
+        {{form.links}}
+        <q-link-field :links="form.links" @update:links="updateLinks"/>
         <v-autocomplete label="Метки"
                         v-model="form.marks.value"
                         :items="form.marks.list"
@@ -72,12 +94,24 @@
                         multiple
         />
         <q-jodit-editor :text="form.description" @update:text="updateDescription" />
+        <div class="py-4 text-end">
+          <v-btn color="primary"
+                 min-width="92"
+                 variant="outlined"
+                 class="ml-3"
+                 @click="createBtn"
+          >
+            Добавить
+          </v-btn>
+        </div>
       </v-form>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 import { UPLOAD_METHOD } from '/src/constants/constants';
 import QLinkField from "../QLinkField/QLinkField.vue";
 import QJoditEditor from "../QJoditEditor/QJoditEditor.vue";
@@ -144,15 +178,12 @@ export default {
         },
         description: '123'
       },
-      model: null,
       imageUrl: '',
       previewUrl: '',
       file: null,
       uploadValue: UPLOAD_METHOD.FILE,
       UPLOAD_METHOD: UPLOAD_METHOD,
-      dateRange: null,
-      startDate: new Date('2022-01-01'),
-      endDate: new Date('2024-12-31')
+      v$: useVuelidate({$scope: 'form'})
     }
   },
   props: {
@@ -186,6 +217,54 @@ export default {
     },
     previewImage() {
       this.previewUrl = this.imageUrl
+    },
+    async isValid(){
+      return await this.v$.$validate();
+    },
+    async createBtn(){
+      console.log('click')
+      if (!await this.isValid()) return;
+      console.log('field`s are valid')
+    }
+  },
+  validations () {
+    return {
+      form: {
+        rusName: {
+          required: helpers.withMessage(`Заполните русское название.`, required)
+        },
+        romName: {
+          required: helpers.withMessage(`Заполните название на ромадзи.`, required)
+        },
+        type: {
+          value: {
+            required: helpers.withMessage(`Выберите тип.`, required)
+          }
+        },
+        genre: {
+          value: {
+            required: helpers.withMessage(`Выберите жанр.`, required)
+          }
+        },
+        studio: {
+          value: {
+            required: helpers.withMessage(`Выберите студию.`, required)
+          }
+        },
+        status: {
+          value: {
+            required: helpers.withMessage(`Выберите статус.`, required)
+          }
+        },
+        duration: {
+          seriesCount: {
+            required: helpers.withMessage(`Заполните количество эпизодов.`, required)
+          },
+          seriesDuration: {
+            required: helpers.withMessage(`Заполните продолжительность эпизода.`, required)
+          }
+        }
+      }
     }
   }
 }
