@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
-import App from './App.vue'
 import { vuetify } from '../vuetify'
+import App from './App.vue'
 import myComponents from '../src/components'
 import router from "./router/router.js";
 import 'material-design-icons-iconfont/dist/material-design-icons.css'

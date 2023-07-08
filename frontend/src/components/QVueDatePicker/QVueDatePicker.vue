@@ -63,8 +63,7 @@ export default {
     }
   },
   computed: {
-    calcClasses(){
-      console.dir(this.errorMessages)
+    calcClasses() {
       const classes = ['mb-2'];
       if (this.errorMessages.length !== 0) {
         classes.push("error")
