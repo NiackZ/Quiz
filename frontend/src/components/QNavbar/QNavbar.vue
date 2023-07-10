@@ -41,9 +41,9 @@
               <v-form v-if="!loginForm.forgotPass">
                 <v-text-field
                     v-model="loginForm.username"
-                    label="Логин"
+                    label="Имя пользователя"
                     variant="outlined"
-                    placeholder="Введите логин"
+                    placeholder="Введите имя пользователя"
                     prepend-inner-icon="mdi-account"
                 />
                 <v-text-field
@@ -98,9 +98,9 @@
               <v-form>
                 <v-text-field
                     v-model="registrationForm.username"
-                    label="Логин"
+                    label="Имя пользователя"
                     variant="outlined"
-                    placeholder="Введите логин"
+                    placeholder="Введите имя пользователя"
                     prepend-inner-icon="mdi-account"
                 />
                 <v-text-field
@@ -128,6 +128,7 @@
                 <v-btn variant="tonal"
                        color="primary"
                        block
+                       @click="registration"
                 >
                   Зарегистрироваться
                 </v-btn>
@@ -197,10 +198,33 @@ export default {
   },
   methods: {
     async enter() {
-      console.log('login...');
-      const result = await axios.get('/users');
-      console.log(result);
-      console.log('end');
+      try{
+        const data = {
+          username: this.loginForm.username,
+          password: this.loginForm.password
+        }
+        console.log(data);
+        const response = await axios.post('/auth/login', data);
+        console.log('OK', response.data);
+      } catch (error) {
+        const response = error.response.data;
+        console.log('ERROR', response);
+      }
+    },
+    async registration() {
+      try{
+        const data = {
+          username: this.registrationForm.username,
+          email: this.registrationForm.email,
+          password: this.registrationForm.password
+        }
+        console.log(data);
+        const response = await axios.post('/auth/registration', data);
+        console.log('OK', response.data);
+      } catch (error) {
+        const response = error.response.data;
+        console.log('ERROR', response);
+      }
     },
     onClick () {
       this.loading = true
