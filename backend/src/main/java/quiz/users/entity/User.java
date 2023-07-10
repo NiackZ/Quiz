@@ -2,11 +2,13 @@ package quiz.users.entity;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import quiz.entities.Role;
 import quiz.quizzes.entity.Quiz;
 import quiz.users.api.dto.UserCreateDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +36,14 @@ public class User {
 
   @ColumnDefault("false")
   private boolean deleted;
+
+  @ManyToMany
+  @JoinTable(
+          name = "users_roles",
+          joinColumns = @JoinColumn(name = "user_id"),
+          inverseJoinColumns = @JoinColumn(name = "role_id")
+  )
+  private Collection<Role> roles;
 
   public User(UserCreateDTO userCreateDTO){
     this.id = userCreateDTO.getId();
