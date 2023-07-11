@@ -1,7 +1,11 @@
 package quiz.users.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import quiz.users.api.dto.UserCreateDTO;
 import quiz.users.api.dto.UserGetDTO;
@@ -14,9 +18,12 @@ import java.util.List;
 
 @Validated
 @Service
-public class UserService {
-  @Autowired
-  private IUserRepository userRepository;
+public class UserService implements UserDetailsService {
+  private final IUserRepository userRepository;
+
+  public UserService(IUserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   private UserGetDTO userToUserGetDTO(User user){
     UserGetDTO userGetDTO = new UserGetDTO(user);
@@ -28,6 +35,10 @@ public class UserService {
     return this.userRepository.findById(id).orElseThrow(
         () -> new RuntimeException(String.format("Пользователь с ИД %d не найден", id))
     );
+  }
+
+  public User findByUserName(@NotNull String username) {
+    return this.userRepository.findByUsername(username);
   }
 
   public UserGetDTO getById(@NotNull Long id){
@@ -58,4 +69,17 @@ public class UserService {
     return add(userData);
   }
 
+  @Override
+  @Transactional
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user = findByUserName(username);
+    if (user == null) {
+      throw new UsernameNotFoundException(String.format("Пользователь '%s' не найден", username));
+    }
+    return new org.springframework.security.core.userdetails.User(
+            user.getUsername(),
+            user.getPassword(),
+            user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList()
+    );
+  }
 }
