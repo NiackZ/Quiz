@@ -2,7 +2,7 @@
   <v-container>
     <div>
       <p>Count: {{ count }}</p>
-      <button @click="incrementCount">Increment</button>
+      <button @click="increment">Increment</button>
     </div>
     <q-component-grid :elements="items" />
   </v-container>
@@ -10,7 +10,7 @@
 
 <script>
 import QComponentGrid from "../components/QContentGrid/QContentGrid.vue";
-
+import { mapState, mapMutations } from 'vuex';
 export default {
   components: {QComponentGrid},
 
@@ -23,14 +23,12 @@ export default {
     }
   },
   computed: {
-    count() {
-      return this.$store.state.count.count;
-    }
+    ...mapState({
+      count: state => state.count.count
+    })
   },
   methods: {
-    incrementCount() {
-      this.$store.commit('count/increment');
-    }
+    ...mapMutations('count', ['increment'])
   }
 }
 </script>
