@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ApiResponse {
-    private boolean success;
+    private int httpCode;
     private Object message;
 }

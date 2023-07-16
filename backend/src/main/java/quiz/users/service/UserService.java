@@ -4,9 +4,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
+import quiz.dtos.RegistrationUserDto;
+import quiz.services.RoleService;
 import quiz.users.api.dto.UserCreateDTO;
 import quiz.users.api.dto.UserGetDTO;
 import quiz.users.entity.User;
@@ -16,10 +18,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Validated
 @Service
 public class UserService implements UserDetailsService {
   private final IUserRepository userRepository;
+  private PasswordEncoder passwordEncoder;
+  private RoleService roleService;
 
   public UserService(IUserRepository userRepository) {
     this.userRepository = userRepository;
@@ -81,5 +84,14 @@ public class UserService implements UserDetailsService {
             user.getPassword(),
             user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList()
     );
+  }
+
+  public User createNewUser(RegistrationUserDto registrationUserDto) {
+    User user = new User();
+    user.setUsername(registrationUserDto.getUsername());
+    user.setEmail(registrationUserDto.getEmail());
+    user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
+    user.setRoles(List.of(roleService.getUserRole()));
+    return userRepository.save(user);
   }
 }

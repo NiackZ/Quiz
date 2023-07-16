@@ -10,9 +10,16 @@
 <script>
 import {defineComponent} from "vue";
 import QNavbar from "./components/QNavbar/QNavbar.vue";
+import {TOKEN} from "./constants/constants.js";
 
 export default defineComponent({
-  components: {QNavbar}
+  components: {QNavbar},
+  created() {
+    const token = localStorage.getItem(TOKEN)
+    if (token) {
+      this.$store.commit('auth/validateToken', {token});
+    }
+  }
 })
 </script>
 

@@ -145,6 +145,7 @@
 <script>
 import { useTheme } from "vuetify";
 import axios from '/src/axios/http-common'
+import {TOKEN} from "../../constants/constants.js";
 
 export default {
   name: 'QNavbar',
@@ -196,6 +197,15 @@ export default {
       if (!oldVal) this.clearModal();
     }
   },
+  async mounted() {
+    try{
+      const response = await axios.get('/users/');
+      console.log('OK', response.data);
+    }
+    catch (error) {
+      console.log('ERROR', error);
+    }
+  },
   methods: {
     async enter() {
       try{
@@ -206,9 +216,9 @@ export default {
         console.log(data);
         const response = await axios.post('/auth/login', data);
         console.log('OK', response.data);
+        localStorage.setItem(TOKEN, response.data.token)
       } catch (error) {
-        const response = error.response.data;
-        console.log('ERROR', response);
+        console.log('ERROR', error);
       }
     },
     async registration() {

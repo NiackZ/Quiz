@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,12 +48,11 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Boolean validateToken(String token, String username2) {
-        final String username = extractUsername(token);
-        return (username.equals(username2) && !isTokenExpired(token));
+    public Boolean validateToken(String token) {
+        return !isTokenExpired(token);
     }
 
-    public String extractUsername(String token) {
+    public String extractUsername(String token) throws SignatureException {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -71,6 +71,7 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
+        System.out.println("extractAllClaims token: " + token);
         return Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token).getBody();
     }
 
