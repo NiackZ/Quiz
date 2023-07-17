@@ -1,4 +1,4 @@
-package quiz.dtos;
+package quiz.auth.model;
 
 import lombok.Getter;
 import lombok.Setter;

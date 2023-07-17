@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import quiz.utils.JwtUtil;
 
@@ -22,15 +23,16 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
+    private static final String AUTHORIZATION = "Authorization";
     private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader(AUTHORIZATION);
         String username = null;
         String jwt = null;
         String bearerString = "Bearer ";
-        if (authHeader != null && authHeader.startsWith(bearerString)) {
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith(bearerString)) {
             try {
                 jwt = authHeader.substring(bearerString.length());
                 username = jwtUtil.extractUsername(jwt);
