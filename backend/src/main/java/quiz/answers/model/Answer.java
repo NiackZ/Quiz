@@ -1,7 +1,7 @@
-package quiz.answers.entity;
+package quiz.answers.model;
 
 import lombok.*;
-import quiz.questions.entity.Question;
+import quiz.questions.model.Question;
 
 import javax.persistence.*;
 

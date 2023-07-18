@@ -3,7 +3,6 @@ package quiz.questions.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
-import quiz.answers.entity.Answer;
 import quiz.answers.service.AnswerService;
 import quiz.questions.api.dto.QuestionCreateDTO;
 import quiz.questions.api.dto.QuestionGetDTO;

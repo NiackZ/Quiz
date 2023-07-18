@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import quiz.auth.api.ApiResponse;
 import quiz.auth.model.JwtRequest;
 import quiz.auth.model.JwtResponse;
-import quiz.dtos.RegistrationUserDto;
-import quiz.dtos.UserDto;
-import quiz.users.entity.User;
+import quiz.auth.api.dto.RegistrationUserDto;
+import quiz.auth.api.dto.UserDto;
+import quiz.users.model.User;
 import quiz.users.service.UserService;
 import quiz.utils.JwtUtil;
 

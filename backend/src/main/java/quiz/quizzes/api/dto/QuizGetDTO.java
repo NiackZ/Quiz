@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import javax.validation.constraints.NotNull;
 import quiz.questions.api.dto.QuestionGetDTO;
-import quiz.questions.entity.Question;
-import quiz.quizzes.entity.Quiz;
+import quiz.questions.model.Question;
+import quiz.quizzes.model.Quiz;
 import quiz.users.api.dto.UserCreateDTO;
-import quiz.users.entity.User;
+import quiz.users.model.User;
 
 import java.util.List;
 

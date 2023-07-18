@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import quiz.answers.api.dto.AnswerCreateDTO;
 import quiz.answers.api.dto.AnswerGetDTO;
-import quiz.answers.entity.Answer;
+import quiz.answers.model.Answer;
 import quiz.answers.repository.IAnswerRepository;
 import quiz.questions.service.QuestionService;
 

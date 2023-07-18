@@ -1,7 +1,7 @@
 package quiz.users.api.dto;
 
 import lombok.*;
-import quiz.users.entity.User;
+import quiz.users.model.User;
 import javax.validation.constraints.NotNull;
 
 @Getter

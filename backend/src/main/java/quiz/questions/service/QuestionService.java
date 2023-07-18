@@ -6,10 +6,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import quiz.answers.entity.Answer;
+import quiz.answers.model.Answer;
 import quiz.questions.api.dto.QuestionCreateDTO;
 import quiz.questions.api.dto.QuestionGetDTO;
-import quiz.questions.entity.Question;
+import quiz.questions.model.Question;
 import quiz.questions.repository.IQuestionRepository;
 import quiz.quizzes.service.QuizService;
 

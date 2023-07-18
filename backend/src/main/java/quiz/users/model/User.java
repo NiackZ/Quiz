@@ -1,9 +1,9 @@
-package quiz.users.entity;
+package quiz.users.model;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import quiz.entities.Role;
-import quiz.quizzes.entity.Quiz;
+import quiz.roles.model.Role;
+import quiz.quizzes.model.Quiz;
 import quiz.users.api.dto.UserCreateDTO;
 
 import javax.persistence.*;

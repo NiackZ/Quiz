@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import quiz.answers.entity.Answer;
+import quiz.answers.model.Answer;
 import javax.validation.constraints.NotNull;
 
 @Getter

@@ -3,8 +3,8 @@ package quiz.users.api.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import quiz.quizzes.api.dto.QuizGetDTO;
-import quiz.quizzes.entity.Quiz;
-import quiz.users.entity.User;
+import quiz.quizzes.model.Quiz;
+import quiz.users.model.User;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;

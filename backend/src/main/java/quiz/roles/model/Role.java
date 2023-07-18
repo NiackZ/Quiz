@@ -1,4 +1,4 @@
-package quiz.entities;
+package quiz.roles.model;
 
 import lombok.Data;
 

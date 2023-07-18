@@ -1,4 +1,4 @@
-package quiz.dtos;
+package quiz.auth.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,9 +1,9 @@
-package quiz.services;
+package quiz.roles.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import quiz.entities.Role;
-import quiz.repositories.RoleRepository;
+import quiz.roles.model.Role;
+import quiz.roles.repositories.RoleRepository;
 
 @Service
 @RequiredArgsConstructor

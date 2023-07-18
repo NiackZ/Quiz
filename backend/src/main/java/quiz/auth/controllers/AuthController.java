@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import quiz.auth.model.JwtRequest;
 import quiz.auth.service.AuthService;
-import quiz.dtos.RegistrationUserDto;
+import quiz.auth.api.dto.RegistrationUserDto;
 
 @RestController
 @RequiredArgsConstructor

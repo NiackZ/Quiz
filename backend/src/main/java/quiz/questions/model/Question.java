@@ -1,9 +1,9 @@
-package quiz.questions.entity;
+package quiz.questions.model;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import quiz.answers.entity.Answer;
-import quiz.quizzes.entity.Quiz;
+import quiz.answers.model.Answer;
+import quiz.quizzes.model.Quiz;
 
 import javax.persistence.*;
 import java.util.List;

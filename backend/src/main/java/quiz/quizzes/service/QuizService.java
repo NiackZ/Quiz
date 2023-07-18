@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import quiz.questions.api.dto.QuestionGetDTO;
 import quiz.quizzes.api.dto.QuizCreateDTO;
 import quiz.quizzes.api.dto.QuizGetDTO;
-import quiz.quizzes.entity.Quiz;
+import quiz.quizzes.model.Quiz;
 import quiz.quizzes.repository.IQuizRepository;
 import quiz.users.service.UserService;
 

@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import quiz.dtos.RegistrationUserDto;
-import quiz.services.RoleService;
+import quiz.auth.api.dto.RegistrationUserDto;
+import quiz.roles.services.RoleService;
 import quiz.users.api.dto.UserCreateDTO;
 import quiz.users.api.dto.UserGetDTO;
-import quiz.users.entity.User;
+import quiz.users.model.User;
 import quiz.users.repository.IUserRepository;
 
 import javax.validation.Valid;

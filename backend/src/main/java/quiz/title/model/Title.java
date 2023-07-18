@@ -1,4 +1,4 @@
-package quiz.title.entity;
+package quiz.title.model;
 
 import lombok.Getter;
 import lombok.Setter;
