@@ -38,7 +38,7 @@ public class JwtUtil {
 
     public String generateAccessToken(@NonNull UserDetails userDetails) {
         final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusMinutes(10).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant accessExpirationInstant = now.plusSeconds(30).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
@@ -66,23 +66,28 @@ public class JwtUtil {
         return validateToken(refreshToken, jwtRefreshSecret);
     }
 
+    public boolean validateAccessToken(@NonNull String accessToken) {
+        return validateToken(accessToken, jwtAccessSecret);
+    }
+
     private boolean validateToken(@NonNull String token, @NonNull Key secret) {
         try {
+            log.info("Токен на проверке: " + token);
             Jwts.parserBuilder()
                     .setSigningKey(secret)
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException expEx) {
-            log.error("Token expired", expEx);
-        } catch (UnsupportedJwtException unsEx) {
-            log.error("Unsupported jwt", unsEx);
-        } catch (MalformedJwtException mjEx) {
-            log.error("Malformed jwt", mjEx);
-        } catch (SignatureException sEx) {
-            log.error("Invalid signature", sEx);
+        } catch (ExpiredJwtException e) {
+            log.error("Время жизни токена истекло: "+ e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("Unsupported jwt", e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.error("Malformed jwt", e.getMessage());
+        } catch (SignatureException e) {
+            log.error("Invalid signature", e.getMessage());
         } catch (Exception e) {
-            log.error("invalid token", e);
+            log.error("invalid token", e.getMessage());
         }
         return false;
     }

@@ -23,12 +23,14 @@ $api.interceptors.response.use( (response) => {
         originalRequest.headers.Authorization = null; //иначе рекурсия
         try {
             const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-            const response = await $api.post('/auth/token', { refreshToken });
-            if (response.data[ACCESS_TOKEN]) {
-                console.log("Установлен новый ACCESS_TOKEN");
-                localStorage.setItem(ACCESS_TOKEN, response.data[ACCESS_TOKEN]);
+            if (refreshToken) {
+                const response = await $api.post('/auth/token', {refreshToken});
+                if (response.data[ACCESS_TOKEN]) {
+                    console.log("Установлен новый ACCESS_TOKEN");
+                    localStorage.setItem(ACCESS_TOKEN, response.data[ACCESS_TOKEN]);
+                }
+                return $api(originalRequest);
             }
-            return $api(originalRequest);
         } catch (error) {
             console.log('Пользователь не авторизован!');
         }

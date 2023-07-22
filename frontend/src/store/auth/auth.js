@@ -7,7 +7,7 @@ const auth = {
         isAuth: false
     },
     actions: {
-        async enter({commit}, data) {
+        async enter({commit, dispatch}, data) {
             try {
                 const loginJson = {
                     username: data.username,
@@ -19,55 +19,51 @@ const auth = {
                 if (response.data[ACCESS_TOKEN] && response.data[REFRESH_TOKEN]) {
                     const accessToken = response.data[ACCESS_TOKEN];
                     const refreshToken = response.data[REFRESH_TOKEN];
-                    commit('saveTokens', { accessToken, refreshToken });
+                    dispatch('saveTokens', {accessToken, refreshToken});
+                    commit('setAuthState', true);
                 }
             } catch (error) {
-                console.log('ERROR', error.response.data);
+                console.log('ERROR', error.response);
             }
         },
-        async logout({commit}) {
+        async logout({commit, dispatch}) {
             try {
                 await axios.post('/auth/logout')
-                commit('deleteTokens');
+                dispatch('deleteTokens');
+                commit('setAuthState', false);
             } catch (error) {
-                console.log(error.response?.data);
+                console.log(error);
             }
         },
-        async validateToken({commit}) {
+        async validateToken({commit, dispatch}) {
             const token = localStorage.getItem(ACCESS_TOKEN);
             if (!!token) {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                };
                 try {
-                    //const response = await axios.post('/auth/validate-token', {}, config);
-                    //console.log('OK', response);
-                    // (response[ACCESS_TOKEN] && response[REFRESH_TOKEN]) {
-                    //     commit('saveTokens', {
-                    //         accessToken: response[ACCESS_TOKEN],
-                    //         refreshToken: response[REFRESH_TOKEN]
-                    //     });
+                    const response = await axios.post('/auth/validate-token');
+                    console.log(response)
+                    if (response.status === 200) {
+                        commit('setAuthState', true)
+                    }
                 }
-                catch
-                    (error)
-                {
+                catch (error) {
                     console.log('ERROR', error);
+                    dispatch('deleteTokens');
                 }
             }
         },
-    },
-    mutations: {
-        saveTokens(state, { accessToken, refreshToken }) {
+        saveTokens({ commit }, { accessToken, refreshToken }) {
             localStorage.setItem(ACCESS_TOKEN, accessToken);
             localStorage.setItem(REFRESH_TOKEN, refreshToken);
-            state.isAuth = true;
         },
-        deleteTokens(state) {
+        deleteTokens() {
             localStorage.removeItem(ACCESS_TOKEN);
             localStorage.removeItem(REFRESH_TOKEN);
-            state.isAuth = false;
+        }
+    },
+    mutations: {
+        setAuthState(state, isAuth) {
+            console.log('isAuth ', isAuth)
+            state.isAuth = isAuth;
         }
     }
 }

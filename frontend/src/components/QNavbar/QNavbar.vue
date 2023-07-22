@@ -205,13 +205,13 @@ export default {
     })
   },
   async mounted() {
-    try{
-      const response = await axios.get('/users');
-      console.log('OK', response.data);
-    }
-    catch (error) {
-      console.log('ERROR', error);
-    }
+    // try{
+    //   const response = await axios.get('/users');
+    //   console.log('OK', response.data);
+    // }
+    // catch (error) {
+    //   console.log('ERROR', error);
+    // }
   },
   methods: {
     ...mapActions('auth', ['enter']),

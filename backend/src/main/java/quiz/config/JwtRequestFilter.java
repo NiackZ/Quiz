@@ -24,14 +24,13 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String BEARER_STR = "Bearer ";
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String BEARER_STR = "Bearer ";
     private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(AUTHORIZATION);
-        System.out.println(authHeader);
         String username = null;
         String jwt = null;
         if (StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_STR)) {
@@ -42,17 +41,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
             catch (ExpiredJwtException e) {
-                log.error("Время жизни токена истекло.", e);
-                //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Время жизни токена истекло.");
-                //return;
+                log.error("Время жизни токена истекло.");
             }
             catch (SignatureException e) {
-                log.error("Подпись JWT не совпадает с локально вычисленной подписью. Действительность JWT не может быть подтверждена и не должна вызывать доверия.", e);
-                //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ошибка подписи JWT");
-                //return;
+                log.error("Подпись JWT не совпадает с локально вычисленной подписью. Действительность JWT не может быть подтверждена и не должна вызывать доверия.");
             }
             catch (MalformedJwtException exception) {
-                log.error("MalformedJwtException: ", exception);
+                log.error("MalformedJwtException: ");
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

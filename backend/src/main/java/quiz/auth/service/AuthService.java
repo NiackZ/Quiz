@@ -62,6 +62,12 @@ public class AuthService {
         return ResponseEntity.ok("OK");
     }
 
+    public ResponseEntity<?> checkAccessToken(@NonNull @RequestBody String jwt) {
+        return jwtUtil.validateAccessToken(jwt)
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
     public ResponseEntity<?> getAccessToken(@NonNull String refreshToken) {
         if (jwtUtil.validateRefreshToken(refreshToken)) {
             Claims claims = jwtUtil.getRefreshClaims(refreshToken);
@@ -76,7 +82,7 @@ public class AuthService {
         return ResponseEntity.ok(new JwtResponse(null, null));
     }
 
-    public ResponseEntity<?> refresh(@NonNull String refreshToken) {
+    private ResponseEntity<?> refresh(@NonNull String refreshToken) {
         if (jwtUtil.validateRefreshToken(refreshToken)) {
             Claims claims = jwtUtil.getRefreshClaims(refreshToken);
             String username = claims.getSubject();
