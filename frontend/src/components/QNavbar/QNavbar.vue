@@ -1,9 +1,7 @@
 <template>
   <v-app-bar fixed elevate-on-scroll scroll-target="#scrolling-techniques-7">
     <v-container class="d-flex align-center">
-      <v-toolbar-title class="dp__pointer"
-                       to="/"
-      >Tracker</v-toolbar-title>
+      <v-toolbar-title class="dp__pointer">Tracker</v-toolbar-title>
       <v-text-field
           class="w-100"
           type="text"
@@ -24,9 +22,13 @@
             location="bottom"
         >Сменить тему</v-tooltip>
       </v-btn>
-      <v-btn @click="dialog = true"
-      >Войти</v-btn>
-      <v-dialog v-model="dialog" max-width="500">
+      <v-btn v-if="!isAuth" @click="dialog = true">
+        Войти
+      </v-btn>
+      <v-btn v-else @click="logout">
+        Выйти
+      </v-btn>
+      <v-dialog v-if="!isAuth" v-model="dialog" max-width="500">
         <v-card>
           <v-tabs
               v-model="tabs"
@@ -69,7 +71,7 @@
                 <v-btn variant="tonal"
                        color="primary"
                        block
-                       @click="enter"
+                       @click="enter(this.loginForm)"
                 >
                   Войти
                 </v-btn>
@@ -145,7 +147,7 @@
 <script>
 import { useTheme } from "vuetify";
 import axios from '/src/axios/http-common'
-import {TOKEN} from "../../constants/constants.js";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: 'QNavbar',
@@ -197,9 +199,14 @@ export default {
       if (!oldVal) this.clearModal();
     }
   },
+  computed: {
+    ...mapState({
+      isAuth: state => state.auth.isAuth
+    })
+  },
   async mounted() {
     try{
-      const response = await axios.get('/users/');
+      const response = await axios.get('/users');
       console.log('OK', response.data);
     }
     catch (error) {
@@ -207,20 +214,8 @@ export default {
     }
   },
   methods: {
-    async enter() {
-      try{
-        const data = {
-          username: this.loginForm.username,
-          password: this.loginForm.password
-        }
-        console.log(data);
-        const response = await axios.post('/auth/login', data);
-        console.log('OK', response.data);
-        localStorage.setItem(TOKEN, response.data.token)
-      } catch (error) {
-        console.log('ERROR', error);
-      }
-    },
+    ...mapActions('auth', ['enter']),
+    ...mapActions('auth', ['logout']),
     async registration() {
       try{
         const data = {

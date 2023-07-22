@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import quiz.auth.api.RefreshJwtRequest;
+import quiz.auth.api.dto.RegistrationUserDto;
 import quiz.auth.model.JwtRequest;
 import quiz.auth.service.AuthService;
-import quiz.auth.api.dto.RegistrationUserDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ import quiz.auth.api.dto.RegistrationUserDto;
 public class AuthController {
 
     private final AuthService authService;
+
 
     @PostMapping("login")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
@@ -28,8 +30,9 @@ public class AuthController {
     }
 
     @PostMapping("token")
-    public ResponseEntity<?> getNewAccessToken(@RequestBody String refreshToken) {
-        return authService.getAccessToken(refreshToken);
+    public ResponseEntity<?> getNewAccessToken(@RequestBody RefreshJwtRequest request) {
+        System.out.println("Refresh: " + request.getRefreshToken());
+        return authService.getAccessToken(request.getRefreshToken());
     }
 
     @PostMapping("refresh")

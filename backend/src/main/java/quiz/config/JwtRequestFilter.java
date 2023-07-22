@@ -1,6 +1,7 @@
 package quiz.config;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -24,26 +25,34 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
     private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER_STR = "Bearer ";
     private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(AUTHORIZATION);
+        System.out.println(authHeader);
         String username = null;
         String jwt = null;
-        String bearerString = "Bearer ";
-        if (StringUtils.hasText(authHeader) && authHeader.startsWith(bearerString)) {
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_STR)) {
             try {
-                jwt = authHeader.substring(bearerString.length());
-                username = jwtUtil.extractUsername(jwt);
+                jwt = authHeader.substring(BEARER_STR.length());
+                if (!jwt.equalsIgnoreCase("null")) {
+                    username = jwtUtil.extractUsername(jwt);
+                }
             }
             catch (ExpiredJwtException e) {
-                log.error("Время жизни токена истекло.");
-                throw new RuntimeException(e.getMessage());
+                log.error("Время жизни токена истекло.", e);
+                //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Время жизни токена истекло.");
+                //return;
             }
             catch (SignatureException e) {
-                log.error("Подпись JWT не совпадает с локально вычисленной подписью. Действительность JWT не может быть подтверждена и не должна вызывать доверия.");
-                throw new SignatureException(e.getMessage());
+                log.error("Подпись JWT не совпадает с локально вычисленной подписью. Действительность JWT не может быть подтверждена и не должна вызывать доверия.", e);
+                //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Ошибка подписи JWT");
+                //return;
+            }
+            catch (MalformedJwtException exception) {
+                log.error("MalformedJwtException: ", exception);
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -52,6 +61,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }
+        System.out.println("doFilter END");
         filterChain.doFilter(request, response);
     }
 
