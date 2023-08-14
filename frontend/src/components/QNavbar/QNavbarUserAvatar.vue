@@ -10,11 +10,20 @@
         </v-avatar>
       </v-btn>
     </template>
-    <v-list :items="items"/>
+    <v-list style="border: 1px solid red; padding: 0;margin-top: 10px">
+      <template v-for="(item, index) in items" :key="index">
+        <v-list-item density="compact" v-if="!item.type" @click="item.action && item.action()">
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+        <v-divider v-if="item.type === 'divider'" :key="'divider-' + index"/>
+      </template>
+    </v-list>
   </v-menu>
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "QNavbarUserAvatar",
   data() {
@@ -23,9 +32,12 @@ export default {
       items: [
         { title: 'Профиль' },
         { type: 'divider' },
-        { title: 'Выход' },
+        { title: 'Выход', action: this.logout }
       ]
     };
+  },
+  methods: {
+    ...mapActions('auth', ['logout'])
   }
 }
 </script>

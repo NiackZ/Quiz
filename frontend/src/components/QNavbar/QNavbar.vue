@@ -3,7 +3,7 @@
     <v-container class="d-flex align-center">
       <v-toolbar-title class="dp__pointer">Tracker</v-toolbar-title>
       <v-text-field
-          class="w-100"
+          class="w-100 pa-2"
           type="text"
           :loading="false"
           density="compact"
