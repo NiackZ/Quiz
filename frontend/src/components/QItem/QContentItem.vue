@@ -65,7 +65,7 @@ export default {
     itemId: Number
   },
   mounted() {
-    document.title = `Element #${this.itemId}` // устанавливаем заголовок страницы
+    //document.title = `Element #${this.itemId}` // устанавливаем заголовок страницы
   }
 }
 </script>

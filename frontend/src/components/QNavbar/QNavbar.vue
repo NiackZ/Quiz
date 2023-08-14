@@ -1,7 +1,11 @@
 <template>
   <v-app-bar fixed elevate-on-scroll scroll-target="#scrolling-techniques-7">
     <v-container class="d-flex align-center">
-      <v-toolbar-title class="dp__pointer">Tracker</v-toolbar-title>
+      <v-toolbar-title class="dp__pointer">
+        <router-link to="/"
+                     style="text-decoration: none; color: inherit;"
+        >Home</router-link>
+      </v-toolbar-title>
       <v-text-field
           class="w-100 pa-2"
           type="text"
@@ -199,6 +203,9 @@ export default {
   watch:{
     dialog: function(newVal, oldVal) {
       if (!oldVal) this.clearModal();
+    },
+    isAuth: function(newVal, oldVal) {
+      if (newVal) this.dialog = false;
     }
   },
   computed: {

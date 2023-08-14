@@ -14,8 +14,7 @@ const app = createApp(App)
 //     app.component(component.name, component)
 // })
 
-app
-    .use(store)
-    .use(router)
-    .use(vuetify)
-    .mount('#app')
+app.use(router)
+   .use(store)
+   .use(vuetify)
+   .mount('#app')

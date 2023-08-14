@@ -1,9 +1,5 @@
 <template>
   <v-container>
-    <div>
-      <p>Count: {{ count }}</p>
-      <button @click="increment">Increment</button>
-    </div>
     <q-component-grid :elements="items" />
   </v-container>
 </template>
