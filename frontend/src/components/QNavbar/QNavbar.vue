@@ -205,7 +205,10 @@ export default {
       if (!oldVal) this.clearModal();
     },
     isAuth: function(newVal, oldVal) {
-      if (newVal) this.dialog = false;
+      if (newVal) {
+        this.dialog = false;
+        this.clearModal();
+      }
     }
   },
   computed: {
@@ -247,9 +250,9 @@ export default {
       }, 2000)
     },
     clearModal() {
-      this.loginForm.userEmail = '';
+      this.loginForm.username = '';
+      this.loginForm.email = '';
       this.loginForm.password = '';
-      this.loginForm.confirmPassword = '';
       this.loginForm.rememberMe = false;
       this.loginForm.forgotPass = false;
     }
@@ -265,7 +268,7 @@ div.forgot-pass span {
 div.forgot-pass span:hover {
   color: rgb(var(--v-theme-primary)) !important;
 }
-.v-toolbar-title{
+.v-toolbar-title {
   min-width: auto;
   padding-right: 10px;
 }
