@@ -17,7 +17,8 @@ export default defineComponent({
   components: {QNavbar},
   computed: {
     ...mapState({
-      isAuth: state => state.auth.isAuth
+      isAuth: state => state.auth.isAuth,
+      loading: state => state.auth.loading
     })
   },
   created() {

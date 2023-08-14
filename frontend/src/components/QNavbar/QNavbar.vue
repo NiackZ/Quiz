@@ -25,9 +25,9 @@
       <v-btn v-if="!isAuth" @click="dialog = true">
         Войти
       </v-btn>
-      <v-btn v-else @click="logout">
-        Выйти
-      </v-btn>
+      <template v-else>
+        <QNavbarUserAvatar/>
+      </template>
       <v-dialog v-if="!isAuth" v-model="dialog" max-width="500">
         <v-card>
           <v-tabs
@@ -148,9 +148,11 @@
 import { useTheme } from "vuetify";
 import axios from '/src/axios/http-common'
 import {mapActions, mapState} from "vuex";
+import QNavbarUserAvatar from "./QNavbarUserAvatar.vue";
 
 export default {
   name: 'QNavbar',
+  components: {QNavbarUserAvatar},
   setup () {
     const theme = useTheme()
     return {
@@ -215,7 +217,6 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['enter']),
-    ...mapActions('auth', ['logout']),
     async registration() {
       try{
         const data = {

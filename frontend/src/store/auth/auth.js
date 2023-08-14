@@ -4,7 +4,8 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "/src/constants/constants.js";
 const auth = {
     namespaced: true,
     state: {
-        isAuth: false
+        isAuth: false,
+        loading: false
     },
     actions: {
         async enter({commit, dispatch}, data) {
@@ -38,6 +39,7 @@ const auth = {
         async validateToken({commit, dispatch}) {
             const token = localStorage.getItem(ACCESS_TOKEN);
             if (!!token) {
+                commit('setLoadingState', true)
                 try {
                     const response = await axios.post('/auth/validate-token');
                     console.log(response)
@@ -49,6 +51,7 @@ const auth = {
                     console.log('ERROR', error);
                     dispatch('deleteTokens');
                 }
+                commit('setLoadingState', false)
             }
         },
         saveTokens({ commit }, { accessToken, refreshToken }) {
@@ -64,6 +67,10 @@ const auth = {
         setAuthState(state, isAuth) {
             console.log('isAuth ', isAuth)
             state.isAuth = isAuth;
+        },
+        setLoadingState(state, loading) {
+            console.log('loading ', loading)
+            state.loading = loading;
         }
     }
 }
