@@ -51,26 +51,26 @@
                     variant="outlined"
                     placeholder="Введите имя пользователя"
                     prepend-inner-icon="mdi-account"
+                    hide-details
+                    :class="calcClasses"
                 />
                 <v-text-field
                     v-model="loginForm.password"
                     label="Пароль"
                     variant="outlined"
-                    hide-details
                     prepend-inner-icon="mdi-lock-outline"
+                    :error-messages="error == null ? '' : error"
                 />
-                <div>
-                  <v-checkbox
-                      class="q-checkbox"
-                      v-model="loginForm.rememberMe"
-                      label="Запомнить меня"
-                      color="primary"
-                      hide-details
-                      density="comfortable"
-                  />
-                  <div class="text-center forgot-pass mb-2">
-                    <span @click="loginForm.forgotPass = true">Забыл пароль</span>
-                  </div>
+                <v-checkbox
+                    class="q-checkbox"
+                    v-model="loginForm.rememberMe"
+                    label="Запомнить меня"
+                    color="primary"
+                    hide-details
+                    density="comfortable"
+                />
+                <div class="text-center forgot-pass mb-2">
+                  <span @click="loginForm.forgotPass = true">Забыл пароль</span>
                 </div>
                 <v-btn variant="tonal"
                        color="primary"
@@ -151,7 +151,7 @@
 <script>
 import { useTheme } from "vuetify";
 import axios from '/src/axios/http-common'
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 import QNavbarUserAvatar from "./QNavbarUserAvatar.vue";
 
 export default {
@@ -182,7 +182,7 @@ export default {
       tabs: null,
       dialog: false,
       loaded: false,
-      loading: !false,
+      loading: true,
       currentTheme: 1
     }
   },
@@ -213,8 +213,16 @@ export default {
   },
   computed: {
     ...mapState({
-      isAuth: state => state.auth.isAuth
-    })
+      isAuth: state => state.auth.isAuth,
+      error: state => state.auth.error
+    }),
+    calcClasses() {
+      console.log(this.error);
+      if (this.error != null) {
+        return "mb-4 v-field--error";
+      }
+      else return "mb-4";
+    }
   },
   async mounted() {
     // try{
@@ -227,6 +235,7 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['enter']),
+    ...mapMutations(['auth/setErrorState']),
     async registration() {
       try{
         const data = {
@@ -255,6 +264,7 @@ export default {
       this.loginForm.password = '';
       this.loginForm.rememberMe = false;
       this.loginForm.forgotPass = false;
+      this["auth/setErrorState"](null);
     }
   }
 }

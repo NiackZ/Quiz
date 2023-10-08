@@ -30,8 +30,8 @@ public class SecurityConfig {
         return httpSecurity
                 .httpBasic().disable()
                 .csrf().disable()
-                //.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-                .cors()
+                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+                //.cors()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/users/**").authenticated()

@@ -5,7 +5,8 @@ const auth = {
     namespaced: true,
     state: {
         isAuth: false,
-        loading: false
+        loading: false,
+        error: null
     },
     actions: {
         async enter({commit, dispatch}, data) {
@@ -22,9 +23,11 @@ const auth = {
                     const refreshToken = response.data[REFRESH_TOKEN];
                     dispatch('saveTokens', {accessToken, refreshToken});
                     commit('setAuthState', true);
+                    commit('setErrorState', null);
                 }
             } catch (error) {
                 console.log('ERROR', error.response);
+                commit('setErrorState', error.response.data.message);
             }
         },
         async logout({commit, dispatch}) {
@@ -71,6 +74,9 @@ const auth = {
         setLoadingState(state, loading) {
             console.log('loading ', loading)
             state.loading = loading;
+        },
+        setErrorState(state, error) {
+            state.error = error;
         }
     }
 }
