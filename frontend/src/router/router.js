@@ -3,6 +3,7 @@ import Main from "../pages/Main.vue";
 import Admin from "../pages/Admin/Admin.vue";
 import CreateTitle from "../pages/Admin/CreateTitle.vue";
 import Item from "../pages/Content/Item.vue";
+import Profile from "../pages/User/Profile.vue";
 
 const routes = [
     {
@@ -20,6 +21,10 @@ const routes = [
     {
         path: '/item/:id',
         component: Item,
+    },
+    {
+        path: '/profile',
+        component: Profile
     }
 ]
 
