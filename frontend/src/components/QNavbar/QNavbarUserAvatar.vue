@@ -12,7 +12,10 @@
     </template>
     <v-list style="border: 1px solid red; padding: 0;margin-top: 10px">
       <template v-for="(item, index) in items" :key="index">
-        <v-list-item density="compact" v-if="!item.type" @click="item.action && item.action()">
+        <v-list-item density="compact" v-if="!item.type"
+                     @click="item.action ? item.action() : null"
+                     :to="item.to ? item.to : null"
+        >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
         <v-divider v-if="item.type === 'divider'" :key="'divider-' + index"/>
@@ -30,7 +33,7 @@ export default {
     return {
       showMenu: false,
       items: [
-        { title: 'Профиль' },
+        { title: 'Профиль', to: "/profile"},
         { type: 'divider' },
         { title: 'Выход', action: this.logout }
       ]
