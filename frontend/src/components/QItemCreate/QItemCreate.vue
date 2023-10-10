@@ -1,30 +1,8 @@
 <template>
   <v-row>
     <v-col cols="12" md="5" lg="4">
-      <v-radio-group v-model="uploadValue">
-        <v-radio :value="UPLOAD_METHOD.FILE" label="Загрузить с ПК"/>
-        <v-radio :value="UPLOAD_METHOD.URL" label="Загрузить по ссылке"/>
-      </v-radio-group>
-      <v-file-input
-          v-if="uploadValue === UPLOAD_METHOD.FILE"
-          variant="underlined"
-          label="Выберите файл"
-          v-model="file"
-          :show-size="true"
-          :show-progress="true"
-          accept=".jpg, .jpeg, .png"
-          @click:clear="clearFile"
+      <QFileUpload :with-preview="true" :with-url="true"
       />
-      <v-text-field
-          v-if="uploadValue === UPLOAD_METHOD.URL"
-          v-model="imageUrl"
-          label="Введите URL-адрес изображения"
-          @input="previewImage"
-          prepend-icon="mdi-link-variant"
-          clearable
-          variant="underlined"
-      />
-      <v-img :src="imageSrc" contain/>
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
@@ -111,14 +89,14 @@
 <script>
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
-import { UPLOAD_METHOD } from '/src/constants/constants';
 import QLinkField from "../QLinkField/QLinkField.vue";
 import QJoditEditor from "../QJoditEditor/QJoditEditor.vue";
 import QVueDatePicker from "../QVueDatePicker/QVueDatePicker.vue";
+import QFileUpload from "../QFileUpload/QFileUpload.vue";
 
 export default {
   name: 'QItemCreate',
-  components: {QVueDatePicker, QJoditEditor, QLinkField},
+  components: {QFileUpload, QVueDatePicker, QJoditEditor, QLinkField},
   data() {
     return {
       form: {
@@ -177,11 +155,9 @@ export default {
         },
         description: '123'
       },
-      imageUrl: '',
-      previewUrl: '',
-      file: null,
-      uploadValue: UPLOAD_METHOD.FILE,
-      UPLOAD_METHOD: UPLOAD_METHOD,
+      file: {
+        value: null,
+      },
       v$: useVuelidate({$scope: 'form'})
     }
   },
@@ -190,16 +166,6 @@ export default {
   },
   mounted() {
     document.title = `Создание нового элемента` // устанавливаем заголовок страницы
-  },
-  computed: {
-    imageSrc() {
-      if (this.uploadValue === UPLOAD_METHOD.FILE && this.file) {
-        return URL.createObjectURL(this.file[0])
-      } else if (this.uploadValue === UPLOAD_METHOD.URL && this.previewUrl) {
-        return this.previewUrl
-      }
-      return ''
-    }
   },
   methods: {
     updateDate(newValue) {
@@ -210,12 +176,6 @@ export default {
     },
     updateLinks(newValue) {
       this.form.links = newValue;
-    },
-    clearFile() {
-      this.file = null
-    },
-    previewImage() {
-      this.previewUrl = this.imageUrl
     },
     async isValid(){
       return await this.v$.$validate();
