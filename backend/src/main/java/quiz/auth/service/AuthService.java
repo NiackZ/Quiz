@@ -53,7 +53,10 @@ public class AuthService {
         String accessToken = jwtUtil.generateAccessToken(userDetails);
         String refreshToken = jwtUtil.generateRefreshToken(userDetails);
         refreshStorage.put(authRequest.getUsername(), refreshToken);
-        return ResponseEntity.ok(new JwtResponse(accessToken, refreshToken));
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", userService.getByUserName(userDetails.getUsername()));
+        map.put("jwt", new JwtResponse(accessToken, refreshToken));
+        return ResponseEntity.ok(map);
     }
 
     public ResponseEntity<?> logout(@NonNull @RequestBody String jwt) {
@@ -63,9 +66,12 @@ public class AuthService {
     }
 
     public ResponseEntity<?> checkAccessToken(@NonNull @RequestBody String jwt) {
-        return jwtUtil.validateAccessToken(jwt)
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (jwtUtil.validateAccessToken(jwt)) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("user", userService.getByUserName(jwtUtil.extractUsername(jwt)));
+            return ResponseEntity.ok(map);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     public ResponseEntity<?> getAccessToken(@NonNull String refreshToken) {

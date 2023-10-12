@@ -46,6 +46,9 @@ export default {
       newPassword: "",
     };
   },
+  created() {
+    console.log("created...");
+  },
   methods: {
     saveChanges() {
       // Реализация сохранения изменений

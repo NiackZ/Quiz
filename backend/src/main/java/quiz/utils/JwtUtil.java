@@ -62,7 +62,7 @@ public class JwtUtil {
     }
 
     public boolean validateRefreshToken(@NonNull String refreshToken) {
-        System.out.println("validateRefreshToken: "+refreshToken);
+        System.out.println("validateRefreshToken: " + refreshToken);
         return validateToken(refreshToken, jwtRefreshSecret);
     }
 
@@ -87,7 +87,7 @@ public class JwtUtil {
         } catch (SignatureException e) {
             log.error("Invalid signature", e.getMessage());
         } catch (Exception e) {
-            log.error("invalid token", e.getMessage());
+            log.error("Invalid token", e.getMessage());
         }
         return false;
     }

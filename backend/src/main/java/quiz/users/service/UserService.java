@@ -48,6 +48,10 @@ public class UserService implements UserDetailsService {
     return userToUserGetDTO(findById(id));
   }
 
+  public UserGetDTO getByUserName(@NotNull String username){
+    return userToUserGetDTO(findByUserName(username));
+  }
+
   public List<UserGetDTO> findAll(){
     return this.userRepository.findAll().stream().map(this::userToUserGetDTO).toList();
   }

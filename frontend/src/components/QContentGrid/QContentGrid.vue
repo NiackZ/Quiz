@@ -9,7 +9,7 @@
         <div class="d-flex justify-center grid-cell bg-img-center h-100 "
              :style="{
                 width: cellWidth,
-                'background-image': 'url(../src/img/poster/darling.jpg)'
+                'background-image': 'url(../src/public/poster/darling.jpg)'
               }"
         >
           <div class="short-description">

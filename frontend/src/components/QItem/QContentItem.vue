@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="5" lg="4">
-      <v-img src="../src/img/poster/darling.jpg"></v-img>
+      <v-img src="../src/public/poster/darling.jpg"></v-img>
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana fs11pt">
       <div class="fs20pt">

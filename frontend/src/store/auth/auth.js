@@ -6,6 +6,7 @@ const auth = {
     state: {
         isAuth: false,
         loading: false,
+        user: null,
         error: null
     },
     actions: {
@@ -18,12 +19,14 @@ const auth = {
                 console.log(loginJson);
                 const response = await axios.post('/auth/login', loginJson);
                 console.log('OK', response.data);
-                if (response.data[ACCESS_TOKEN] && response.data[REFRESH_TOKEN]) {
-                    const accessToken = response.data[ACCESS_TOKEN];
-                    const refreshToken = response.data[REFRESH_TOKEN];
+                if (response.data.jwt && response.data.jwt[ACCESS_TOKEN] && response.data.jwt[REFRESH_TOKEN]) {
+                    const accessToken = response.data.jwt[ACCESS_TOKEN];
+                    const refreshToken = response.data.jwt[REFRESH_TOKEN];
+                    const userData = response.data.user;
                     dispatch('saveTokens', {accessToken, refreshToken});
                     commit('setAuthState', true);
                     commit('setErrorState', null);
+                    commit('setUserState', userData);
                 }
             } catch (error) {
                 console.log('ERROR', error.response);
@@ -47,7 +50,8 @@ const auth = {
                     const response = await axios.post('/auth/validate-token');
                     console.log(response)
                     if (response.status === 200) {
-                        commit('setAuthState', true)
+                        commit('setAuthState', true);
+                        commit('setUserState', response.data.user);
                     }
                 }
                 catch (error) {
@@ -77,6 +81,9 @@ const auth = {
         },
         setErrorState(state, error) {
             state.error = error;
+        },
+        setUserState(state, user) {
+            state.user = user;
         }
     }
 }
