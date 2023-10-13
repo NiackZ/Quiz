@@ -6,23 +6,24 @@
       </v-col>
       <v-col cols="8">
         <!-- Логин пользователя -->
-        <v-text-field
-            label="Логин"
-            v-model="login"
-        ></v-text-field>
+        <v-text-field v-if="user" label="Логин"
+                      v-model="user.username"
+                      :disabled="true"
+                      variant="underlined"
+        />
 
         <!-- Поля для изменения пароля -->
-        <v-text-field
-            label="Текущий пароль"
-            type="password"
-            v-model="currentPassword"
-        ></v-text-field>
+        <v-text-field label="Текущий пароль"
+                      type="password"
+                      v-model="currentPassword"
+                      variant="underlined"
+        />
 
-        <v-text-field
-            label="Новый пароль"
-            type="password"
-            v-model="newPassword"
-        ></v-text-field>
+        <v-text-field label="Новый пароль"
+                      type="password"
+                      v-model="newPassword"
+                      variant="underlined"
+        />
 
         <!-- Кнопка для сохранения изменений -->
         <v-btn @click="saveChanges">Сохранить</v-btn>
@@ -32,6 +33,7 @@
 </template>
 <script>
 import QFileUpload from "../../components/QFileUpload/QFileUpload.vue";
+import {mapState} from "vuex";
 
 export default {
   name: "Profile",
@@ -41,13 +43,14 @@ export default {
       file: {
         withPreview: true,
       },
-      login: "",
       currentPassword: "",
       newPassword: "",
     };
   },
-  created() {
-    console.log("created...");
+  computed: {
+    ...mapState({
+        user: state => state.auth.user
+      })
   },
   methods: {
     saveChanges() {

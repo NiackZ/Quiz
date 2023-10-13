@@ -35,7 +35,6 @@ $api.interceptors.response.use( (response) => {
             console.log('Пользователь не авторизован!');
         }
     }
-    else console.log('prev req');
     throw error;
 })
 

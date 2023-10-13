@@ -37,6 +37,7 @@ const auth = {
             try {
                 await axios.post('/auth/logout')
                 dispatch('deleteTokens');
+                commit('setUserState', null);
                 commit('setAuthState', false);
             } catch (error) {
                 console.log(error);
@@ -48,7 +49,6 @@ const auth = {
                 commit('setLoadingState', true)
                 try {
                     const response = await axios.post('/auth/validate-token');
-                    console.log(response)
                     if (response.status === 200) {
                         commit('setAuthState', true);
                         commit('setUserState', response.data.user);
@@ -72,11 +72,9 @@ const auth = {
     },
     mutations: {
         setAuthState(state, isAuth) {
-            console.log('isAuth ', isAuth)
             state.isAuth = isAuth;
         },
         setLoadingState(state, loading) {
-            console.log('loading ', loading)
             state.loading = loading;
         },
         setErrorState(state, error) {

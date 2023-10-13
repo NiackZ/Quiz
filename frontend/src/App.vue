@@ -22,7 +22,6 @@ export default defineComponent({
     })
   },
   created() {
-    console.log(this.isAuth)
     if (!this.isAuth && localStorage.getItem(ACCESS_TOKEN)) {
       this.$store.dispatch('auth/validateToken');
     }
