@@ -5,9 +5,9 @@ import CreateTitle from "../pages/Admin/CreateTitle.vue";
 import Item from "../pages/Public/Content/Item.vue";
 import Profile from "../pages/User/Profile.vue";
 import Error403 from "../pages/Error/Error403.vue";
-import Login from "../pages/Public/Login.vue";
-import {LOGIN_PATH} from "../constants/constants.js";
 import Error404 from "../pages/Error/Error404.vue";
+import AuthRequired from "../pages/Error/AuthRequired.vue";
+import {store} from "../store/index.js";
 
 const routes = [
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404 },
@@ -48,17 +48,23 @@ const routes = [
         component: Error403
     },
     {
-        path: LOGIN_PATH,
-        component: Login,
-        meta: {
-            requiresAuth: false
-        }
+        path: "/auth-required",
+        component: AuthRequired
     }
 ]
 
 const router = createRouter({
     routes,
     history: createWebHistory(import.meta.env.BASE_URL)
+})
+
+router.beforeEach(async  (to, from) => {
+    const isAuthenticated = await store.dispatch('auth/validateToken');
+    if (to.meta.requiresAuth && !isAuthenticated) {
+        return {
+            path: '/'
+        }
+    }
 })
 
 export default router

@@ -45,6 +45,7 @@ const auth = {
         },
         async validateToken({commit, dispatch}) {
             const token = localStorage.getItem(ACCESS_TOKEN);
+            let result = false;
             if (!!token) {
                 commit('setLoadingState', true)
                 try {
@@ -52,14 +53,18 @@ const auth = {
                     if (response.status === 200) {
                         commit('setAuthState', true);
                         commit('setUserState', response.data.user);
+                        result = true;
                     }
+                    else result = false;
                 }
                 catch (error) {
                     console.log('ERROR', error);
                     dispatch('deleteTokens');
+                    result = false;
                 }
                 commit('setLoadingState', false)
             }
+            return result;
         },
         saveTokens({ commit }, { accessToken, refreshToken }) {
             localStorage.setItem(ACCESS_TOKEN, accessToken);

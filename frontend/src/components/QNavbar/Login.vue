@@ -152,7 +152,6 @@ export default {
       error: state => state.auth.error
     }),
     calcClasses() {
-      console.log(this.error);
       if (this.error != null) {
         return "mb-4 v-field--error";
       }
