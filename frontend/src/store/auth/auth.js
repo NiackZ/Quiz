@@ -55,12 +55,10 @@ const auth = {
                         commit('setUserState', response.data.user);
                         result = true;
                     }
-                    else result = false;
                 }
                 catch (error) {
                     console.log('ERROR', error);
                     dispatch('deleteTokens');
-                    result = false;
                 }
                 commit('setLoadingState', false)
             }
