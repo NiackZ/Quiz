@@ -10,9 +10,6 @@ import {store} from "./store/index.js"; //Vuex
 
 const app = createApp(App)
 
-// myComponents.forEach(component => {
-//     app.component(component.name, component)
-// })
 
 app.use(router)
    .use(store)
