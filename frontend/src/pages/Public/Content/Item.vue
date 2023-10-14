@@ -1,7 +1,6 @@
 <template>
-  <v-container>
-    <q-content-item :item-id="Number($route.params.id)" />
-  </v-container>
+  {{id}}
+  <q-content-item :item-id="Number(id)" />
 </template>
 
 <script>
@@ -9,7 +8,8 @@
 import QContentItem from "../../../components/QItem/QContentItem.vue";
 
 export default {
-  components: {QContentItem}
+  components: {QContentItem},
+  props: ['id']
 }
 </script>
 

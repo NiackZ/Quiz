@@ -7,15 +7,16 @@ import Profile from "../pages/User/Profile.vue";
 import Error403 from "../pages/Error/Error403.vue";
 import Login from "../pages/Public/Login.vue";
 import {LOGIN_PATH} from "../constants/constants.js";
+import Error404 from "../pages/Error/Error404.vue";
 
 const routes = [
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404 },
     {
         path: '/',
         component: Main
     },
     {
         path: '/admin',
-        name: 'admin',
         component: Admin,
         meta: {
             requiresAuth: true
@@ -24,17 +25,18 @@ const routes = [
     {
         path: '/admin/create/title',
         component: CreateTitle,
+        name: 'createTitle',
         meta: {
             requiresAuth: true
         }
     },
     {
-        path: '/item/:id',
+        path: '/item/:id(\\d+)',
         component: Item,
+        props: true
     },
     {
         path: '/profile',
-        name: 'profile',
         component: Profile,
         meta: {
             requiresAuth: true
