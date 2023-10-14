@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-    <q-component-grid :elements="items" />
-  </v-container>
+  <q-component-grid :elements="items" />
 </template>
 
 <script>
@@ -29,5 +27,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>
