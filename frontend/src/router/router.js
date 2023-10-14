@@ -1,12 +1,12 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Main from "../pages/Main.vue";
-import Admin from "../pages/Admin/Admin.vue";
-import CreateTitle from "../pages/Admin/CreateTitle.vue";
-import Item from "../pages/Public/Content/Item.vue";
-import Profile from "../pages/User/Profile.vue";
-import Error403 from "../pages/Error/Error403.vue";
-import Error404 from "../pages/Error/Error404.vue";
-import AuthRequired from "../pages/Error/AuthRequired.vue";
+import Main from "../views/Main.vue";
+import Admin from "../views/Admin/Admin.vue";
+import CreateTitle from "../views/Admin/CreateTitle.vue";
+import Item from "../views/Public/Content/Item.vue";
+import Profile from "../views/User/Profile.vue";
+import Error403 from "../views/Error/Error403.vue";
+import Error404 from "../views/Error/Error404.vue";
+import AuthRequired from "../views/Error/AuthRequired.vue";
 import {store} from "../store/index.js";
 
 const routes = [
@@ -62,7 +62,7 @@ router.beforeEach(async  (to, from) => {
     const isAuthenticated = await store.dispatch('auth/validateToken');
     if (to.meta.requiresAuth && !isAuthenticated) {
         return {
-            path: '/'
+            path: '/auth-required'
         }
     }
 })
