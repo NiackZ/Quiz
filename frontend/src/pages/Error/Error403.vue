@@ -1,10 +1,8 @@
 <template>
-  <v-container>
-    <div>
-      <h1>Error 403 - Forbidden</h1>
-      <p>You do not have permission to access this page.</p>
-    </div>
-  </v-container>
+  <div>
+    <h1>Error 403 - Forbidden</h1>
+    <p>You do not have permission to access this page.</p>
+  </div>
 </template>
 
 <script>

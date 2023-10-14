@@ -39,7 +39,6 @@
       </v-dialog>
     </v-container>
   </v-app-bar>
-
 </template>
 
 <script>

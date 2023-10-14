@@ -1,113 +1,111 @@
 <template>
-  <v-container>
-    <v-tabs
-        v-model="tabs"
-        color="primary"
-        align-tabs="center"
-    >
-      <v-tab value="1">Вход</v-tab>
-      <v-tab value="2">Регистрация</v-tab>
-    </v-tabs>
-    <v-window v-model="tabs" class="pa-4">
-      <v-window-item value="1">
-        <v-form v-if="!loginForm.forgotPass">
-          <v-text-field
-              v-model="loginForm.username"
-              label="Имя пользователя"
-              variant="outlined"
-              placeholder="Введите имя пользователя"
-              prepend-inner-icon="mdi-account"
-              :hide-details="true"
-              :class="calcClasses"
-          />
-          <v-text-field
-              v-model="loginForm.password"
-              label="Пароль"
-              variant="outlined"
-              prepend-inner-icon="mdi-lock-outline"
-              :error-messages="error == null ? '' : error"
-          />
-          <v-checkbox
-              class="q-checkbox"
-              v-model="loginForm.rememberMe"
-              label="Запомнить меня"
-              color="primary"
-              :hide-details="true"
-              density="comfortable"
-          />
-          <div class="text-center forgot-pass mb-2">
-            <span @click="loginForm.forgotPass = true">Забыл пароль</span>
-          </div>
-          <v-btn variant="tonal"
-                 color="primary"
-                 :block="true"
-                 @click="enter(this.loginForm)"
-          >
-            Войти
-          </v-btn>
-        </v-form>
-        <v-form v-else>
-          <v-text-field
-              v-model="loginForm.email"
-              label="Email"
-              variant="outlined"
-              type="email"
-              placeholder="Введите email"
-              prepend-inner-icon="mdi-email-outline"
-          />
-          <div class="text-center forgot-pass mb-2">
-            <span @click="loginForm.forgotPass = false">Вспомнил пароль</span>
-          </div>
-          <v-btn variant="tonal"
-                 color="primary"
-                 :block="true"
-          >
-            Восстановить
-          </v-btn>
-        </v-form>
-      </v-window-item>
-      <v-window-item value="2">
-        <v-form>
-          <v-text-field
-              v-model="registrationForm.username"
-              label="Имя пользователя"
-              variant="outlined"
-              placeholder="Введите имя пользователя"
-              prepend-inner-icon="mdi-account"
-          />
-          <v-text-field
-              v-model="registrationForm.email"
-              label="Email"
-              variant="outlined"
-              type="email"
-              placeholder="Введите email"
-              prepend-inner-icon="mdi-email-outline"
-          />
-          <v-text-field
-              v-model="registrationForm.password"
-              label="Пароль"
-              variant="outlined"
-              type="password"
-              prepend-inner-icon="mdi-lock-outline"
-          />
-          <v-text-field
-              v-model="registrationForm.confirmPassword"
-              label="Повторите пароль"
-              variant="outlined"
-              type="password"
-              prepend-inner-icon="mdi-lock-outline"
-          />
-          <v-btn variant="tonal"
-                 color="primary"
-                 :block="true"
-                 @click="registration"
-          >
-            Зарегистрироваться
-          </v-btn>
-        </v-form>
-      </v-window-item>
-    </v-window>
-  </v-container>
+  <v-tabs
+      v-model="tabs"
+      color="primary"
+      align-tabs="center"
+  >
+    <v-tab value="1">Вход</v-tab>
+    <v-tab value="2">Регистрация</v-tab>
+  </v-tabs>
+  <v-window v-model="tabs" class="pa-4">
+    <v-window-item value="1">
+      <v-form v-if="!loginForm.forgotPass">
+        <v-text-field
+            v-model="loginForm.username"
+            label="Имя пользователя"
+            variant="outlined"
+            placeholder="Введите имя пользователя"
+            prepend-inner-icon="mdi-account"
+            :hide-details="true"
+            :class="calcClasses"
+        />
+        <v-text-field
+            v-model="loginForm.password"
+            label="Пароль"
+            variant="outlined"
+            prepend-inner-icon="mdi-lock-outline"
+            :error-messages="error == null ? '' : error"
+        />
+        <v-checkbox
+            class="q-checkbox"
+            v-model="loginForm.rememberMe"
+            label="Запомнить меня"
+            color="primary"
+            :hide-details="true"
+            density="comfortable"
+        />
+        <div class="text-center forgot-pass mb-2">
+          <span @click="loginForm.forgotPass = true">Забыл пароль</span>
+        </div>
+        <v-btn variant="tonal"
+               color="primary"
+               :block="true"
+               @click="enter(this.loginForm)"
+        >
+          Войти
+        </v-btn>
+      </v-form>
+      <v-form v-else>
+        <v-text-field
+            v-model="loginForm.email"
+            label="Email"
+            variant="outlined"
+            type="email"
+            placeholder="Введите email"
+            prepend-inner-icon="mdi-email-outline"
+        />
+        <div class="text-center forgot-pass mb-2">
+          <span @click="loginForm.forgotPass = false">Вспомнил пароль</span>
+        </div>
+        <v-btn variant="tonal"
+               color="primary"
+               :block="true"
+        >
+          Восстановить
+        </v-btn>
+      </v-form>
+    </v-window-item>
+    <v-window-item value="2">
+      <v-form>
+        <v-text-field
+            v-model="registrationForm.username"
+            label="Имя пользователя"
+            variant="outlined"
+            placeholder="Введите имя пользователя"
+            prepend-inner-icon="mdi-account"
+        />
+        <v-text-field
+            v-model="registrationForm.email"
+            label="Email"
+            variant="outlined"
+            type="email"
+            placeholder="Введите email"
+            prepend-inner-icon="mdi-email-outline"
+        />
+        <v-text-field
+            v-model="registrationForm.password"
+            label="Пароль"
+            variant="outlined"
+            type="password"
+            prepend-inner-icon="mdi-lock-outline"
+        />
+        <v-text-field
+            v-model="registrationForm.confirmPassword"
+            label="Повторите пароль"
+            variant="outlined"
+            type="password"
+            prepend-inner-icon="mdi-lock-outline"
+        />
+        <v-btn variant="tonal"
+               color="primary"
+               :block="true"
+               @click="registration"
+        >
+          Зарегистрироваться
+        </v-btn>
+      </v-form>
+    </v-window-item>
+  </v-window>
 </template>
 
 <script>

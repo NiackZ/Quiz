@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-    <q-item-create/>
-  </v-container>
+  <q-item-create/>
 </template>
 
 <script>

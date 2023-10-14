@@ -2,7 +2,9 @@
   <v-app>
     <q-navbar/>
     <v-main>
-      <router-view/>
+      <v-container>
+        <router-view/>
+      </v-container>
     </v-main>
   </v-app>
 </template>
