@@ -6,7 +6,7 @@
 
 <script>
 
-import QContentItem from "../../components/QItem/QContentItem.vue";
+import QContentItem from "../../../components/QItem/QContentItem.vue";
 
 export default {
   components: {QContentItem}
