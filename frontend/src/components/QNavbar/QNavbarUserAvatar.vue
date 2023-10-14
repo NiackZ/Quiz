@@ -33,7 +33,7 @@ export default {
     return {
       showMenu: false,
       items: [
-        { title: 'Профиль', to: "/profile"},
+        { title: 'Профиль', to: { name: 'profile' } },
         { type: 'divider' },
         { title: 'Выход', action: this.logout }
       ]

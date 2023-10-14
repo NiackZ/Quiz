@@ -15,6 +15,7 @@ const routes = [
     },
     {
         path: '/admin',
+        name: 'admin',
         component: Admin,
         meta: {
             requiresAuth: true
@@ -33,6 +34,7 @@ const routes = [
     },
     {
         path: '/profile',
+        name: 'profile',
         component: Profile,
         meta: {
             requiresAuth: true
