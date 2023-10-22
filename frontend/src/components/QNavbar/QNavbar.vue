@@ -46,7 +46,7 @@ import { useTheme } from "vuetify";
 import axios from '/src/axios/http-common'
 import {mapActions, mapMutations, mapState} from "vuex";
 import QNavbarUserAvatar from "./QNavbarUserAvatar.vue";
-import QLogin from "./Login.vue";
+import QLogin from "./QLogin.vue";
 
 export default {
   name: 'QNavbar',
