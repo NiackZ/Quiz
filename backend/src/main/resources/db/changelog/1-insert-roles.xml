@@ -4,9 +4,9 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="ZhuravelNA" id="1-create-tables" dbms="postgresql">
+    <changeSet author="ZhuravelNA" id="1-insert-roles" dbms="postgresql">
 
-        <sqlFile relativeToChangelogFile="true" path="sql/1-create-tables.sql"/>
+        <sqlFile relativeToChangelogFile="true" path="sql/1-insert-roles.sql"/>
 <!--        <rollback>-->
 <!--            <dropTable tableName="t_roles"/>-->
 <!--        </rollback>-->
