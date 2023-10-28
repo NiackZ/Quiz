@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
     user.setUsername(userData.getUsername());
     user.setEmail(userData.getEmail());
     user.setPassword(userData.getPassword());
-    user.setDeleted(userData.isDeleted());
+    user.setActive(userData.isActive());
 
     return this.userRepository.save(user).getId();
   }
@@ -72,7 +72,7 @@ public class UserService implements UserDetailsService {
   }
 
   public Long delete(@Valid @NotNull UserCreateDTO userData){
-    userData.setDeleted(true);
+    userData.setActive(false);
     return add(userData);
   }
 

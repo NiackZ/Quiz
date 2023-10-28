@@ -19,14 +19,14 @@ public class UserCreateDTO {
   @NotNull
   private String password;
 
-  private boolean deleted = false;
+  private boolean isActive;
 
   public UserCreateDTO(User author) {
     this.id = author.getId();
     this.username = author.getUsername();
     this.email = author.getEmail();
     this.password = author.getPassword();
-    this.deleted = author.isDeleted();
+    this.isActive = author.isActive();
   }
 
 }

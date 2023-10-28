@@ -35,7 +35,7 @@ public class User {
   private String password;
 
   @ColumnDefault("false")
-  private boolean deleted;
+  private boolean isActive;
 
   @ManyToMany
   @JoinTable(
@@ -50,7 +50,7 @@ public class User {
     this.username = userCreateDTO.getUsername();
     this.email = userCreateDTO.getEmail();
     this.password = userCreateDTO.getPassword();
-    this.deleted = userCreateDTO.isDeleted();
+    this.isActive = userCreateDTO.isActive();
   }
 
 }

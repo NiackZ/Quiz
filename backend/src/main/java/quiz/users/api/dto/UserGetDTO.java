@@ -32,7 +32,7 @@ public class UserGetDTO {
     this.id = user.getId();
     this.username = user.getUsername();
     this.email = user.getEmail();
-    this.deleted = user.isDeleted();
+    this.deleted = user.isActive();
     this.quizzes = null;
   }
 
