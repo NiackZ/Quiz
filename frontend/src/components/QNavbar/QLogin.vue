@@ -166,7 +166,8 @@ export default {
         const data = {
           username: this.registrationForm.username,
           email: this.registrationForm.email,
-          password: this.registrationForm.password
+          password: this.registrationForm.password,
+          confirmPassword: this.registrationForm.confirmPassword
         }
         console.log(data);
         const response = await axios.post('/auth/registration', data);
