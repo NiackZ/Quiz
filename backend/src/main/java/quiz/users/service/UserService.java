@@ -21,11 +21,13 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
   private final IUserRepository userRepository;
-  private PasswordEncoder passwordEncoder;
-  private RoleService roleService;
+  private final PasswordEncoder passwordEncoder;
+  private final RoleService roleService;
 
-  public UserService(IUserRepository userRepository) {
+  public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+    this.roleService = roleService;
   }
 
   private UserGetDTO userToUserGetDTO(User user){

@@ -24,7 +24,7 @@ public class QuizService {
 
   private QuizGetDTO quizToQuizGetDTO(Quiz quiz){
     QuizGetDTO quizGetDTO = new QuizGetDTO(quiz);
-    quizGetDTO.setAuthor(quiz.getAuthor());
+    quizGetDTO.setAuthor(quiz.getUser());
     quizGetDTO.setQuestions(quiz.getQuestions());
     return quizGetDTO;
   }
@@ -49,7 +49,7 @@ public class QuizService {
     Quiz quiz = quizCreateDTO.getId() == null ? new Quiz() : findById(quizCreateDTO.getId());
 
     quiz.setTitle(quizCreateDTO.getTitle());
-    quiz.setAuthor(this.userService.findById(quizCreateDTO.getAuthorId()));
+    quiz.setUser(this.userService.findById(quizCreateDTO.getAuthorId()));
     quiz.setDeleted(quizCreateDTO.isDeleted());
     quiz.setVisible(quizCreateDTO.isVisible());
 

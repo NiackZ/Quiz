@@ -2,13 +2,11 @@ package quiz.users.model;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import quiz.roles.model.Role;
 import quiz.quizzes.model.Quiz;
+import quiz.roles.model.Role;
 import quiz.users.api.dto.UserCreateDTO;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,13 +26,18 @@ public class User {
   @Column(nullable = false, unique = true)
   private String email;
 
-  @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-  private List<Quiz> quizzes = new ArrayList<>();
+  @OneToMany
+  @JoinTable(
+          name = "user_quiz",
+          joinColumns = @JoinColumn(name = "user_id"),
+          inverseJoinColumns = @JoinColumn(name = "quiz_id")
+  )
+  private List<Quiz> quizzes;
 
   @Column(nullable = false)
   private String password;
 
-  @ColumnDefault("false")
+  @ColumnDefault("true")
   private boolean isActive;
 
   @ManyToMany
@@ -43,7 +46,7 @@ public class User {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
-  private Collection<Role> roles;
+  private List<Role> roles;
 
   public User(UserCreateDTO userCreateDTO){
     this.id = userCreateDTO.getId();

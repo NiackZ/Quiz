@@ -23,9 +23,9 @@ public class Quiz {
   @Column(nullable = false)
   private String title;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id", nullable = false)
-  private User author;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
   @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
   private List<Question> questions;
