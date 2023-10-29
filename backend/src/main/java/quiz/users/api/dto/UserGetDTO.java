@@ -26,13 +26,13 @@ public class UserGetDTO {
 
   private List<QuizGetDTO> quizzes = new ArrayList<>();
 
-  private boolean deleted;
+  private boolean isActive;
 
   public UserGetDTO(User user){
     this.id = user.getId();
     this.username = user.getUsername();
     this.email = user.getEmail();
-    this.deleted = user.isActive();
+    this.isActive = user.isActive();
     this.quizzes = null;
   }
 
