@@ -4,3 +4,8 @@ export const UPLOAD_METHOD = {
 }
 export const ACCESS_TOKEN = 'accessToken';
 export const REFRESH_TOKEN = 'refreshToken';
+
+/** ПРАВА */
+export const RIGHTS =  {
+    ADMIN_PANEL_READ: 'ADMIN_PANEL_READ'
+}

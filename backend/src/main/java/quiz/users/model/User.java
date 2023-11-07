@@ -3,6 +3,7 @@ package quiz.users.model;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import quiz.quizzes.model.Quiz;
+import quiz.rights.model.Right;
 import quiz.roles.model.Role;
 import quiz.users.api.dto.UserCreateDTO;
 
@@ -47,6 +48,14 @@ public class User {
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
   private List<Role> roles;
+
+  @ManyToMany
+  @JoinTable(
+          name = "users_rights",
+          joinColumns = @JoinColumn(name = "user_id"),
+          inverseJoinColumns = @JoinColumn(name = "right_id")
+  )
+  private List<Right> rights;
 
   public User(UserCreateDTO userCreateDTO){
     this.id = userCreateDTO.getId();

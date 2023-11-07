@@ -8,6 +8,8 @@ import Error403 from "../views/Error/Error403.vue";
 import Error404 from "../views/Error/Error404.vue";
 import AuthRequired from "../views/Error/AuthRequired.vue";
 import {store} from "../store/index.js";
+import {checkRights} from "../utils/utils.js";
+import {RIGHTS} from "../constants/constants.js";
 
 const routes = [
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404 },
@@ -63,6 +65,16 @@ router.beforeEach(async  (to, from) => {
     if (to.meta.requiresAuth && !isAuthenticated) {
         return {
             path: '/auth-required'
+        }
+    }
+
+    if (to.fullPath.startsWith('/admin')) {
+        const allowEnter = await checkRights(store.state.auth.user.id, [RIGHTS.ADMIN_PANEL_READ]);
+        console.log(allowEnter.data);
+        if (!allowEnter.data) {
+            return {
+                path: '/403'
+            }
         }
     }
 })

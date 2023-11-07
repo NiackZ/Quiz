@@ -1,5 +1,6 @@
 package quiz.users.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,16 +20,11 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
   private final IUserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
-
-  public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
-    this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
-    this.roleService = roleService;
-  }
 
   private UserGetDTO userToUserGetDTO(User user){
     UserGetDTO userGetDTO = new UserGetDTO(user);

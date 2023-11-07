@@ -1,10 +1,15 @@
 package quiz.users.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import quiz.users.model.User;
+
+import java.util.List;
 
 public interface IUserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     User findByUsername(String username);
+    @Query("SELECT r.name FROM User u JOIN u.rights r WHERE u.id = :userId")
+    List<String> findUserRightsById(Long userId);
 }
