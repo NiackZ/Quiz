@@ -3,10 +3,10 @@ package quiz.rights.api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import quiz.rights.model.Right;
+import quiz.rights.model.dto.CheckRightsDTO;
 import quiz.rights.services.RightService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/rights")
@@ -21,9 +21,9 @@ public class RightController {
   }
 
   @PostMapping("check-rights")
-  public boolean checkRights(@RequestBody Map<String, Object> requestData) {
-    Long userId = Long.valueOf(requestData.get("userId").toString());
-    List<String> rights = (List<String>) requestData.get("rights");
+  public boolean checkRights(@RequestBody CheckRightsDTO requestData) {
+    Long userId = requestData.getUserId();
+    List<String> rights = requestData.getRights();
     return this.rightService.checkRights(userId, rights);
   }
 

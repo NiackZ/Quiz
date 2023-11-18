@@ -1,5 +1,4 @@
 <template>
-  {{id}}
   <q-content-item :item-id="Number(id)" />
 </template>
 
