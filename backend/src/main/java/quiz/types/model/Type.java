@@ -1,4 +1,4 @@
-package quiz.rights.model;
+package quiz.types.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -6,13 +6,14 @@ import lombok.Setter;
 import lombok.ToString;
 import quiz.utils.model.LongString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "rights")
-public class Right extends LongString {
+@Table(name = "types")
+public class Type extends LongString {
 }
