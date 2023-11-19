@@ -19,7 +19,6 @@
         <span class="span-tag">Этти</span>
       </div>
 
-
       <div class="mr2-0">
         <span>Студия:</span>
         <span class="span-tag">A-1 Pictures</span>

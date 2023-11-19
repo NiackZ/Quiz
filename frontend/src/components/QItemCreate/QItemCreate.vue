@@ -1,8 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="5" lg="4">
-      <QFileUpload :with-preview="true" :with-url="true"
-      />
+      <QFileUpload ref="fileUpload"/>
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
@@ -47,14 +46,14 @@
                         :error-messages="v$.form.status.value.$errors.map(e => e.$message)"
         />
         <v-text-field label="Количество эпизодов"
-                      v-model="form.duration.seriesCount"
+                      v-model="form.episodeCount"
                       variant="underlined"
-                      :error-messages="v$.form.duration.seriesCount.$errors.map(e => e.$message)"
+                      :error-messages="v$.form.episodeCount.$errors.map(e => e.$message)"
         />
-        <v-text-field label="Продолжительность эпизода"
-                      v-model="form.duration.seriesDuration"
+        <v-text-field label="Продолжительность эпизода (в минутах)"
+                      v-model="form.episodeDuration"
                       variant="underlined"
-                      :error-messages="v$.form.duration.seriesDuration.$errors.map(e => e.$message)"
+                      :error-messages="v$.form.episodeDuration.$errors.map(e => e.$message)"
         />
         <q-vue-date-picker :date="form.period"
                            @update:date="updateDate"
@@ -93,6 +92,7 @@ import QLinkField from "../QLinkField/QLinkField.vue";
 import QJoditEditor from "../QJoditEditor/QJoditEditor.vue";
 import QVueDatePicker from "../QVueDatePicker/QVueDatePicker.vue";
 import QFileUpload from "../QFileUpload/QFileUpload.vue";
+import {getGenres, getStatuses, getStudios, getTypes} from "../../utils/utils.js";
 
 export default {
   name: 'QItemCreate',
@@ -104,25 +104,23 @@ export default {
         romName: "4",
         type: {
           value: null,
-          list: [ {id: 1, name: 'ТВ'}, {id: 2, name: 'Фильм'} ]
+          list: []
         },
         genre: {
           value: [],
-          list: [ {id: 1, name: 'Фэнтази'}, {id: 2, name: 'Школа'} ]
+          list: []
         },
         studio: {
           value: [],
-          list: [ {id: 1, name: 'Ufotable'}, {id: 2, name: 'Kyoto Animation'} ]
+          list: []
         },
         status: {
-          value: [],
-          list: [ {id: 1, name: 'Вышел'}, {id: 2, name: 'Онгоинг'} ]
+          value: null,
+          list: []
         },
         period: null,
-        duration: {
-          seriesCount: 0,
-          seriesDuration: 0
-        },
+        episodeCount: 0,
+        episodeDuration: 0,
         links: [
           {
             name: "URL1",
@@ -164,6 +162,12 @@ export default {
   props: {
     itemId: Number
   },
+  async created() {
+    this.form.type.list = (await getTypes()).data;
+    this.form.genre.list = (await getGenres()).data;
+    this.form.studio.list = (await getStudios()).data;
+    this.form.status.list = (await getStatuses()).data;
+  },
   mounted() {
     document.title = `Создание нового элемента` // устанавливаем заголовок страницы
   },
@@ -184,6 +188,7 @@ export default {
       console.log('click')
       if (!await this.isValid()) return;
       console.log('field`s are valid')
+
     }
   },
   validations () {
@@ -215,13 +220,11 @@ export default {
             required: helpers.withMessage(`Выберите статус.`, required)
           }
         },
-        duration: {
-          seriesCount: {
-            required: helpers.withMessage(`Заполните количество эпизодов.`, required)
-          },
-          seriesDuration: {
-            required: helpers.withMessage(`Заполните продолжительность эпизода.`, required)
-          }
+        episodeCount: {
+          required: helpers.withMessage(`Заполните количество эпизодов.`, required)
+        },
+        episodeDuration: {
+          required: helpers.withMessage(`Заполните продолжительность эпизода.`, required)
         },
         period: {
           required: helpers.withMessage(`Выберите период.`, required)

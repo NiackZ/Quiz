@@ -34,8 +34,14 @@ export default {
       type: Array,
       default: ['.jpg', '.jpeg', '.png', '.gif']
     },
-    withPreview: Boolean,
-    withUrl: Boolean
+    withPreview: {
+      type: Boolean,
+      default: true
+    },
+    withUrl: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -63,7 +69,7 @@ export default {
   },
   methods: {
     getFile() {
-      return this.file;
+      return this.file[0];
     },
     getImageURL() {
       return this.imageUrl;
