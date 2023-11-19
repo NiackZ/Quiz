@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/studios")
+@RequestMapping("/statuses")
 @AllArgsConstructor
 public class StatusController {
 
