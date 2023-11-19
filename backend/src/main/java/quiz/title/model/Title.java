@@ -36,7 +36,8 @@ public abstract class Title {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
-    private String duration;
+    private Integer episodeCount;
+    private String episodeDuration;
     @OneToMany
     @JoinTable(
             name = "title_links",
