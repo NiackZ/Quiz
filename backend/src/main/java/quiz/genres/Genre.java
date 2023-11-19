@@ -1,4 +1,4 @@
-package quiz.genres.model;
+package quiz.genres;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
