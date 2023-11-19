@@ -14,6 +14,6 @@ import javax.persistence.MappedSuperclass;
 public abstract class LongString {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
 }
