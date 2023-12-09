@@ -10,6 +10,7 @@ import AuthRequired from "../views/Error/AuthRequired.vue";
 import {store} from "../store/index.js";
 import {checkRights} from "../utils/utils.js";
 import {RIGHTS} from "../constants/constants.js";
+import Anime from "../views/Admin/Anime.vue";
 
 const routes = [
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404 },
@@ -20,6 +21,14 @@ const routes = [
     {
         path: '/admin',
         component: Admin,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/admin/anime',
+        component: Anime,
+        name: 'anime',
         meta: {
             requiresAuth: true
         }
@@ -70,7 +79,6 @@ router.beforeEach(async  (to, from) => {
 
     if (to.fullPath.startsWith('/admin')) {
         const allowEnter = await checkRights(store.state.auth.user.id, [RIGHTS.ADMIN_PANEL_READ]);
-        console.log(allowEnter.data);
         if (!allowEnter.data) {
             return {
                 path: '/403'

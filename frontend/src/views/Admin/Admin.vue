@@ -3,7 +3,8 @@
     Hello world!
   </h1>
   <v-btn @click="goto">New title</v-btn>
-  <router-view></router-view>
+  <v-btn @click="animeRoute">Anime</v-btn>
+<!--  <router-view></router-view>-->
 </template>
 
 <script>
@@ -24,6 +25,9 @@ export default {
   methods: {
     goto() {
       router.push({name: 'createTitle'})
+    },
+    animeRoute() {
+      router.push({name: 'anime'});
     }
   }
 }
