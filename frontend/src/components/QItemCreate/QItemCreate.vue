@@ -86,13 +86,14 @@
 </template>
 
 <script>
-import { useVuelidate } from '@vuelidate/core'
-import { required, helpers } from '@vuelidate/validators'
+import {useVuelidate} from '@vuelidate/core'
+import {helpers, required} from '@vuelidate/validators'
 import QLinkField from "../QLinkField/QLinkField.vue";
 import QJoditEditor from "../QJoditEditor/QJoditEditor.vue";
 import QVueDatePicker from "../QVueDatePicker/QVueDatePicker.vue";
 import QFileUpload from "../QFileUpload/QFileUpload.vue";
-import {getGenres, getStatuses, getStudios, getTypes} from "../../utils/utils.js";
+import {encodeImage, getGenres, getMarks, getStatuses, getStudios, getTypes} from "../../utils/utils.js";
+import axios from '/src/axios/http-common'
 
 export default {
   name: 'QItemCreate',
@@ -153,9 +154,6 @@ export default {
         },
         description: '123'
       },
-      file: {
-        value: null,
-      },
       v$: useVuelidate({$scope: 'form'})
     }
   },
@@ -163,10 +161,17 @@ export default {
     itemId: Number
   },
   async created() {
-    this.form.type.list = (await getTypes()).data;
-    this.form.genre.list = (await getGenres()).data;
-    this.form.studio.list = (await getStudios()).data;
-    this.form.status.list = (await getStatuses()).data;
+    const typesPromise = getTypes();
+    const genresPromise = getGenres();
+    const studiosPromise = getStudios();
+    const statusesPromise = getStatuses();
+    const marksPromise = getMarks();
+
+    this.form.type.list = (await typesPromise).data;
+    this.form.genre.list = (await genresPromise).data;
+    this.form.studio.list = (await studiosPromise).data;
+    this.form.status.list = (await statusesPromise).data;
+    this.form.marks.list = (await marksPromise).data;
   },
   mounted() {
     document.title = `Создание нового элемента` // устанавливаем заголовок страницы
@@ -185,9 +190,37 @@ export default {
       return await this.v$.$validate();
     },
     async createBtn(){
-      console.log('click')
       if (!await this.isValid()) return;
-      console.log('field`s are valid')
+      const file = this.$refs.fileUpload.getFile();
+      const posterPromise = encodeImage(file);
+      const period = this.form.period;
+      const requestData = {
+        poster: await posterPromise,
+        rusName: this.form.rusName,
+        romName: this.form.romName,
+        typeId: this.form.type.value,
+        genreIds: this.form.genre.value,
+        studioIds: this.form.studio.value,
+        statusId: this.form.status.value,
+        period: period[0] !== undefined ? period : [period], // суть в том, чтобы в любом случае передать массив
+        episodeCount: this.form.episodeCount,
+        episodeDuration: this.form.episodeDuration,
+        linkList: this.form.links,
+        markIds: this.form.marks.value,
+        description: this.form.description
+      };
+
+      console.log(requestData);
+      await axios.post("/anime", requestData);
+      // try {
+      //   const response = await this.$axios.post('/api/createAnime', requestData);
+      //
+      //   // Обработка успешного ответа
+      //   console.log('Anime успешно создан:', response.data);
+      // } catch (error) {
+      //   // Обработка ошибки
+      //   console.error('Ошибка при создании Anime:', error);
+      // }
 
     }
   },

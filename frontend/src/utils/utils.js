@@ -19,3 +19,28 @@ export async function getGenres() {
 export async function getStatuses() {
     return await axios.get("/statuses");
 }
+
+export async function getMarks() {
+    return await axios.get("/marks");
+}
+
+export async function encodeImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1];
+            const dataToSend = {
+                fileName: file.name,
+                base64Image: base64String
+            }
+            resolve(dataToSend);
+        };
+
+        reader.onerror = () => {
+            reject(new Error('Ошибка при кодировании изображения'));
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
