@@ -1,4 +1,4 @@
-package quiz.links.model;
+package quiz.marks;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,11 +8,11 @@ import quiz.utils.model.LongString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+
+@Entity
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Entity
-@Table(name="links")
-public class Link extends LongString {
-    private String url;
+@Table(name="marks")
+public class Mark extends LongString {
 }
