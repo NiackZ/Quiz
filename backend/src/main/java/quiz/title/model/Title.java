@@ -2,15 +2,12 @@ package quiz.title.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import quiz.genres.Genre;
-import quiz.links.model.Link;
-import quiz.mark.model.Mark;
 import quiz.status.Status;
 import quiz.types.model.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -26,31 +23,12 @@ public abstract class Title {
     @ManyToOne
     @JoinColumn(name = "type_id")
     private Type type;
-    @ManyToMany
-    @JoinTable(
-            name = "title_genres",
-            joinColumns = @JoinColumn(name = "title_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    private List<Genre> genres;
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
     private Integer episodeCount;
-    private String episodeDuration;
-    @OneToMany
-    @JoinTable(
-            name = "title_links",
-            joinColumns = @JoinColumn(name = "title_id"),
-            inverseJoinColumns = @JoinColumn(name = "link_id")
-    )
-    private List<Link> links;
-    @OneToMany
-    @JoinTable(
-            name = "title_marks",
-            joinColumns = @JoinColumn(name = "title_id"),
-            inverseJoinColumns = @JoinColumn(name = "mark_id")
-    )
-    private List<Mark> marks;
+    private Integer episodeDuration;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
 }
