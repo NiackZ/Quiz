@@ -47,10 +47,13 @@ export default {
     computedColumnCount() {
       if (this.$vuetify.display.lgAndUp) { // если экран большой
         return 3;
-      } else if (this.$vuetify.display.smAndUp) { // если экран средний
+      }
+      else if (this.$vuetify.display.md || this.$vuetify.display.sm) { // если экран средний
         return 4;
       }
-      return 6;
+      else if (this.$vuetify.display.xs) {
+        return 6;
+      }
     }
   }
 }

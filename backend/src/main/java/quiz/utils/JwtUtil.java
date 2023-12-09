@@ -38,7 +38,7 @@ public class JwtUtil {
 
     public String generateAccessToken(@NonNull UserDetails userDetails) {
         final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusMinutes(15).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant accessExpirationInstant = now.plusSeconds(10).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();

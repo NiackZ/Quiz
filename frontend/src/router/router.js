@@ -10,7 +10,7 @@ import AuthRequired from "../views/Error/AuthRequired.vue";
 import {store} from "../store/index.js";
 import {checkRights} from "../utils/utils.js";
 import {RIGHTS} from "../constants/constants.js";
-import Anime from "../views/Admin/Anime.vue";
+import AnimeGrid from "../views/Admin/Anime/AnimeGrid.vue";
 
 const routes = [
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404 },
@@ -27,8 +27,8 @@ const routes = [
     },
     {
         path: '/admin/anime',
-        component: Anime,
-        name: 'anime',
+        component: AnimeGrid,
+        name: 'animeGrid',
         meta: {
             requiresAuth: true
         }

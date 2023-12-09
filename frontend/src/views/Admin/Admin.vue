@@ -27,7 +27,7 @@ export default {
       router.push({name: 'createTitle'})
     },
     animeRoute() {
-      router.push({name: 'anime'});
+      router.push({name: 'animeGrid'});
     }
   }
 }
