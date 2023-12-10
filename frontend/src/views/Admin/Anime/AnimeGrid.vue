@@ -3,19 +3,18 @@
     <v-col v-for="(anime, index) in animes"
            :key="index"
            :cols="computedColumnCount"
-           :style="{ height: this.cellHeight }"
+           :style="{ height: this.cellHeight, maxHeight: this.cellMaxHeight }"
     >
       <router-link :to="{ name: ANIME_DETAIL_ROUTE(), params: { id: anime.id } }" class="text-decoration-none">
-        <div class="d-flex justify-center grid-cell bg-img-center h-100 "
-             :style="{ width: cellWidth, 'background-image': `url(${anime.posterURL})` }"
-        >
-          <div class="short-description">
-            {{anime.rusName}}
-            <br/>
-            {{anime.romName}}
-          </div>
-        </div>
-        {{ anime.type.name }}
+        <v-card color="transparent" variant="flat">
+          <v-img :src="anime.posterURL"
+
+                 class="bg-img-center rounded" />
+          <v-card-text class="px-0 pt-1">
+            <h3 class="max-line-2">{{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}}{{anime.rusName}}{{anime.rusName}}{{anime.rusName}}</h3>
+            <span>{{anime.type.name}} • {{anime.genreList.map(genre => genre.name).join(', ')}}</span>
+          </v-card-text>
+        </v-card>
       </router-link>
     </v-col>
   </v-row>
@@ -35,7 +34,8 @@ export default {
     return {
       animes: [],
       cellWidth: 'auto',
-      cellHeight: '500px'
+      cellHeight: 'auto',
+      cellMaxHeight: '500px'
     }
   },
   async created() {

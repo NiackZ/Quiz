@@ -60,25 +60,5 @@ export default {
 </script>
 
 <style>
-.grid-cell {
-  border: 0px solid rgba(var(--v-theme-on-background));
-  border-radius: 4px;
-}
-.bg-img-center{
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-}
-.short-description{
-  padding: 15px !important;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  transition: 0.3s;
-  text-align: center;
-}
-.grid-cell:hover .short-description{
-  opacity: 1;
-  background-color: rgba(0,0,0,.5);
-}
+
 </style>
