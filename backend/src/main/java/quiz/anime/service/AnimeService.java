@@ -21,8 +21,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
-import static quiz.utils.Utils.convertToRelativePath;
-
 @Service
 @AllArgsConstructor
 public class AnimeService {
@@ -63,13 +61,14 @@ public class AnimeService {
 
         Image posterImage = animeCreateDTO.getPoster();
         String directoryPath = Paths.get("").toAbsolutePath() + "/frontend/src/public/poster/anime/" + animeId + "/";
-        String fileName = "main-" + Utils.generateRandomString() + "." + Utils.getFileExtension(posterImage.getFileName());
+        String formatName = Utils.getFileExtension(posterImage.getFileName());
+        String fileName = "main-" + Utils.generateRandomString() + "." + formatName;
         Files.createDirectories(Paths.get(directoryPath));
 
         byte[] fileBytes = java.util.Base64.getDecoder().decode(posterImage.getBase64Image());
         String fullPath = directoryPath + fileName;
-        String posterURL = convertToRelativePath(fullPath);
-        Files.write(Paths.get(fullPath), fileBytes);
+        String posterURL = Utils.convertToRelativePath(fullPath);
+        Files.write(Paths.get(fullPath), Utils.resizeImage(fileBytes, formatName, 700));
 
         this.animeRepository.updatePoster(posterURL, animeId);
         return animeId;

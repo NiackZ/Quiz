@@ -1,5 +1,11 @@
 package quiz.utils;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
@@ -58,5 +64,32 @@ public class Utils {
         Path relativePath = projectPath.relativize(filePath);
 
         return "../" + relativePath.toString().replace("\\", "/");
+    }
+
+    public static byte[] resizeImage(byte[] originalImage, String formatName, int targetWidth) throws IOException {
+        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(originalImage)) {
+            BufferedImage originalBufferedImage = ImageIO.read(inputStream);
+            int originalWidth = originalBufferedImage.getWidth();
+            if (originalWidth <= targetWidth) {
+                return originalImage;
+            }
+            int originalHeight = originalBufferedImage.getHeight();
+
+            // Вычисляем новую высоту, сохраняя пропорции
+            int targetHeight = (int) Math.round((double) targetWidth / originalWidth * originalHeight);
+
+            // Создаем новое изображение с уменьшенными размерами
+            Image scaledImage = originalBufferedImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+            BufferedImage resizedBufferedImage = new BufferedImage(targetWidth, targetHeight, originalBufferedImage.getType());
+
+            Graphics2D g2d = resizedBufferedImage.createGraphics();
+            g2d.drawImage(scaledImage, 0, 0, null);
+            g2d.dispose();
+
+            // Конвертируем BufferedImage обратно в массив байтов
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(resizedBufferedImage, formatName, outputStream);
+            return outputStream.toByteArray();
+        }
     }
 }
