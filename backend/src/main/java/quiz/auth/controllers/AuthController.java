@@ -1,6 +1,8 @@
 package quiz.auth.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -25,7 +27,7 @@ import static quiz.config.JwtRequestFilter.BEARER_STR;
 public class AuthController {
 
     private final AuthService authService;
-
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("login")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
@@ -48,7 +50,7 @@ public class AuthController {
 
     @PostMapping("token")
     public ResponseEntity<?> getNewAccessToken(@RequestBody RefreshJwtRequest request) {
-        System.out.println("Refresh: " + request.getRefreshToken());
+        log.info("Refresh: " + request.getRefreshToken());
         return authService.getAccessToken(request.getRefreshToken());
     }
 
@@ -63,7 +65,7 @@ public class AuthController {
 
     private String getHeaderToken(HttpServletRequest request) {
         String authHeader = request.getHeader(AUTHORIZATION);
-        System.out.println("getHeaderToken: " + authHeader);
+        log.info("getHeaderToken: " + authHeader);
         if (StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_STR)) {
             String jwt = authHeader.substring(BEARER_STR.length());
             if (!jwt.equalsIgnoreCase("null")) {

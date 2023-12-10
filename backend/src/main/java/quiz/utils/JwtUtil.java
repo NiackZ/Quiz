@@ -62,7 +62,7 @@ public class JwtUtil {
     }
 
     public boolean validateRefreshToken(@NonNull String refreshToken) {
-        System.out.println("validateRefreshToken: " + refreshToken);
+        log.info("validateRefreshToken: " + refreshToken);
         return validateToken(refreshToken, jwtRefreshSecret);
     }
 
