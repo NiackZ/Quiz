@@ -5,14 +5,17 @@
            :cols="computedColumnCount"
            :style="{ height: this.cellHeight }"
     >
-      <router-link :to="'/item/' + anime.id" class="text-decoration-none">
+      <router-link :to="{ name: ANIME_DETAIL_ROUTE(), params: { id: anime.id } }" class="text-decoration-none">
         <div class="d-flex justify-center grid-cell bg-img-center h-100 "
              :style="{ width: cellWidth, 'background-image': `url(${anime.posterURL})` }"
         >
           <div class="short-description">
-            element #{{ anime.id }}
+            {{anime.rusName}}
+            <br/>
+            {{anime.romName}}
           </div>
         </div>
+        {{ anime.type.name }}
       </router-link>
     </v-col>
   </v-row>
@@ -20,8 +23,14 @@
 
 <script>
 import axios from "/src/axios/http-common.js";
+import {ANIME_DETAIL_ROUTE} from "../../../router/routeConstants.js";
 
 export default {
+  methods: {
+    ANIME_DETAIL_ROUTE() {
+      return ANIME_DETAIL_ROUTE;
+    }
+  },
   data() {
     return {
       animes: [],
@@ -35,7 +44,7 @@ export default {
       this.animes = animes.data;
     }
     else {
-      console.log("Ничего не найдено")
+      console.log("Ничего не найдено");
     }
   },
   computed: {

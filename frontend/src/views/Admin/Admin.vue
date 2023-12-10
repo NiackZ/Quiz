@@ -9,6 +9,7 @@
 
 <script>
 import router from "../../router/router.js";
+import {ANIME_GRID_ROUTE} from "../../router/routeConstants.js";
 
 export default {
   data() {
@@ -27,7 +28,7 @@ export default {
       router.push({name: 'createTitle'})
     },
     animeRoute() {
-      router.push({name: 'animeGrid'});
+      router.push({name: ANIME_GRID_ROUTE});
     }
   }
 }
