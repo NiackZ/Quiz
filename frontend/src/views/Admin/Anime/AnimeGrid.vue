@@ -11,7 +11,7 @@
 
                  class="bg-img-center rounded" />
           <v-card-text class="px-0 pt-1">
-            <h3 class="max-line-2">{{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}} {{anime.rusName}}{{anime.rusName}}{{anime.rusName}}{{anime.rusName}}</h3>
+            <h3 class="max-line-2">{{anime.rusName}}</h3>
             <span>{{anime.type.name}} • {{anime.genreList.map(genre => genre.name).join(', ')}}</span>
           </v-card-text>
         </v-card>
