@@ -41,10 +41,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
             catch (ExpiredJwtException e) {
-                log.error("Время жизни токена истекло.");
+                log.warn("Время жизни токена истекло.");
             }
             catch (SignatureException e) {
-                log.error("Подпись JWT не совпадает с локально вычисленной подписью. Действительность JWT не может быть подтверждена и не должна вызывать доверия.");
+                log.warn("Подпись JWT не совпадает с локально вычисленной подписью. Действительность JWT не может быть подтверждена и не должна вызывать доверия.");
             }
             catch (MalformedJwtException exception) {
                 log.error("MalformedJwtException: ");

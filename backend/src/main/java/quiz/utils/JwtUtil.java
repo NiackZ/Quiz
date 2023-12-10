@@ -79,7 +79,7 @@ public class JwtUtil {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
-            log.error("Время жизни токена истекло: "+ e.getMessage());
+            log.warn("Время жизни токена истекло: "+ e.getMessage());
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported jwt", e.getMessage());
         } catch (MalformedJwtException e) {
