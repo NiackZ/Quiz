@@ -1,15 +1,14 @@
 <template>
   <v-row>
-    <v-col v-for="(anime, index) in animes"
-           :key="index"
+    <v-col v-for="anime in animes"
+           :key="anime.id"
            :cols="computedColumnCount"
-           :style="{ height: this.cellHeight, maxHeight: this.cellMaxHeight }"
     >
       <router-link :to="{ name: ANIME_DETAIL_ROUTE(), params: { id: anime.id } }" class="text-decoration-none">
         <v-card color="transparent" variant="flat">
-          <v-img :src="anime.posterURL"
-
-                 class="bg-img-center rounded" />
+          <v-img :src="anime.posterURL" class="rounded"
+                 :max-height="css.imgHeight"
+          />
           <v-card-text class="px-0 pt-1">
             <h3 class="max-line-2">{{anime.rusName}}</h3>
             <span>{{anime.type.name}} • {{anime.genreList.map(genre => genre.name).join(', ')}}</span>
@@ -33,9 +32,10 @@ export default {
   data() {
     return {
       animes: [],
-      cellWidth: 'auto',
-      cellHeight: 'auto',
-      cellMaxHeight: '500px'
+      css: {
+        imgHeight: '490px',
+        imgWidth: 'auto'
+      }
     }
   },
   async created() {
@@ -50,13 +50,13 @@ export default {
   computed: {
     computedColumnCount() {
       if (this.$vuetify.display.lgAndUp) { // если экран большой
-        return 3;
+        return 2;
       }
       else if (this.$vuetify.display.md || this.$vuetify.display.sm) { // если экран средний
-        return 4;
+        return 3;
       }
       else if (this.$vuetify.display.xs) {
-        return 6;
+        return 12;
       }
     }
   }

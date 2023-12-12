@@ -34,10 +34,13 @@ const routes = [
         }
     },
     {
-        path: '/admin/anime/:id',
+        path: '/admin/anime/:id(\\d+)',
         name: ANIME_DETAIL_ROUTE,
         component: () => import('../views/Admin/Anime/AnimeDetail.vue'),
-        props: true
+        props: true,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/admin/create/title',
