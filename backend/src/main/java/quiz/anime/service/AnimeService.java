@@ -79,4 +79,8 @@ public class AnimeService {
                 .map(AnimeGetDTO::new)
                 .toList();
     }
+
+    public Anime getById(Long id) {
+        return this.animeRepository.findById(id).orElse(null);
+    }
 }

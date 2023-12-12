@@ -2,6 +2,7 @@ package quiz.anime.api;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import quiz.anime.Anime;
 import quiz.anime.AnimeCreateDTO;
 import quiz.anime.AnimeGetDTO;
 import quiz.anime.service.AnimeService;
@@ -24,6 +25,11 @@ public class AnimeController {
     @GetMapping()
     public List<AnimeGetDTO> getAll() {
         return this.service.getAll();
+    }
+
+    @GetMapping("{id}")
+    public Anime getById(@PathVariable Long id){
+        return this.service.getById(id);
     }
 
 }
