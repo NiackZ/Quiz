@@ -1,6 +1,6 @@
 <template>
-  <jodit-editor :model-value="text"
-                :config="config"
+  <jodit-editor :config="config"
+                v-model="desc"
                 @change="$emit('update:text', $event.target.value)"
   />
 </template>
@@ -26,6 +26,17 @@ export default {
         saveModeInCookie: true,
         theme: 'custom'
       })
+    }
+  },
+  watch: {
+    text(newText) {
+      // Обновляем свойство desc при изменении пропса text
+      this.desc = newText;
+    },
+  },
+  data() {
+    return {
+      desc: ""
     }
   }
 }

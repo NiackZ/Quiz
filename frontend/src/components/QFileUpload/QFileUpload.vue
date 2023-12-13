@@ -38,6 +38,10 @@ export default {
       type: Boolean,
       default: true
     },
+    posterUrl: {
+      type: String,
+      default: null
+    },
     withUrl: {
       type: Boolean,
       default: false
@@ -64,7 +68,7 @@ export default {
       } else if (this.uploadValue === UPLOAD_METHOD.URL && this.previewUrl) {
         return this.previewUrl;
       }
-      return null;
+      return this.posterUrl ? this.posterUrl : null;
     }
   },
   methods: {

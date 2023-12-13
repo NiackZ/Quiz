@@ -1,10 +1,16 @@
 <template>
   <v-row>
     <v-col cols="12" md="5" lg="4">
-      <QFileUpload ref="fileUpload"/>
+      <q-file-upload v-if="anime?.posterURL" ref="fileUpload" :poster-url="anime.posterURL" />
+      <q-file-upload v-else ref="fileUpload" />
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
+        <v-text-field v-if="this.form.id" label="ИД"
+                      v-model="form.id"
+                      variant="underlined"
+                      disabled
+        />
         <v-text-field label="Название на русском"
                       v-model="form.rusName"
                       variant="underlined"
@@ -75,9 +81,9 @@
                  min-width="92"
                  variant="outlined"
                  class="ml-3"
-                 @click="createBtn"
+                 @click="anime ? saveAnime() : createAnime()"
           >
-            Добавить
+            {{ anime ? 'Сохранить' : 'Создать' }}
           </v-btn>
         </div>
       </v-form>
@@ -88,21 +94,22 @@
 <script>
 import {useVuelidate} from '@vuelidate/core'
 import {helpers, required} from '@vuelidate/validators'
-import QLinkField from "../QLinkField/QLinkField.vue";
-import QJoditEditor from "../QJoditEditor/QJoditEditor.vue";
-import QVueDatePicker from "../QVueDatePicker/QVueDatePicker.vue";
-import QFileUpload from "../QFileUpload/QFileUpload.vue";
-import {encodeImage, getGenres, getMarks, getStatuses, getStudios, getTypes} from "../../utils/utils.js";
+import QLinkField from "../../QLinkField/QLinkField.vue";
+import QJoditEditor from "../../QJoditEditor/QJoditEditor.vue";
+import QVueDatePicker from "../../QVueDatePicker/QVueDatePicker.vue";
+import QFileUpload from "../../QFileUpload/QFileUpload.vue";
+import {encodeImage, getGenres, getMarks, getStatuses, getStudios, getTypes} from "../../../utils/utils.js";
 import axios from '/src/axios/http-common'
 
 export default {
-  name: 'QItemCreate',
+  name: 'QAnimeDetail',
   components: {QFileUpload, QVueDatePicker, QJoditEditor, QLinkField},
   data() {
     return {
       form: {
-        rusName: "3",
-        romName: "4",
+        id: null,
+        rusName: "",
+        romName: "",
         type: {
           value: null,
           list: []
@@ -119,48 +126,30 @@ export default {
           value: null,
           list: []
         },
-        period: null,
         episodeCount: 0,
         episodeDuration: 0,
-        links: [
-          {
-            name: "URL1",
-            url: "https://yandex.ru"
-          },
-          {
-            name: "URL2",
-            url: "https://google.ru"
-          },
-          {
-            name: "URL3",
-            url: "https://yandex.ru"
-          },
-          {
-            name: "URL4",
-            url: "https://google.ru"
-          },
-          {
-            name: "URL5",
-            url: "https://yandex.ru"
-          },
-          {
-            name: "URL6",
-            url: "https://google.ru"
-          }
-        ],
+        period: null,
+        links: [],
         marks: {
           value: [],
-          list: [{id: 1, name: 'BDRip'}]
+          list: []
         },
-        description: '123'
+        description: ''
       },
+      anime: null,
       v$: useVuelidate({$scope: 'form'})
     }
   },
   props: {
-    itemId: Number
+    id: Number
   },
   async created() {
+    const animeId = this.$props.id;
+    let animePromise = null;
+    if (animeId) {
+      this.form.id = animeId;
+      animePromise = axios.get(`/anime/${this.$props.id}`);
+    }
     const typesPromise = getTypes();
     const genresPromise = getGenres();
     const studiosPromise = getStudios();
@@ -172,9 +161,34 @@ export default {
     this.form.studio.list = (await studiosPromise).data;
     this.form.status.list = (await statusesPromise).data;
     this.form.marks.list = (await marksPromise).data;
+
+    if (animePromise !== null) {
+      this.anime = (await animePromise).data;
+      console.log("Аниме получено из БД");
+      this.form.rusName = this.anime.ruName;
+      this.form.romName = this.anime.romajiName;
+      this.form.type.value = this.anime.type.id;
+      this.form.genre.value.push(...this.anime.genres.map(genre => genre.id));
+      this.form.studio.value.push(...this.anime.studios.map(studio => studio.id));
+      this.form.status.value = this.anime.status.id;
+      this.form.rusName = this.anime.ruName;
+      this.form.romName = this.anime.romajiName;
+      this.form.episodeCount = this.anime.episodeCount;
+      this.form.episodeDuration = this.anime.episodeDuration;
+      const startDate = this.anime.startDate ? new Date(this.anime.startDate) : null;
+      const endDate = this.anime.endDate ? new Date(this.anime.endDate) : null;
+      if (startDate) {
+        this.form.period = endDate
+            ? [...[startDate, endDate]]
+            : startDate
+      }
+      this.form.links = this.anime.links;
+      this.form.marks = this.anime.marks;
+      this.form.description = this.anime.description;
+    }
   },
   mounted() {
-    document.title = `Создание нового элемента` // устанавливаем заголовок страницы
+    document.title = this.$props.id ? 'Редактирование аниме' : 'Добавление нового аниме';
   },
   methods: {
     updateDate(newValue) {
@@ -189,7 +203,7 @@ export default {
     async isValid(){
       return await this.v$.$validate();
     },
-    async createBtn(){
+    async createAnime() {
       if (!await this.isValid()) return;
       const file = this.$refs.fileUpload.getFile();
       const posterPromise = encodeImage(file);
@@ -202,26 +216,25 @@ export default {
         genreIds: this.form.genre.value,
         studioIds: this.form.studio.value,
         statusId: this.form.status.value,
-        period: period[0] !== undefined ? period : [period], // суть в том, чтобы в любом случае передать массив
         episodeCount: this.form.episodeCount,
         episodeDuration: this.form.episodeDuration,
+        period: period[0] !== undefined ? period : [period], // суть в том, чтобы в любом случае передать массив
         linkList: this.form.links,
         markIds: this.form.marks.value,
         description: this.form.description
       };
-
       console.log(requestData);
-      await axios.post("/anime", requestData);
-      // try {
-      //   const response = await this.$axios.post('/api/createAnime', requestData);
-      //
-      //   // Обработка успешного ответа
-      //   console.log('Anime успешно создан:', response.data);
-      // } catch (error) {
-      //   // Обработка ошибки
-      //   console.error('Ошибка при создании Anime:', error);
-      // }
+      try {
+        const response = await axios.post("/anime", requestData);
+        console.log('Anime успешно создан:', response.data);
+      } catch (error) {
+        // Обработка ошибки
+        console.error('Ошибка при создании Anime:', error);
+      }
 
+    },
+    async saveAnime() {
+      console.log('save');
     }
   },
   validations () {

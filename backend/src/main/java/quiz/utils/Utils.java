@@ -63,7 +63,7 @@ public class Utils {
 
         Path relativePath = projectPath.relativize(filePath);
 
-        return "../" + relativePath.toString().replace("\\", "/");
+        return "/" + relativePath.toString().replace("\\", "/");
     }
 
     public static byte[] resizeImage(byte[] originalImage, String formatName, int targetWidth) throws IOException {

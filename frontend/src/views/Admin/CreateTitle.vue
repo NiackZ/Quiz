@@ -1,12 +1,12 @@
 <template>
-  <q-item-create/>
+  <q-anime-detail/>
 </template>
 
 <script>
-import QItemCreate from "../../components/QItemCreate/QItemCreate.vue";
+import QAnimeDetail from "../../components/Anime/QAnimeDetail/QAnimeDetail.vue";
 
 export default {
-  components: {QItemCreate}
+  components: {QAnimeDetail}
 }
 </script>
 
