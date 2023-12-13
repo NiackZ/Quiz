@@ -11,12 +11,12 @@
     color: #c8b6ff;
 }
 
-.bg-img-center{
+.bg-img-center {
     background-size: cover;
     background-position: center bottom;
     background-repeat: no-repeat;
 }
-.short-description{
+.short-description {
     padding: 15px !important;
     height: 100%;
     width: 100%;

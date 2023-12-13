@@ -179,11 +179,11 @@ export default {
       const endDate = this.anime.endDate ? new Date(this.anime.endDate) : null;
       if (startDate) {
         this.form.period = endDate
-            ? [...[startDate, endDate]]
+            ? [startDate, endDate]
             : startDate
       }
       this.form.links = this.anime.links;
-      this.form.marks = this.anime.marks;
+      this.form.marks.value = this.anime.marks;
       this.form.description = this.anime.description;
     }
   },
