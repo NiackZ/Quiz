@@ -24,8 +24,14 @@ export async function getMarks() {
     return await axios.get("/marks");
 }
 
+export function isEmpty(obj) {
+    return obj === null || obj === undefined;
+}
+
 export async function encodeImage(file) {
-    return new Promise((resolve, reject) => {
+    return isEmpty(file)
+        ? null
+        : new Promise((resolve, reject) => {
         const reader = new FileReader();
 
         reader.onloadend = () => {

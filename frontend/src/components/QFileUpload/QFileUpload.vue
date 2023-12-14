@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     getFile() {
-      return this.file[0];
+      return this.file?.[0];
     },
     getImageURL() {
       return this.imageUrl;

@@ -203,12 +203,11 @@ export default {
     async isValid(){
       return await this.v$.$validate();
     },
-    async createAnime() {
-      if (!await this.isValid()) return;
+    async getFormData() {
       const file = this.$refs.fileUpload.getFile();
       const posterPromise = encodeImage(file);
       const period = this.form.period;
-      const requestData = {
+      return {
         poster: await posterPromise,
         rusName: this.form.rusName,
         romName: this.form.romName,
@@ -223,18 +222,21 @@ export default {
         markIds: this.form.marks.value,
         description: this.form.description
       };
-      console.log(requestData);
+    },
+    async createAnime() {
+      if (!await this.isValid()) return;
+      const createData = this.getFormData();
       try {
-        const response = await axios.post("/anime", requestData);
-        console.log('Anime успешно создан:', response.data);
+        const response = await axios.post("/anime", await createData);
+        console.log('Anime успешно создан: ', response.data);
       } catch (error) {
-        // Обработка ошибки
-        console.error('Ошибка при создании Anime:', error);
+        console.error('Ошибка при создании Anime: ', error);
       }
-
     },
     async saveAnime() {
-      console.log('save');
+      const requestData = await this.getFormData();
+      requestData.anime = this.anime;
+      console.log(requestData);
     }
   },
   validations () {
