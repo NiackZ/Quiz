@@ -6,8 +6,8 @@
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
-        <v-text-field v-if="this.form.id" label="ИД"
-                      v-model="form.id"
+        <v-text-field v-if="this.anime?.id" label="ИД"
+                      v-model="this.anime.id"
                       variant="underlined"
                       disabled
         />
@@ -107,7 +107,6 @@ export default {
   data() {
     return {
       form: {
-        id: null,
         rusName: "",
         romName: "",
         type: {
@@ -147,7 +146,6 @@ export default {
     const animeId = this.$props.id;
     let animePromise = null;
     if (animeId) {
-      this.form.id = animeId;
       animePromise = axios.get(`/anime/${this.$props.id}`);
     }
     const typesPromise = getTypes();
@@ -229,14 +227,33 @@ export default {
       try {
         const response = await axios.post("/anime", await createData);
         console.log('Anime успешно создан: ', response.data);
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Ошибка при создании Anime: ', error);
       }
     },
     async saveAnime() {
+      //todo
       const requestData = await this.getFormData();
+      var jsonString = JSON.stringify(requestData);
       requestData.anime = this.anime;
-      console.log(requestData);
+      var jsonString2 = JSON.stringify(requestData);
+
+// Измеряем размер строки в байтах
+      var byteSize = new TextEncoder().encode(jsonString).length;
+      var byteSize2 = new TextEncoder().encode(jsonString2).length;
+
+      console.log("Размер JSON в байтах:", byteSize);
+      console.log(jsonString);
+      console.log("Размер JSON с аниме в байтах:", byteSize2);
+      console.log(jsonString2);
+      // try{
+      //   const response = await axios.put(`/anime/${this.anime.id}`, requestData);
+      //   console.log('Anime успешно сохранен: ', response.data);
+      // }
+      // catch (error) {
+      //   console.error('Ошибка при сохранении Anime: ', error);
+      // }
     }
   },
   validations () {
@@ -291,20 +308,20 @@ export default {
   font-family: Verdana, serif;
 }
 .mr2-0{
-  margin: 2px 0px;
+  margin: 2px 0;
 }
 .mrl5{
   margin-left: 5px;
 }
 .mr10-0{
-  margin: 10px 0px;
+  margin: 10px 0;
 }
 .span-tag {
   margin-top: 5px;
   margin-left: 5px;
   cursor: pointer;
   display: inline-block;
-  padding: 0px 5px;
+  padding: 0 5px;
   border-radius: 3px;
   background-color: rgba(25, 88, 255, 0.5);
   transition: 0.1s;

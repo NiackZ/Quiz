@@ -32,7 +32,7 @@ public class AnimeService {
     private final StudioRepository studioRepository;
     private final LinkService linkService;
 
-    public Long create(AnimeCreateDTO animeCreateDTO) throws IOException {
+    public Long createAnime(AnimeCreateDTO animeCreateDTO) throws IOException {
         Anime anime = new Anime();
 
         anime.setRuName(animeCreateDTO.getRusName());
@@ -74,13 +74,20 @@ public class AnimeService {
         return animeId;
     }
 
-    public List<AnimeGetDTO> getAll() {
+    public List<AnimeGetDTO> getAllAnimes() {
         return this.animeRepository.findAll().stream()
                 .map(AnimeGetDTO::new)
                 .toList();
     }
 
-    public Anime getById(Long id) {
+    public Anime getAnimeById(Long id) {
         return this.animeRepository.findById(id).orElse(null);
+    }
+
+
+    public void updateAnime(Long id, Anime anime) {
+    }
+
+    public void deleteAnime(Long id) {
     }
 }

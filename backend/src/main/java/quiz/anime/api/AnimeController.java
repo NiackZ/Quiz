@@ -1,6 +1,8 @@
 package quiz.anime.api;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import quiz.anime.Anime;
 import quiz.anime.AnimeCreateDTO;
@@ -15,21 +17,41 @@ import java.util.List;
 @RequestMapping("/anime")
 @AllArgsConstructor
 public class AnimeController {
-    private final AnimeService service;
+    private final AnimeService animeService;
 
-    @PostMapping()
-    public Long create(@RequestBody @NotNull AnimeCreateDTO anime) throws IOException {
-        return this.service.create(anime);
+    //Получение всех аниме
+    @GetMapping
+    public ResponseEntity<List<AnimeGetDTO>> getAll() {
+        List<AnimeGetDTO> animes = this.animeService.getAllAnimes();
+        return new ResponseEntity<>(animes, HttpStatus.OK);
     }
 
-    @GetMapping()
-    public List<AnimeGetDTO> getAll() {
-        return this.service.getAll();
+    // Получить одно аниме по ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Anime> getAnimeById(@PathVariable Long id) {
+        Anime anime = this.animeService.getAnimeById(id);
+        return new ResponseEntity<>(anime, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public Anime getById(@PathVariable Long id){
-        return this.service.getById(id);
+    // Создать новое аниме
+    @PostMapping
+    public ResponseEntity<Long> createAnime(@RequestBody @NotNull AnimeCreateDTO anime) throws IOException {
+        Long createdAnimeId = this.animeService.createAnime(anime);
+        return new ResponseEntity<>(createdAnimeId, HttpStatus.CREATED);
+    }
+
+    // Обновить существующее аниме
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateAnime(@PathVariable Long id, @RequestBody Anime anime) {
+        this.animeService.updateAnime(id, anime);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // Удалить аниме
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAnime(@PathVariable Long id) {
+        animeService.deleteAnime(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
