@@ -1,39 +1,62 @@
 <template>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-  <v-btn @click="goto">New title</v-btn>
-  <v-btn @click="animeRoute">Anime</v-btn>
-<!--  <router-view></router-view>-->
+  <v-row justify="center">
+    <v-col v-for="block in blocks"
+           :cols="computedColumnCount"
+    >
+      <v-card v-ripple.center>
+        <router-link :to="{ name: block.link }" class="text-decoration-none">
+          <v-card-text class="text-center custom-card-text">
+            {{block.name}}
+          </v-card-text>
+        </router-link>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import router from "../../router/router.js";
-import {ANIME_GRID_ROUTE} from "../../router/routeConstants.js";
+
+import {ADMIN_ROUTE} from "../../router/routeConstants.js";
 
 export default {
   data() {
     return {
-      showMenu: false,
-      routes: [
-        {
-          path: '/admin/create/title',
-          title: 'New title'
-        }
+      blocks: [
+        { name: "Аниме", link: ADMIN_ROUTE.ANIME },
+        { name: "Жанры", link: ADMIN_ROUTE.GENRE },
+        { name: "Типы", link: null },
+        { name: "Студии", link: null },
+        { name: "Статусы", link: null }
       ]
     }
   },
-  methods: {
-    goto() {
-      router.push({name: 'createTitle'})
-    },
-    animeRoute() {
-      router.push({name: ANIME_GRID_ROUTE});
+  async created() {
+
+  },
+  computed: {
+    computedColumnCount() {
+      if (this.$vuetify.display.lgAndUp) { // если экран большой
+        return 2;
+      }
+      else if (this.$vuetify.display.md || this.$vuetify.display.sm) { // если экран средний
+        return 3;
+      }
+      else if (this.$vuetify.display.xs) {
+        return 12;
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.custom-card-text {
+  transition: 0.3s ease;
+}
 
+.custom-card-text:hover {
+  background-color: #514080 !important; /* Измените этот цвет на нужный вам */
+  color: white !important;
+}
 </style>
+

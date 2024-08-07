@@ -24,11 +24,6 @@ import axios from "/src/axios/http-common.js";
 import {ANIME_DETAIL_ROUTE} from "../../../router/routeConstants.js";
 
 export default {
-  methods: {
-    ANIME_DETAIL_ROUTE() {
-      return ANIME_DETAIL_ROUTE;
-    }
-  },
   data() {
     return {
       animes: [],
@@ -36,6 +31,11 @@ export default {
         imgHeight: '490px',
         imgWidth: 'auto'
       }
+    }
+  },
+  methods: {
+    ANIME_DETAIL_ROUTE() {
+      return ANIME_DETAIL_ROUTE;
     }
   },
   async created() {

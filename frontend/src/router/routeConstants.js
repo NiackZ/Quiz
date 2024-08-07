@@ -1,2 +1,8 @@
-export const ANIME_GRID_ROUTE = "animeGrid";
 export const ANIME_DETAIL_ROUTE = "animeDetail";
+
+/** ADMIN GRID */
+
+export const ADMIN_ROUTE = {
+    GENRE: 'genreGrid',
+    ANIME: "animeGrid"
+}
