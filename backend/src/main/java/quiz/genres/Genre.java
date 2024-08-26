@@ -16,4 +16,6 @@ import javax.persistence.*;
 @Table(name = "genres")
 public class Genre extends LongString {
 
+    @Column(unique = true)
+    private String name;
 }
