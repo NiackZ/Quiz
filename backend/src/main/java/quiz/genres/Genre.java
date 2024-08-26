@@ -13,9 +13,6 @@ import javax.persistence.*;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "genres")
+@Table(name = "genres", uniqueConstraints = { @UniqueConstraint(columnNames = {"name"})})
 public class Genre extends LongString {
-
-    @Column(unique = true)
-    private String name;
 }
