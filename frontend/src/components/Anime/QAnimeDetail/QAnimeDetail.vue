@@ -98,7 +98,8 @@ import QLinkField from "../../QLinkField/QLinkField.vue";
 import QJoditEditor from "../../QJoditEditor/QJoditEditor.vue";
 import QVueDatePicker from "../../QVueDatePicker/QVueDatePicker.vue";
 import QFileUpload from "../../QFileUpload/QFileUpload.vue";
-import {encodeImage, getGenres, getMarks, getStatuses, getStudios, getTypes} from "../../../utils/utils.js";
+import {encodeImage, getMarks, getStatuses, getStudios, getTypes} from "../../../utils/utils.js";
+import {getGenres} from "../../../axios/api/genres/genres.js";
 import axios from '/src/axios/http-common'
 
 export default {

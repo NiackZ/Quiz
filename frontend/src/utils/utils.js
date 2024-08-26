@@ -12,10 +12,6 @@ export async function getStudios() {
     return await axios.get("/studios");
 }
 
-export async function getGenres() {
-    return await axios.get("/genres");
-}
-
 export async function getStatuses() {
     return await axios.get("/statuses");
 }
