@@ -34,3 +34,7 @@
 .d-content {
     display: contents;
 }
+
+.deleted-row {
+    background-color: #362020;
+}

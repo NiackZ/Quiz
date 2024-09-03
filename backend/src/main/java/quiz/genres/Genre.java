@@ -1,16 +1,14 @@
 package quiz.genres;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import quiz.utils.model.LongString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Getter
-@Setter
 @ToString
 @RequiredArgsConstructor
 @Table(name = "genres", uniqueConstraints = { @UniqueConstraint(columnNames = {"name"})})

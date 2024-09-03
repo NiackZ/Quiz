@@ -32,9 +32,8 @@ public class GenreService {
     }
 
     public void deleteById(Long id) {
-        if (!genreRepository.existsById(id)) {
-            throw new EntityNotFoundException(NOT_FOUND + id);
-        }
-        genreRepository.deleteById(id);
+        Genre genre = genreRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+        genre.setDeleted(true);
+        genreRepository.save(genre);
     }
 }

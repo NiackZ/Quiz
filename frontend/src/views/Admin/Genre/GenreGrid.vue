@@ -16,7 +16,8 @@
                           show-select hover
                           :loading="loading"
                           v-model="selected"
-                          :items="items"
+                          :items="showDeleted ? items : filteredItems"
+                          :row-props="rowFunc"
                           :headers="headers"
                           :search="search"
     >
@@ -62,7 +63,7 @@
                 </v-btn>
                 <v-btn color="blue-darken-1"
                        variant="text"
-                       @click="save"
+                       @click="this.editedItem.id === null ? create() : save()"
                 >
                   Сохранить
                 </v-btn>
@@ -70,6 +71,14 @@
             </v-card>
           </v-dialog>
           <v-btn class="" color="red" :disabled="selected.length === 0" @click="deleteSelected">Удалить</v-btn>
+          <v-checkbox
+              class="q-checkbox"
+              v-model="showDeleted"
+              label="Показать удалённые"
+              color="primary"
+              :hide-details="true"
+              density="comfortable"
+          />
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -83,6 +92,7 @@
         <v-icon
             size="small"
             @click="deleteItem(item)"
+            :disabled="item.isDeleted"
         >
           mdi-delete
         </v-icon>
@@ -96,7 +106,7 @@
 </template>
 
 <script>
-import {getGenres} from "../../../axios/api/genres/genres.js";
+import {getGenres, saveGenre, createGenre, deleteGenre} from "../../../axios/api/genres/genres.js";
 
 export default {
   data() {
@@ -106,56 +116,64 @@ export default {
           { title: 'Название', key: 'name' },
           { title: 'Действия', key: 'actions', sortable: false, width: '100px' }
       ],
+      showDeleted: false,
       dialog: false,
       loading: true,
       search: '',
       selected: [],
       items: [],
-      editedIndex: -1,
+      filteredItems: [],
       editedItem: {
-        name: ''
+        id: null,
+        name: null
       }
     }
   },
   async created() {
-    const genresPromise = getGenres();
-    this.items = (await genresPromise).data.map(genre => {
-      return {
-        id: genre.id,
-        name: genre.name,
-        actions: null
-      }
-    });
-    const _this = this;
-    setTimeout(function () {
-      _this.loading = false;
-    }, 500)
+    await this.reloadList();
   },
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'Новый жанр' : 'Редактирование жанра';
-    },
-    computedColumnCount() {
-      if (this.$vuetify.display.lgAndUp) { // если экран большой
-        return 2;
-      }
-      else if (this.$vuetify.display.md || this.$vuetify.display.sm) { // если экран средний
-        return 3;
-      }
-      else if (this.$vuetify.display.xs) {
-        return 12;
-      }
+      return this.editedItem.id === null ? 'Новый жанр' : 'Редактирование жанра';
     }
   },
   methods: {
-    editItem (item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
+    rowFunc(row) {
+      if (row.item.isDeleted) {
+        return {
+          class: 'deleted-row'
+        }
+      }
     },
-    deleteItem (item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.items.splice(this.editedIndex, 1)
+    async reloadList() {
+      try{
+        this.loading = true;
+        this.items = (await getGenres()).data.map(genre => {
+          return {
+            id: genre.id,
+            name: genre.name,
+            isDeleted: genre.isDeleted
+          }
+        });
+        this.filteredItems = this.items.filter(item => !item.isDeleted);
+        const _this = this;
+        setTimeout(function () {
+          _this.loading = false;
+          console.log('list reloaded');
+        }, 200)
+      }
+      catch (e) {
+        this.loading = false;
+      }
+    },
+    editItem (item) {
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    async deleteItem (item) {
+      await deleteGenre(item.id);
+      console.log("deleted");
+      await this.reloadList();
     },
     deleteSelected() {
       console.log('delete selected');
@@ -163,12 +181,27 @@ export default {
     close () {
       this.dialog = false;
       this.$nextTick(() => {
-        this.editedItem.name = '';
-        this.editedIndex = -1;
+        this.editedItem.name = null;
+        this.editedItem.id = null;
       })
     },
-    save() {
-
+    async create() {
+      try {
+        await createGenre(this.editedItem);
+        await this.reloadList();
+      }
+      catch (e) {
+        console.error(e.response.data);
+      }
+    },
+    async save() {
+      try {
+        await saveGenre(this.editedItem.id, this.editedItem);
+        await this.reloadList();
+      }
+      catch (e) {
+        console.error(e.response.data);
+      }
     }
   }
 }

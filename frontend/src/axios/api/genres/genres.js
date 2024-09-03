@@ -9,6 +9,10 @@ export function createGenre(genre) {
     return axios.post(GENRE_URL, genre);
 }
 
+export async function saveGenre(genreId, genre) {
+    return await axios.put(`${GENRE_URL}/${genreId}`, genre);
+}
+
 export function deleteGenre(genreId) {
     return axios.delete(`${GENRE_URL}/${genreId}`);
 }
