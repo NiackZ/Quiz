@@ -26,6 +26,7 @@ public class GenreService {
         return genreRepository.findById(id)
                 .map(genre -> {
                     genre.setName(updatedGenre.getName());
+                    genre.setDeleted(updatedGenre.isDeleted());
                     return genreRepository.save(genre);
                 })
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));

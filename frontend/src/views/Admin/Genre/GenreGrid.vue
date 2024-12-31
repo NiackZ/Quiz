@@ -13,13 +13,13 @@
       ></v-text-field>
     </template>
     <v-data-table-virtual density="comfortable"
-                          show-select hover
-                          :loading="loading"
-                          v-model="selected"
+                          hover
+                          :loading="isLoading"
                           :items="showDeleted ? items : filteredItems"
                           :row-props="rowFunc"
                           :headers="headers"
                           :search="search"
+                          :sort-by="[{ key: 'id', order: 'desc' }]"
     >
       <template v-slot:top>
         <v-toolbar density="compact" flat style="padding: 0 1rem; background-color: inherit;">
@@ -88,12 +88,17 @@
         >
           mdi-pencil
         </v-icon>
-        <v-icon
+        <v-icon v-if="!item.isDeleted"
             size="small"
             @click="deleteItem(item)"
-            :disabled="item.isDeleted"
         >
           mdi-delete
+        </v-icon>
+        <v-icon v-else
+                size="small"
+                @click="restoreItem(item)"
+        >
+          mdi-restore
         </v-icon>
       </template>
 
@@ -117,9 +122,8 @@ export default {
       ],
       showDeleted: false,
       dialog: false,
-      loading: true,
+      isLoading: true,
       search: '',
-      selected: [],
       items: [],
       filteredItems: [],
       editedItem: {
@@ -146,7 +150,7 @@ export default {
     },
     async reloadList() {
       try{
-        this.loading = true;
+        this.isLoading = true;
         this.items = (await getGenres()).data.map(genre => {
           return {
             id: genre.id,
@@ -157,12 +161,12 @@ export default {
         this.filteredItems = this.items.filter(item => !item.isDeleted);
         const _this = this;
         setTimeout(function () {
-          _this.loading = false;
+          _this.isLoading = false;
           console.log('list reloaded');
         }, 200)
       }
       catch (e) {
-        this.loading = false;
+        this.isLoading = false;
       }
     },
     editItem (item) {
@@ -171,11 +175,17 @@ export default {
     },
     async deleteItem (item) {
       await deleteGenre(item.id);
-      console.log("deleted");
       await this.reloadList();
     },
-    deleteSelected() {
-      console.log('delete selected');
+    async restoreItem (item) {
+      try {
+        item.isDeleted = false;
+        await saveGenre(item.id, item);
+        await this.reloadList();
+      }
+      catch (e) {
+        console.error(e.response.data);
+      }
     },
     close () {
       this.dialog = false;
@@ -188,6 +198,7 @@ export default {
       try {
         await createGenre(this.editedItem);
         await this.reloadList();
+        this.close();
       }
       catch (e) {
         console.error(e.response.data);
@@ -197,6 +208,7 @@ export default {
       try {
         await saveGenre(this.editedItem.id, this.editedItem);
         await this.reloadList();
+        this.close();
       }
       catch (e) {
         console.error(e.response.data);

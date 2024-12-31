@@ -20,7 +20,7 @@ export default defineComponent({
   computed: {
     ...mapState({
       isAuth: state => state.auth.isAuth,
-      loading: state => state.auth.loading
+      loading: state => state.auth.authLoading
     })
   },
   created() {

@@ -5,7 +5,7 @@ const auth = {
     namespaced: true,
     state: {
         isAuth: false,
-        loading: false,
+        authLoading: false,
         user: null,
         error: null
     },
@@ -78,7 +78,7 @@ const auth = {
             state.isAuth = isAuth;
         },
         setLoadingState(state, loading) {
-            state.loading = loading;
+            state.authLoading = loading;
         },
         setErrorState(state, error) {
             state.error = error;
