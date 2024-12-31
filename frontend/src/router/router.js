@@ -1,85 +1,18 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Main from "../views/Main.vue";
-import Admin from "../views/Admin/Admin.vue";
-import CreateTitle from "../views/Admin/CreateTitle.vue";
-import Item from "../views/Public/Content/Item.vue";
-import Profile from "../views/User/Profile.vue";
-import Error403 from "../views/Error/Error403.vue";
-import Error404 from "../views/Error/Error404.vue";
-import AuthRequired from "../views/Error/AuthRequired.vue";
 import {store} from "../store/index.js";
 import {checkRights} from "../utils/utils.js";
 import {RIGHTS} from "../constants/constants.js";
-import {ADMIN_ROUTE, ANIME_DETAIL_ROUTE} from "./routeConstants.js";
+import {adminRoutes} from "./admin.js";
+import {mainRoutes} from "./main.js";
+import {errorRoutes} from "./error.js";
+import {userRoutes} from "./user.js";
 
 const routes = [
-    { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404 },
-    {
-        path: '/',
-        component: Main
-    },
-    {
-        path: '/admin',
-        component: Admin,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/admin/anime',
-        component: () => import('../views/Admin/Anime/AnimeGrid.vue'),
-        name: ADMIN_ROUTE.ANIME,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/admin/genre',
-        component: () => import('../views/Admin/Genre/GenreGrid.vue'),
-        name: ADMIN_ROUTE.GENRE,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/admin/anime/:id(\\d+)',
-        name: ANIME_DETAIL_ROUTE,
-        component: () => import('../views/Admin/Anime/AnimeDetail.vue'),
-        props: true,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/admin/create/title',
-        component: CreateTitle,
-        name: 'createTitle',
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/item/:id(\\d+)',
-        component: Item,
-        props: true
-    },
-    {
-        path: '/profile',
-        name: 'profile',
-        component: Profile,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/403',
-        component: Error403
-    },
-    {
-        path: "/auth-required",
-        component: AuthRequired
-    }
-]
+    ...mainRoutes,
+    ...adminRoutes,
+    ...errorRoutes,
+    ...userRoutes
+];
 
 const router = createRouter({
     routes,
