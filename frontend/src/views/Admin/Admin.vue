@@ -22,11 +22,11 @@ export default {
   data() {
     return {
       blocks: [
-        { name: "Аниме", link: ADMIN_ROUTE.ANIME },
-        { name: "Жанры", link: ADMIN_ROUTE.GENRE },
-        { name: "Типы", link: null },
-        { name: "Студии", link: null },
-        { name: "Статусы", link: null }
+        { name: "Аниме", link: ADMIN_ROUTE.ANIMES },
+        { name: "Жанры", link: ADMIN_ROUTE.GENRES },
+        { name: "Типы", link: ADMIN_ROUTE.TYPES },
+        { name: "Студии", link: ADMIN_ROUTE.STUDIES },
+        { name: "Статусы", link: ADMIN_ROUTE.STATUSES }
       ]
     }
   },

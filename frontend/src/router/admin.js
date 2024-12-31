@@ -43,11 +43,26 @@ export const adminRoutes = [
             requiresAuth: true
         }
     },
-    /** TYPES */
     {
         path: '/admin/type',
         component: () => import('../views/Admin/Type/TypeGrid.vue'),
         name: ADMIN_ROUTE.TYPES,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/admin/studio',
+        component: () => import('../views/Admin/Studio/StudioGrid.vue'),
+        name: ADMIN_ROUTE.STUDIES,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/admin/status',
+        component: () => import('../views/Admin/Status/StatusGrid.vue'),
+        name: ADMIN_ROUTE.STATUSES,
         meta: {
             requiresAuth: true
         }

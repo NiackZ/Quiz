@@ -3,7 +3,7 @@
     <template v-slot:text>
       <v-text-field
           v-model="search"
-          label="Поиск жанра"
+          label="Поиск типа"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
           density="compact"
@@ -31,7 +31,7 @@
                      color="primary"
                      v-bind="props"
               >
-                Добавить жанр
+                Добавить тип
               </v-btn>
             </template>
             <v-card density="compact">
@@ -89,8 +89,8 @@
           mdi-pencil
         </v-icon>
         <v-icon v-if="!item.isDeleted"
-            size="small"
-            @click="deleteItem(item)"
+                size="small"
+                @click="deleteItem(item)"
         >
           mdi-delete
         </v-icon>
@@ -116,9 +116,9 @@ export default {
   data() {
     return {
       headers: [
-          { title: 'ИД', key: 'id' },
-          { title: 'Название', key: 'name' },
-          { title: 'Действия', key: 'actions', sortable: false, width: '100px' }
+        { title: 'ИД', key: 'id' },
+        { title: 'Название', key: 'name' },
+        { title: 'Действия', key: 'actions', sortable: false, width: '100px' }
       ],
       showDeleted: false,
       dialog: false,
