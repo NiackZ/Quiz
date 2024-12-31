@@ -70,7 +70,6 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-btn class="" color="red" :disabled="selected.length === 0" @click="deleteSelected">Удалить</v-btn>
           <v-checkbox
               class="q-checkbox"
               v-model="showDeleted"
