@@ -13,17 +13,17 @@ import java.util.List;
 @AllArgsConstructor
 public class GenreController {
 
-    private final GenreService genreService;
+    private final GenreService service;
 
     @GetMapping
     public List<Genre> getAll() {
-        return this.genreService.findAll();
+        return this.service.findAll();
     }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Genre genre) {
         try {
-            Genre savedGenre = genreService.save(genre);
+            Genre savedGenre = service.save(genre);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedGenre);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -35,7 +35,7 @@ public class GenreController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Genre genre) {
         try {
-            Genre savedGenre = genreService.update(id, genre);
+            Genre savedGenre = service.update(id, genre);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedGenre);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -46,6 +46,6 @@ public class GenreController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        genreService.deleteById(id);
+        service.deleteById(id);
     }
 }

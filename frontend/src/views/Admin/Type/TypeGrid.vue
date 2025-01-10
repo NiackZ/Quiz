@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import {getGenres, saveGenre, createGenre, deleteGenre} from "../../../axios/api/genres.js";
+import {getTypes, saveType, createType, deleteType} from "../../../axios/api/types.js";
 
 export default {
   data() {
@@ -137,7 +137,7 @@ export default {
   },
   computed: {
     formTitle () {
-      return this.editedItem.id === null ? 'Новый жанр' : 'Редактирование жанра';
+      return this.editedItem.id === null ? 'Новый тип' : 'Редактирование типа';
     }
   },
   methods: {
@@ -151,11 +151,11 @@ export default {
     async reloadList() {
       try{
         this.isLoading = true;
-        this.items = (await getGenres()).data.map(genre => {
+        this.items = (await getTypes()).data.map(type => {
           return {
-            id: genre.id,
-            name: genre.name,
-            isDeleted: genre.isDeleted
+            id: type.id,
+            name: type.name,
+            isDeleted: type.isDeleted
           }
         });
         this.filteredItems = this.items.filter(item => !item.isDeleted);
@@ -174,13 +174,13 @@ export default {
       this.dialog = true;
     },
     async deleteItem (item) {
-      await deleteGenre(item.id);
+      await deleteType(item.id);
       await this.reloadList();
     },
     async restoreItem (item) {
       try {
         item.isDeleted = false;
-        await saveGenre(item.id, item);
+        await saveType(item.id, item);
         await this.reloadList();
       }
       catch (e) {
@@ -196,7 +196,7 @@ export default {
     },
     async create() {
       try {
-        await createGenre(this.editedItem);
+        await createType(this.editedItem);
         await this.reloadList();
         this.close();
       }
@@ -206,7 +206,7 @@ export default {
     },
     async save() {
       try {
-        await saveGenre(this.editedItem.id, this.editedItem);
+        await saveType(this.editedItem.id, this.editedItem);
         await this.reloadList();
         this.close();
       }

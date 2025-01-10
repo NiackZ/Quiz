@@ -10,9 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 public class StatusService {
 
-    private final StatusRepository statusRepository;
+    private final StatusRepository repository;
 
     public List<Status> findAll() {
-        return IteratorUtils.toList(this.statusRepository.findAll().iterator());
+        return IteratorUtils.toList(this.repository.findAll().iterator());
     }
 }

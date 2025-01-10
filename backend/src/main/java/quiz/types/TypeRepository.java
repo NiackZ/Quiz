@@ -1,7 +1,6 @@
-package quiz.types.repository;
+package quiz.types;
 
 import org.springframework.data.repository.CrudRepository;
-import quiz.types.model.Type;
 
 public interface TypeRepository extends CrudRepository<Type, Long> {
 }

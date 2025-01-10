@@ -13,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class StudioController {
 
-    private final StudioService studioService;
+    private final StudioService service;
 
     @GetMapping
     public List<Studio> getAll() {
-        return this.studioService.findAll();
+        return this.service.findAll();
     }
 
 }

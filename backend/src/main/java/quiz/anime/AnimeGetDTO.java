@@ -3,7 +3,7 @@ package quiz.anime;
 import lombok.Getter;
 import lombok.Setter;
 import quiz.genres.Genre;
-import quiz.types.model.Type;
+import quiz.types.Type;
 
 import java.util.List;
 

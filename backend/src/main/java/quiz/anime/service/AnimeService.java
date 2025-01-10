@@ -11,7 +11,7 @@ import quiz.links.LinkService;
 import quiz.marks.MarkRepository;
 import quiz.status.StatusRepository;
 import quiz.studios.StudioRepository;
-import quiz.types.repository.TypeRepository;
+import quiz.types.TypeRepository;
 import quiz.utils.Utils;
 import quiz.utils.model.Image;
 

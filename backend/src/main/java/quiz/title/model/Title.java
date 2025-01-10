@@ -3,7 +3,7 @@ package quiz.title.model;
 import lombok.Getter;
 import lombok.Setter;
 import quiz.status.Status;
-import quiz.types.model.Type;
+import quiz.types.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

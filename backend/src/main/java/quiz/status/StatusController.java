@@ -13,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class StatusController {
 
-    private final StatusService statusService;
+    private final StatusService service;
 
     @GetMapping
     public List<Status> getAll() {
-        return this.statusService.findAll();
+        return this.service.findAll();
     }
 
 }

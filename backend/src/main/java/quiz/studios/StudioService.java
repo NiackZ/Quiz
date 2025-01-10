@@ -10,9 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 public class StudioService {
 
-    private final StudioRepository studioRepository;
+    private final StudioRepository repository;
 
     public List<Studio> findAll() {
-        return IteratorUtils.toList(this.studioRepository.findAll().iterator());
+        return IteratorUtils.toList(this.repository.findAll().iterator());
     }
 }

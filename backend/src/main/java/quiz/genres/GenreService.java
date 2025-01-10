@@ -11,30 +11,30 @@ import java.util.List;
 @AllArgsConstructor
 public class GenreService {
 
-    private final GenreRepository genreRepository;
+    private final GenreRepository repository;
     private static final String NOT_FOUND = "Жанр не найден. ID = ";
 
     public List<Genre> findAll() {
-        return IteratorUtils.toList(this.genreRepository.findAll().iterator());
+        return IteratorUtils.toList(this.repository.findAll().iterator());
     }
 
     public Genre save(Genre genre) {
-        return genreRepository.save(genre);
+        return repository.save(genre);
     }
 
     public Genre update(Long id, Genre updatedGenre) {
-        return genreRepository.findById(id)
-                .map(genre -> {
-                    genre.setName(updatedGenre.getName());
-                    genre.setDeleted(updatedGenre.isDeleted());
-                    return genreRepository.save(genre);
+        return repository.findById(id)
+                .map(item -> {
+                    item.setName(updatedGenre.getName());
+                    item.setDeleted(updatedGenre.isDeleted());
+                    return repository.save(item);
                 })
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     }
 
     public void deleteById(Long id) {
-        Genre genre = genreRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+        Genre genre = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
         genre.setDeleted(true);
-        genreRepository.save(genre);
+        repository.save(genre);
     }
 }

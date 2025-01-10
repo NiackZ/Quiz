@@ -1,4 +1,4 @@
-package quiz.types.model;
+package quiz.types;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
