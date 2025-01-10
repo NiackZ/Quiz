@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import quiz.anime.Anime;
 import quiz.anime.AnimeCreateDTO;
 import quiz.anime.AnimeGetDTO;
+import quiz.anime.AnimeGetShortDTO;
 import quiz.anime.repository.AnimeRepository;
 import quiz.genres.GenreRepository;
 import quiz.links.LinkService;
@@ -77,6 +78,12 @@ public class AnimeService {
     public List<AnimeGetDTO> getAllAnimes() {
         return this.animeRepository.findAll().stream()
                 .map(AnimeGetDTO::new)
+                .toList();
+    }
+
+    public List<AnimeGetShortDTO> getAllAnimesShort() {
+        return this.animeRepository.findAll().stream()
+                .map(AnimeGetShortDTO::new)
                 .toList();
     }
 

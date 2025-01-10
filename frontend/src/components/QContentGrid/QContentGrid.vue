@@ -9,9 +9,10 @@
         <div class="d-flex justify-center grid-cell bg-img-center h-100 "
              :style="{
                 width: cellWidth,
-                'background-image': 'url(../src/public/poster/darling.jpg)'
+                'background-image': `url(${element.posterURL})`
               }"
         >
+<!--          TODO Доделать отображение при наведении-->
           <div class="short-description">
             element #{{ element.id }}
           </div>

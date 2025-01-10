@@ -20,6 +20,10 @@ export async function getMarks() {
     return await axios.get("/marks");
 }
 
+export async function getAnimeInfoForGrid() {
+    return await axios.get("/anime/short");
+}
+
 export function isEmpty(obj) {
     return obj === null || obj === undefined;
 }

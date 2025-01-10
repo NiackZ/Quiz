@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import quiz.anime.Anime;
 import quiz.anime.AnimeCreateDTO;
 import quiz.anime.AnimeGetDTO;
+import quiz.anime.AnimeGetShortDTO;
 import quiz.anime.service.AnimeService;
 
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,13 @@ public class AnimeController {
     @GetMapping
     public ResponseEntity<List<AnimeGetDTO>> getAll() {
         List<AnimeGetDTO> animes = this.animeService.getAllAnimes();
+        return new ResponseEntity<>(animes, HttpStatus.OK);
+    }
+
+    // Укороченная информация
+    @GetMapping("/short")
+    public ResponseEntity<List<AnimeGetShortDTO>> getAllShortInfo() {
+        List<AnimeGetShortDTO> animes = this.animeService.getAllAnimesShort();
         return new ResponseEntity<>(animes, HttpStatus.OK);
     }
 
