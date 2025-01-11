@@ -1,69 +1,92 @@
 <template>
   <v-row>
     <v-col cols="12" md="5" lg="4">
-      <v-img src="../src/public/poster/darling.jpg"></v-img>
+      <v-skeleton-loader v-if="isLoading" type="image"/>
+      <v-img v-else :src="animeData.posterURL"></v-img>
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana fs11pt">
-      <div class="fs20pt">
-        <span class="rus_name deep-purple">Любимый во Франксе</span> / <span class="en_name deep-purple">Darling in the FranXX</span>
-      </div>
+      <v-skeleton-loader v-if="isLoading" type="card, text, text, text"/>
+      <template v-else>
+        <div class="fs20pt">
+          <span class="rus_name deep-purple" v-text="animeData.ruName"></span> / <span class="rom_name deep-purple" v-text="animeData.romajiName"></span>
+        </div>
+        <div v-if="animeData.type?.name" class="mr2-0">
+          <span>Тип:</span>
+          <span class="span-tag" v-text="animeData.type.name"></span>
+        </div>
 
-      <div class="mr2-0">
-        <span>Тип:</span>
-        <span class="span-tag">Сериал</span>
-      </div>
+        <div v-if="animeData.genres.length > 0" class="mr2-0">
+          <span>Жанр:</span>
+          <span v-for="genre in animeData.genres"
+                :key="genre.id" class="span-tag" v-text="genre.name"></span>
+        </div>
 
-      <div class="mr2-0">
-        <span>Жанр:</span>
-        <span class="span-tag">Романтика</span>
-        <span class="span-tag">Этти</span>
-      </div>
+        <div v-if="animeData.studios.length > 0" class="mr2-0">
+          <span>Студия:</span>
+          <span v-for="studio in animeData.studios"
+                :key="studio.id" class="span-tag" v-text="studio.name"></span>
+        </div>
 
-      <div class="mr2-0">
-        <span>Студия:</span>
-        <span class="span-tag">A-1 Pictures</span>
-        <span class="span-tag">Studio Trigger</span>
-      </div>
+        <div v-if="animeData.startDate || animeData.endDate" class="mr2-0">
+          <span v-text="animeData.endDate ? 'Сезон:' : 'Дата выхода:'"></span>
+          <span class="mrl5" v-text="new Date(animeData.startDate).toLocaleDateString() + (animeData.endDate ? ' - ' + new Date(animeData.endDate).toLocaleDateString() : '')">
+            </span>
+        </div>
 
-      <div class="mr2-0">
-        <span>Сезон:</span>
-        <span class="mrl5">17.08.2019 - 22.08.2019</span>
-      </div>
-      <div class="mr2-0">
-        <span>Продолжительность:</span>
-        <span class="mrl5">24 эп., по 25 мин</span>
-      </div>
+        <div v-if="animeData.episodeCount || animeData.episodeDuration" class="mr2-0">
+          <span>Продолжительность:</span>
+          <span class="mrl5" v-text="animeData.episodeCount > 1
+              ? `${animeData.episodeCount} эп. по ~ ${animeData.episodeDuration} мин.`
+              : `${animeData.episodeDuration} мин.`"></span>
+        </div>
 
-      <div class="mr2-0">
-        <span>Ссылки:</span>
-        <span class="mrl5">
-          <a class="item-link" href="https://shikimori.one/animes/33352-violet-evergarden" target="_blank">Shiki</a>
-        </span>
-      </div>
+        <div v-if="animeData.links.length > 1" class="mr2-0">
+          <span>Ссылки:</span>
+          <span v-for="link in animeData.links"
+                :key="link.id" class="mrl5">
+                  <a class="item-link" :href=link.url v-text="link.name" target="_blank"></a>
+                </span>
+        </div>
+
+        <div v-if="animeData.marks.length > 1" class="item_marks">
+          <span>Метки:</span>
+          <span v-for="mark in animeData.marks"
+                :key="mark.id" v-text="mark.name"
+                class="span-tag"></span>
+        </div>
+
+        <div class="mr10-0 d-block text-justify" v-html="animeData.description">
+        </div>
+      </template>
 
 
-      <div class="item_marks">
-        <span>Метки:</span>
-        <span class="span-tag">BDRip</span>
-      </div>
-
-      <div class="mr10-0 d-block text-justify">
-        Далёкое будущее. Земля в руинах, и на остатки человечества наводят ужас таинственные гигантские формы жизни, известные как кёрю — «ревущие драконы». Чтобы противостоять им, люди создали передвижное фортификационное сооружение, названное Плантацией, где растут и обучаются юные пилоты роботов Франкс.<br><br>
-        Единственная цель, ради которой живут эти дети, — уничтожение кёрю после прохождения специальной подготовки. Но чтобы управлять роботом — необходимо двое: мужчина и женщина, «тычинка» и «пестик». И если один не справляется, статуса пилота лишаются оба, что и для того, и для другого значит ни много ни мало утратить смысл существования.<br><br>
-        Хиро считали одарённым. До тех пор, пока он не провалился на экзамене вместе со своей напарницей. Птица, которая никогда не взлетит, — так чувствовал себя мальчик с того времени и даже не догадывался, что скоро встретит человека с похожей судьбой...<br><br>
-        «Убийца напарников», рогатая девчонка, в жилах которой течет кровь кёрю. «Станешь ли ты моим милым?» — спросила она не то шутки ради, не то всерьёз. И для Хиро вдруг снова нашлось место в мире...
-      </div>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import {getAnimeInfo} from "../../utils/utils.js";
+
 export default {
   name: 'QContentItem',
   props: {
     itemId: Number
   },
-  mounted() {
+  data() {
+    return {
+      isLoading: true,
+      animeData: {}
+    }
+  },
+  async mounted() {
+    const animeId = this.$props.itemId;
+    if (animeId) {
+      this.animeData = (await getAnimeInfo(animeId)).data;
+      console.log(this.animeData)
+    }
+    this.isLoading = false;
+
+    // TODO Фикс при нажатии назад по навигации выходит название предыдущего тайтла
     //document.title = `Element #${this.itemId}` // устанавливаем заголовок страницы
   }
 }

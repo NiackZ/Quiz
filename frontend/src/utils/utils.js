@@ -24,6 +24,10 @@ export async function getAnimeInfoForGrid() {
     return await axios.get("/anime/short");
 }
 
+export async function getAnimeInfo(id) {
+    return await axios.get(`/anime/${id}`);
+}
+
 export function isEmpty(obj) {
     return obj === null || obj === undefined;
 }

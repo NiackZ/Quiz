@@ -147,7 +147,7 @@ export default {
     const animeId = this.$props.id;
     let animePromise = null;
     if (animeId) {
-      animePromise = axios.get(`/anime/${this.$props.id}`);
+      animePromise = axios.get(`/anime/${animeId}`);
     }
     const typesPromise = getTypes();
     const genresPromise = getGenres();
