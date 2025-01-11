@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import QAnimeDetail from "../../components/Anime/QAnimeDetail/QAnimeDetail.vue";
+import QAnimeDetail from "../../../components/Anime/QAnimeDetail/QAnimeDetail.vue";
 
 export default {
   components: {QAnimeDetail}

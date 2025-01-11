@@ -132,7 +132,7 @@ export default {
       tabs: null,
       dialog: false,
       loaded: false,
-      loading: true,
+      authLoading: true,
     }
   },
   watch:{

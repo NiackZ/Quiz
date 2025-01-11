@@ -1,4 +1,11 @@
 <template>
+  <v-card-actions class="justify-center">
+    <v-btn variant="outlined"
+           v-text="'Создать'"
+           width="200px"
+           :href="ADMIN_ROUTE.ANIME_NEW.path"
+    />
+  </v-card-actions>
   <v-row>
     <v-col v-for="anime in animes"
            :key="anime.id"
@@ -21,7 +28,7 @@
 
 <script>
 import axios from "/src/axios/http-common.js";
-import {ANIME_DETAIL_ROUTE} from "../../../router/routeConstants.js";
+import {ADMIN_ROUTE, ANIME_DETAIL_ROUTE} from "../../../router/routeConstants.js";
 
 export default {
   data() {
@@ -48,6 +55,9 @@ export default {
     }
   },
   computed: {
+    ADMIN_ROUTE() {
+      return ADMIN_ROUTE
+    },
     computedColumnCount() {
       if (this.$vuetify.display.lgAndUp) { // если экран большой
         return 2;

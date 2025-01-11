@@ -32,6 +32,10 @@ export function isEmpty(obj) {
     return obj === null || obj === undefined;
 }
 
+export function isNotEmpty(obj) {
+    return !isEmpty(obj);
+}
+
 export async function encodeImage(file) {
     return isEmpty(file)
         ? null

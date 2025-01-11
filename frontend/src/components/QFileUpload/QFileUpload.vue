@@ -64,7 +64,7 @@ export default {
     },
     imageSrc() {
       if (this.uploadValue === UPLOAD_METHOD.FILE && this.file) {
-        return URL.createObjectURL(this.file[0]);
+        return URL.createObjectURL(this.file);
       } else if (this.uploadValue === UPLOAD_METHOD.URL && this.previewUrl) {
         return this.previewUrl;
       }
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     getFile() {
-      return this.file?.[0];
+      return this.file;
     },
     getImageURL() {
       return this.imageUrl;

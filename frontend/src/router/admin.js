@@ -1,6 +1,5 @@
 import Admin from "../views/Admin/Admin.vue";
 import {ADMIN_ROUTE, ANIME_DETAIL_ROUTE} from "./routeConstants.js";
-import CreateTitle from "../views/Admin/CreateTitle.vue";
 
 export const adminRoutes = [
     {
@@ -36,9 +35,9 @@ export const adminRoutes = [
         }
     },
     {
-        path: '/admin/create/title',
-        component: CreateTitle,
-        name: 'createTitle',
+        path: ADMIN_ROUTE.ANIME_NEW.path,
+        component: ADMIN_ROUTE.ANIME_NEW.component,
+        name: ADMIN_ROUTE.ANIME_NEW.name,
         meta: {
             requiresAuth: true
         }

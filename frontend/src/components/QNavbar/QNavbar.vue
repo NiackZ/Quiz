@@ -75,7 +75,7 @@ export default {
       },
       dialog: false,
       loaded: false,
-      loading: true,
+      authLoading: true,
       currentTheme: 1
     }
   },
