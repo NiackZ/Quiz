@@ -1,5 +1,6 @@
 import axios from "axios";
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "../constants/constants.js";
+import {store} from "../store/index.js";
 
 const $api =  axios.create({
     baseURL: "http://localhost:8080/api/",
@@ -7,14 +8,16 @@ const $api =  axios.create({
         "Content-Type": "application/json"
     }
 })
-$api.interceptors.request.use( (config) => {
+$api.interceptors.request.use( async (config) => {
     localStorage.getItem(ACCESS_TOKEN)
         ? config.headers.Authorization = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`
         : config.headers.Authorization = null;
+    await store.dispatch("overlay/setLoading", true);
     return config
 })
 
-$api.interceptors.response.use( (response) => {
+$api.interceptors.response.use( async (response) => {
+    await store.dispatch("overlay/setLoading", false);
     return response;
 }, async (error) => {
     const originalRequest = error.config
@@ -35,6 +38,7 @@ $api.interceptors.response.use( (response) => {
             console.log('Пользователь не авторизован!');
         }
     }
+    await store.dispatch("overlay/setLoading", false);
     throw error;
 })
 
