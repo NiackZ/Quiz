@@ -98,7 +98,7 @@ import QLinkField from "../../QLinkField/QLinkField.vue";
 import QJoditEditor from "../../QJoditEditor/QJoditEditor.vue";
 import QVueDatePicker from "../../QVueDatePicker/QVueDatePicker.vue";
 import QFileUpload from "../../QFileUpload/QFileUpload.vue";
-import {encodeImage, getMarks, getStatuses, getStudios, getTypes} from "../../../utils/utils.js";
+import {encodeImage, getMarks, getStatuses, getStudios, getTypes, isNotEmpty} from "../../../utils/utils.js";
 import {getGenres} from "../../../axios/api/genres.js";
 import axios from '/src/axios/http-common'
 
@@ -207,6 +207,7 @@ export default {
       const posterPromise = encodeImage(file);
       const period = this.form.period;
       return {
+        id: this.anime?.id,
         poster: await posterPromise,
         rusName: this.form.rusName,
         romName: this.form.romName,
@@ -216,7 +217,7 @@ export default {
         statusId: this.form.status.value,
         episodeCount: this.form.episodeCount,
         episodeDuration: this.form.episodeDuration,
-        period: period[0] !== undefined ? period : [period], // суть в том, чтобы в любом случае передать массив
+        period: isNotEmpty(period[0]) ? period : [period], // суть в том, чтобы в любом случае передать массив
         linkList: this.form.links,
         markIds: this.form.marks.value,
         description: this.form.description
@@ -227,34 +228,22 @@ export default {
       const createData = this.getFormData();
       try {
         const response = await axios.post("/anime", await createData);
-        console.log('Anime успешно создан: ', response.data);
+        console.log('Anime успешно создано: ', response.data);
       }
       catch (error) {
         console.error('Ошибка при создании Anime: ', error);
       }
     },
     async saveAnime() {
-      //todo
-      const requestData = await this.getFormData();
-      var jsonString = JSON.stringify(requestData);
-      requestData.anime = this.anime;
-      var jsonString2 = JSON.stringify(requestData);
-
-// Измеряем размер строки в байтах
-      var byteSize = new TextEncoder().encode(jsonString).length;
-      var byteSize2 = new TextEncoder().encode(jsonString2).length;
-
-      console.log("Размер JSON в байтах:", byteSize);
-      console.log(jsonString);
-      console.log("Размер JSON с аниме в байтах:", byteSize2);
-      console.log(jsonString2);
-      // try{
-      //   const response = await axios.put(`/anime/${this.anime.id}`, requestData);
-      //   console.log('Anime успешно сохранен: ', response.data);
-      // }
-      // catch (error) {
-      //   console.error('Ошибка при сохранении Anime: ', error);
-      // }
+      const updated = await this.getFormData();
+      try {
+        console.log(updated);
+        const response = await axios.put(`/anime/${this.anime.id}`, updated);
+        console.log('Anime успешно сохранено: ', response.data);
+      }
+      catch (error) {
+        console.error('Ошибка при сохранении Anime: ', error);
+      }
     }
   },
   validations () {

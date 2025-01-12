@@ -3,16 +3,18 @@ package quiz.links;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import quiz.utils.model.LongString;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
 @Entity
 @Table(name="links")
-public class Link extends LongString {
+public class Link {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
     private String url;
 }

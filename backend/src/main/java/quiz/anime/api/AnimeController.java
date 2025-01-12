@@ -50,8 +50,9 @@ public class AnimeController {
 
     // Обновить существующее аниме
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAnime(@PathVariable Long id, @RequestBody Anime anime) {
+    public ResponseEntity<Void> updateAnime(@PathVariable Long id, @RequestBody AnimeCreateDTO anime) throws InterruptedException {
         this.animeService.updateAnime(id, anime);
+        Thread.sleep(2000);// имитация долгой обработки
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

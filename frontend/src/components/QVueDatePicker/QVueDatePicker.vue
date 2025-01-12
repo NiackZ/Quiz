@@ -18,13 +18,7 @@
         <span v-if="internalModelValue && internalModelValue[0]" class="current-selection">
           с {{ internalModelValue[0].toLocaleDateString() + (internalModelValue[1] ? ` по ${internalModelValue[1].toLocaleDateString()}` : '')}}
         </span>
-        <v-btn
-            class="my-2"
-            color="primary"
-            dark
-            @click="selectDate"
-            variant="tonal"
-        >Выбрать</v-btn>
+        <v-btn class="my-2" color="primary" dark @click="selectDate" variant="tonal" v-text="'Выбрать'"></v-btn>
       </div>
     </template>
   </VueDatePicker>

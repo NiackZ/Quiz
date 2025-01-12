@@ -19,4 +19,9 @@ public class LinkService {
     public Link createNewLink(Link link) {
         return this.linkRepository.save(link);
     }
+
+    public void deleteAll(List<Link> links) {
+        this.linkRepository.deleteAll(links);
+    }
+
 }
