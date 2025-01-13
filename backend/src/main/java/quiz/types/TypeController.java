@@ -25,9 +25,7 @@ public class TypeController {
             Type saved = service.save(type);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при добавлении жанра \"%s\"", type.getName())
-            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getLocalizedMessage());
         }
     }
 
@@ -37,9 +35,7 @@ public class TypeController {
             Type saved = service.update(id, type);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при сохранении жанра \"%s\" с ИД = %d", type.getName(), id)
-            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getLocalizedMessage());
         }
     }
 

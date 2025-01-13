@@ -69,6 +69,16 @@
                 </v-btn>
               </v-card-actions>
             </v-card>
+            <v-fade-transition>
+              <v-alert class="alert-container"
+                       ref="alert"
+                       :text=alertText
+                       type="error"
+                       variant="outlined"
+                       density="compact"
+                       v-model="showAlert"
+              ></v-alert>
+            </v-fade-transition>
           </v-dialog>
           <v-checkbox
               class="q-checkbox"
@@ -129,7 +139,9 @@ export default {
       editedItem: {
         id: null,
         name: null
-      }
+      },
+      showAlert: false,
+      alertText: null
     }
   },
   async created() {
@@ -211,7 +223,10 @@ export default {
         this.close();
       }
       catch (e) {
-        console.error(e.response.data);
+        this.alertText = e.response.data;
+        this.showAlert = true;
+        const _this = this;
+        setTimeout(() => _this.showAlert = false, 5000);
       }
     }
   }
@@ -219,5 +234,9 @@ export default {
 </script>
 
 <style scoped>
-
+.alert-container {
+  position: fixed;
+  transform: translateY(calc(100% + 180px)); /*Сомнительно*/
+  width: 100%;
+}
 </style>
