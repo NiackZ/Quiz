@@ -1,12 +1,14 @@
 import Admin from "../views/Admin/Admin.vue";
 import {ADMIN_ROUTE, ANIME_DETAIL_ROUTE} from "./routeConstants.js";
+import {RIGHTS} from "../constants/constants.js";
 
 export const adminRoutes = [
     {
         path: '/admin',
         component: Admin,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
     {
@@ -14,7 +16,8 @@ export const adminRoutes = [
         component: () => import('../views/Admin/Anime/AnimeGrid.vue'),
         name: ADMIN_ROUTE.ANIMES,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
     {
@@ -22,7 +25,8 @@ export const adminRoutes = [
         component: () => import('../views/Admin/Genre/GenreGrid.vue'),
         name: ADMIN_ROUTE.GENRES,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
     {
@@ -31,7 +35,8 @@ export const adminRoutes = [
         component: () => import('../views/Admin/Anime/AnimeDetail.vue'),
         props: true,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
     {
@@ -39,7 +44,8 @@ export const adminRoutes = [
         component: ADMIN_ROUTE.ANIME_NEW.component,
         name: ADMIN_ROUTE.ANIME_NEW.name,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
     {
@@ -47,7 +53,8 @@ export const adminRoutes = [
         component: () => import('../views/Admin/Type/TypeGrid.vue'),
         name: ADMIN_ROUTE.TYPES,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
     {
@@ -55,7 +62,8 @@ export const adminRoutes = [
         component: () => import('../views/Admin/Studio/StudioGrid.vue'),
         name: ADMIN_ROUTE.STUDIES,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
     {
@@ -63,7 +71,8 @@ export const adminRoutes = [
         component: () => import('../views/Admin/Status/StatusGrid.vue'),
         name: ADMIN_ROUTE.STATUSES,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiredRights: [RIGHTS.ADMIN_PANEL_READ]
         }
     },
 ]

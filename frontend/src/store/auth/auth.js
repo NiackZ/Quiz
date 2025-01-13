@@ -1,5 +1,6 @@
 import axios from '/src/axios/http-common'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "/src/constants/constants.js";
+import {checkRights} from "../../utils/utils.js";
 
 const auth = {
     namespaced: true,
@@ -71,7 +72,19 @@ const auth = {
         deleteTokens() {
             localStorage.removeItem(ACCESS_TOKEN);
             localStorage.removeItem(REFRESH_TOKEN);
-        }
+        },
+        async checkAccess({ state }, requiredRights) {
+            if (!state.user || !state.user.id || !requiredRights || requiredRights.length === 0) {
+                return true;
+            }
+            try {
+                const response = await checkRights(state.user?.id, requiredRights);
+                return response.data;
+            } catch (error) {
+                console.error("Ошибка при проверке прав:", error);
+                return false;
+            }
+        },
     },
     mutations: {
         setAuthState(state, isAuth) {
