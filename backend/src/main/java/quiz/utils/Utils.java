@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Utils {
-    private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-";
+    private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
     private static final int DEFAULT_LENGTH = 10;
 
     public static boolean listContainsValuesIgnoreCase(List<String> srcList, List<String> secondList) {
