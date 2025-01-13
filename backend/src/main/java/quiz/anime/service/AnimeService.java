@@ -184,7 +184,7 @@ public class AnimeService {
         if (previousPosterUrl != null) {
             Files.deleteIfExists(Paths.get(absolutePath + "/frontend/" + previousPosterUrl));
         }
-        String directoryPath = absolutePath + "/frontend/src/public/poster/anime/" + animeId + "/";
+        String directoryPath = absolutePath + "/frontend/src/public/images/poster/anime/" + animeId + "/";
         String formatName = Utils.getFileExtension(poster.getFileName());
         String fileName = "poster_" + Utils.generateRandomString() + "." + formatName;
         Files.createDirectories(Paths.get(directoryPath));
