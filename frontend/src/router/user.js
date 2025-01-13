@@ -4,7 +4,7 @@ export const userRoutes = [
     {
         path: '/profile',
         name: 'profile',
-        component: Profile,
+        component: () => import('../views/User/Profile.vue'),
         meta: { requiresAuth: true }
     }
 ];

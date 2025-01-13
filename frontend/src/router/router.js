@@ -21,7 +21,8 @@ router.beforeEach(async (to, from, next) => {
     try {
         const isAuthenticated = await store.dispatch('auth/validateToken');
         if (to.meta.requiresAuth && !isAuthenticated) {
-            return next({ path: '/auth-required' });
+            store.commit('auth/setAuthRequiredRoute', to.fullPath); // Сохраняем целевой маршрут
+            return next(); // Не блокируем навигацию
         }
 
         const hasAccess = await store.dispatch('auth/checkAccess', to.meta.requiredRights);

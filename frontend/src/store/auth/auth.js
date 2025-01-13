@@ -8,7 +8,8 @@ const auth = {
         isAuth: false,
         authLoading: false,
         user: null,
-        error: null
+        error: null,
+        authRequiredRoute: null, // Храним маршрут, куда пользователь хотел перейти
     },
     actions: {
         async enter({commit, dispatch}, data) {
@@ -98,6 +99,12 @@ const auth = {
         },
         setUserState(state, user) {
             state.user = user;
+        },
+        setAuthRequiredRoute(state, route) {
+            state.authRequiredRoute = route; // Сохраняем маршрут
+        },
+        clearAuthRequiredRoute(state) {
+            state.authRequiredRoute = null; // Очищаем после успешной авторизации
         }
     }
 }
