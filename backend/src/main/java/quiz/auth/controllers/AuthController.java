@@ -49,9 +49,10 @@ public class AuthController {
     }
 
     @PostMapping("token")
-    public ResponseEntity<?> getNewAccessToken(@RequestBody RefreshJwtRequest request) {
-        log.info("Refresh: {}", request.getRefreshToken().substring(0, 10));
-        return authService.getAccessToken(request.getRefreshToken());
+    public ResponseEntity<?> getToken(@RequestBody RefreshJwtRequest request) {
+        log.info("Refresh: {}", request.getRefreshToken()
+                .substring(request.getRefreshToken().length() - 10));
+        return authService.getToken(request.getRefreshToken());
     }
 
     @PostMapping("validate-token")

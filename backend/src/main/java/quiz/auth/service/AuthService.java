@@ -77,16 +77,7 @@ public class AuthService {
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    public ResponseEntity<?> getAccessToken(@NonNull String refreshToken) {
-        try {
-            JwtResponse response = processRefreshToken(refreshToken);
-            return ResponseEntity.ok(new JwtResponse(response.getAccessToken(), null));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    private ResponseEntity<?> refresh(@NonNull String refreshToken) {
+    public ResponseEntity<?> getToken(@NonNull String refreshToken) {
         try {
             JwtResponse response = processRefreshToken(refreshToken);
             return ResponseEntity.ok(response);

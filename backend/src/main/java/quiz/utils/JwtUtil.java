@@ -39,7 +39,7 @@ public class JwtUtil {
 
     public String generateAccessToken(@NonNull UserDetails userDetails) {
         final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusHours(2).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant accessExpirationInstant = now.plusHours(1).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
@@ -92,7 +92,7 @@ public class JwtUtil {
         }
     }
 
-    public Claims getAccessClaims(@NonNull String token) {
+    private Claims getAccessClaims(@NonNull String token) {
         return getClaims(token, jwtAccessSecret);
     }
 

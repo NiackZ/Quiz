@@ -10,7 +10,6 @@ const overlay = {
     },
     mutations: {
         setOverlayLoading(state, status) {
-            console.log("Новый статус оверлея: " + status)
             state.overlayLoading = status;
         },
     }

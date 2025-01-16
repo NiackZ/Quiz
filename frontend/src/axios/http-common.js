@@ -28,9 +28,9 @@ $api.interceptors.response.use( async (response) => {
             const refreshToken = localStorage.getItem(REFRESH_TOKEN);
             if (refreshToken) {
                 const response = await $api.post('/auth/token', {refreshToken});
-                if (response.data[ACCESS_TOKEN]) {
-                    console.log("Установлен новый ACCESS_TOKEN");
+                if (response.data) {
                     localStorage.setItem(ACCESS_TOKEN, response.data[ACCESS_TOKEN]);
+                    localStorage.setItem(REFRESH_TOKEN, response.data[REFRESH_TOKEN]);
                 }
                 return $api(originalRequest);
             }
