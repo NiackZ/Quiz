@@ -110,7 +110,7 @@ public class JwtUtil {
 
     public List<String> extractRoles(String token) {
         try {
-            Claims claims = getClaims(token, jwtAccessSecret);
+            Claims claims = getAccessClaims(token);
             List<?> roles = claims.get(ROLE_LIST_NAME, List.class);
             if (roles == null) {
                 throw new IllegalStateException("Роли отсутствуют в токене");
@@ -123,7 +123,7 @@ public class JwtUtil {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getClaims(token, jwtAccessSecret);
+        final Claims claims = getAccessClaims(token);
         return claimsResolver.apply(claims);
     }
 

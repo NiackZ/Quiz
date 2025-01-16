@@ -21,6 +21,8 @@ import quiz.users.service.UserService;
 import quiz.utils.JwtUtil;
 import quiz.utils.model.TokenStatus;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,9 +110,22 @@ public class AuthService {
 
         UserDetails userDetails = userService.loadUserByUsername(username);
         String accessToken = jwtUtil.generateAccessToken(userDetails);
-        String newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
 
-        refreshStorage.put(username, newRefreshToken);
+        // Получаем дату истечения refreshToken в виде LocalDateTime
+        LocalDateTime expirationDate = claims.getExpiration().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+
+        // Рассчитываем, сколько времени осталось до истечения
+        LocalDateTime now = LocalDateTime.now();
+        long daysUntilExpiration = now.until(expirationDate, java.time.temporal.ChronoUnit.DAYS);
+
+        // Обновляем refreshToken, если осталось меньше 7 дней
+        String newRefreshToken = refreshToken;
+        if (daysUntilExpiration < 7) {
+            newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
+            refreshStorage.put(username, newRefreshToken);
+        }
 
         return new JwtResponse(accessToken, newRefreshToken);
     }
