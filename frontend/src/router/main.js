@@ -4,11 +4,17 @@ import Item from "../views/Public/Content/Item.vue";
 export const mainRoutes = [
     {
         path: '/',
-        component: Main
+        component: Main,
+        meta: {
+            title: "Главная"
+        }
     },
     {
         path: '/item/:id(\\d+)',
         component: Item,
-        props: true
+        props: true,
+        meta: {
+            title: "Anime"
+        }
     }
 ];
