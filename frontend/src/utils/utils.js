@@ -20,8 +20,8 @@ export async function getMarks() {
     return await axios.get("/marks");
 }
 
-export async function getAnimeInfoForGrid() {
-    return await axios.get("/anime/short");
+export function getAnimeInfoForGrid() {
+    return axios.get("/anime/short");
 }
 
 export async function getAnimeInfo(id) {

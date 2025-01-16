@@ -1,3 +1,9 @@
+export const PATH = {
+    ANIME: 'anime',
+    MANGA: 'manga',
+    RANOBE: 'ranobe'
+}
+
 export const UPLOAD_METHOD = {
     FILE: 'file',
     URL: 'url'

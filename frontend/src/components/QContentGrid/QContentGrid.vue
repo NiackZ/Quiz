@@ -5,7 +5,7 @@
            :cols="computedColumnCount"
            :style="{ height: this.cellHeight }"
     >
-      <router-link :to="'/item/' + element.id" class="text-decoration-none">
+      <router-link :to="`/${path}/${element.id}`" class="text-decoration-none">
         <div class="d-flex justify-center grid-cell bg-img-center h-100 "
              :style="{
                 width: cellWidth,
@@ -29,6 +29,9 @@ export default {
     elements: {
       type: Array,
       default: []
+    },
+    path: {
+      type: String
     },
     cellWidth: {
       type: String,

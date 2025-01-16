@@ -4,43 +4,45 @@
       align-tabs="center"
       color="deep-purple"
       density="compact"
+      hide-slider
   >
-    <v-tab v-for="tab in items" :key="tab.text" :value="tab.text" :text="tab.text"/>
+    <v-tab v-for="tab in this.$props.items" :key="tab.text" :value="tab.text" :text="tab.text"/>
   </v-tabs>
 
   <v-tabs-window v-model="tab">
-    <v-tabs-window-item
-        v-for="item in items"
+<!--    Подумать над анимацией-->
+    <v-tabs-window-item transition="toggle-slide-y-transition"
+        v-for="item in this.$props.items"
         :key="item.text"
         :value="item.text"
     >
-      <v-card color="transparent">
-        <v-card-text>{{ text }}</v-card-text>
-      </v-card>
+      <q-content-grid :elements="item.list" :path="item.path"/>
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
 
 <script>
 
+import QContentGrid from "../QContentGrid/QContentGrid.vue";
+
 export default {
   name: 'QMainTabs',
+  components: {QContentGrid},
+  props: {
+    items: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      tab: null,
-      items: [
-        {text: "Аниме"},
-        {text: "Манга"},
-        {text: "Ранобэ"}
-      ],
-      text: "Somebody wanna told me" +
-          "The world is gonna hold me",
+      tab: null
     };
   },
   methods: {
   },
   created() {
-    this.tab = this.items[0];
+    this.tab = this.$props.items.length > 0 ? this.$props.items[0] : null;
   },
 };
 </script>
