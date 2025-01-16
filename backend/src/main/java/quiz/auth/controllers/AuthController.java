@@ -50,7 +50,7 @@ public class AuthController {
 
     @PostMapping("token")
     public ResponseEntity<?> getNewAccessToken(@RequestBody RefreshJwtRequest request) {
-        log.info("Refresh: " + request.getRefreshToken());
+        log.info("Refresh: {}", request.getRefreshToken().substring(0, 10));
         return authService.getAccessToken(request.getRefreshToken());
     }
 
@@ -65,7 +65,7 @@ public class AuthController {
 
     private String getHeaderToken(HttpServletRequest request) {
         String authHeader = request.getHeader(AUTHORIZATION);
-        log.info("getHeaderToken: " + authHeader);
+        log.info("getHeaderToken: {}", authHeader);
         if (StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_STR)) {
             String jwt = authHeader.substring(BEARER_STR.length());
             if (!jwt.equalsIgnoreCase("null")) {

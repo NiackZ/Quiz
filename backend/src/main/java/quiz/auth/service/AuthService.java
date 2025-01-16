@@ -12,13 +12,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import quiz.auth.api.ApiResponse;
-import quiz.auth.model.JwtRequest;
-import quiz.auth.model.JwtResponse;
 import quiz.auth.api.dto.RegistrationUserDto;
 import quiz.auth.api.dto.UserDto;
+import quiz.auth.model.JwtRequest;
+import quiz.auth.model.JwtResponse;
 import quiz.users.model.User;
 import quiz.users.service.UserService;
 import quiz.utils.JwtUtil;
+import quiz.utils.model.TokenStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class AuthService {
     }
 
     public ResponseEntity<?> checkAccessToken(@NonNull @RequestBody String jwt) {
-        if (jwtUtil.validateAccessToken(jwt)) {
+        if (jwtUtil.validateAccessToken(jwt) == TokenStatus.VALID) {
             Map<String, Object> map = new HashMap<>();
             map.put("user", userService.getByUserName(jwtUtil.extractUsername(jwt)));
             return ResponseEntity.ok(map);
@@ -75,33 +76,43 @@ public class AuthService {
     }
 
     public ResponseEntity<?> getAccessToken(@NonNull String refreshToken) {
-        if (jwtUtil.validateRefreshToken(refreshToken)) {
-            Claims claims = jwtUtil.getRefreshClaims(refreshToken);
-            String username = claims.getSubject();
-            String saveRefreshToken = refreshStorage.get(username);
-            if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                UserDetails userDetails = userService.loadUserByUsername(username);
-                String accessToken = jwtUtil.generateAccessToken(userDetails);
-                return ResponseEntity.ok(new JwtResponse(accessToken, null));
-            }
+        try {
+            JwtResponse response = processRefreshToken(refreshToken);
+            return ResponseEntity.ok(new JwtResponse(response.getAccessToken(), null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(new JwtResponse(null, null));
     }
 
     private ResponseEntity<?> refresh(@NonNull String refreshToken) {
-        if (jwtUtil.validateRefreshToken(refreshToken)) {
-            Claims claims = jwtUtil.getRefreshClaims(refreshToken);
-            String username = claims.getSubject();
-            String saveRefreshToken = refreshStorage.get(username);
-            if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                UserDetails userDetails = userService.loadUserByUsername(username);
-                String accessToken = jwtUtil.generateAccessToken(userDetails);
-                String newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
-                refreshStorage.put(username, newRefreshToken);
-                return ResponseEntity.ok(new JwtResponse(accessToken, newRefreshToken));
-            }
+        try {
+            JwtResponse response = processRefreshToken(refreshToken);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return new ResponseEntity<>("Невалидный JWT токен", HttpStatus.BAD_REQUEST);
+    }
+
+    private JwtResponse processRefreshToken(String refreshToken) {
+        if (jwtUtil.validateRefreshToken(refreshToken) != TokenStatus.VALID) {
+            throw new IllegalArgumentException("Невалидный refresh токен");
+        }
+
+        Claims claims = jwtUtil.getRefreshClaims(refreshToken);
+        String username = claims.getSubject();
+        String savedRefreshToken = refreshStorage.get(username);
+
+        if (savedRefreshToken == null || !savedRefreshToken.equals(refreshToken)) {
+            throw new IllegalArgumentException("Токен отсутствует или не совпадает");
+        }
+
+        UserDetails userDetails = userService.loadUserByUsername(username);
+        String accessToken = jwtUtil.generateAccessToken(userDetails);
+        String newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
+
+        refreshStorage.put(username, newRefreshToken);
+
+        return new JwtResponse(accessToken, newRefreshToken);
     }
 
 }

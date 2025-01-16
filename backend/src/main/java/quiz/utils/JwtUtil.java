@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import quiz.utils.model.TokenStatus;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -61,35 +62,34 @@ public class JwtUtil {
                 .compact();
     }
 
-    public boolean validateRefreshToken(@NonNull String refreshToken) {
-        log.info("validateRefreshToken: " + refreshToken);
-        return validateToken(refreshToken, jwtRefreshSecret);
+    public TokenStatus validateRefreshToken(@NonNull String refreshToken) {
+        return validateTokenDetailed(refreshToken, jwtRefreshSecret);
     }
 
-    public boolean validateAccessToken(@NonNull String accessToken) {
-        return validateToken(accessToken, jwtAccessSecret);
+    public TokenStatus validateAccessToken(@NonNull String accessToken) {
+        return validateTokenDetailed(accessToken, jwtAccessSecret);
     }
 
-    private boolean validateToken(@NonNull String token, @NonNull Key secret) {
+    private TokenStatus validateTokenDetailed(@NonNull String token, @NonNull Key secret) {
         try {
-            log.info("Токен на проверке: " + token);
-            Jwts.parserBuilder()
-                    .setSigningKey(secret)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
+            createParser(secret).parseClaimsJws(token);
+            return TokenStatus.VALID;
         } catch (ExpiredJwtException e) {
-            log.warn("Время жизни токена истекло: "+ e.getMessage());
+            log.warn("Токен истёк: {}", e.getMessage());
+            return TokenStatus.EXPIRED;
         } catch (UnsupportedJwtException e) {
-            log.error("Unsupported jwt", e.getMessage());
+            log.error("Unsupported JWT: {}", e.getMessage());
+            return TokenStatus.UNSUPPORTED;
         } catch (MalformedJwtException e) {
-            log.error("Malformed jwt", e.getMessage());
+            log.error("Malformed JWT: {}", e.getMessage());
+            return TokenStatus.MALFORMED;
         } catch (SignatureException e) {
-            log.error("Invalid signature", e.getMessage());
+            log.error("Invalid signature: {}", e.getMessage());
+            return TokenStatus.INVALID_SIGNATURE;
         } catch (Exception e) {
-            log.error("Invalid token", e.getMessage());
+            log.error("Invalid token: {}", e.getMessage());
+            return TokenStatus.INVALID;
         }
-        return false;
     }
 
     public Claims getAccessClaims(@NonNull String token) {
@@ -101,11 +101,7 @@ public class JwtUtil {
     }
 
     private Claims getClaims(@NonNull String token, @NonNull Key secret) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secret)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        return createParser(secret).parseClaimsJws(token).getBody();
     }
 
     public String extractUsername(String token) throws SignatureException {
@@ -113,13 +109,28 @@ public class JwtUtil {
     }
 
     public List<String> extractRoles(String token) {
-        List<?> roles = getClaims(token, jwtAccessSecret).get(ROLE_LIST_NAME, List.class);
-        return roles.stream().map(Object::toString).toList();
+        try {
+            Claims claims = getClaims(token, jwtAccessSecret);
+            List<?> roles = claims.get(ROLE_LIST_NAME, List.class);
+            if (roles == null) {
+                throw new IllegalStateException("Роли отсутствуют в токене");
+            }
+            return roles.stream().map(Object::toString).toList();
+        } catch (Exception e) {
+            log.error("Не удалось извлечь роли: {}", e.getMessage());
+            return List.of();
+        }
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getClaims(token, jwtAccessSecret);
         return claimsResolver.apply(claims);
+    }
+
+    private JwtParser createParser(Key secret) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secret)
+                .build();
     }
 
 }
