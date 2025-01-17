@@ -26,6 +26,7 @@
                         :items="form.type.list"
                         item-value="id" item-title="name"
                         variant="underlined"
+                        density="compact"
                         :error-messages="v$.form.type.value.$errors.map(e => e.$message)"
         />
         <v-autocomplete label="Жанр"
@@ -34,6 +35,7 @@
                         item-value="id" item-title="name"
                         variant="underlined"
                         multiple
+                        density="compact"
                         :error-messages="v$.form.genre.value.$errors.map(e => e.$message)"
         />
         <v-autocomplete label="Студия"
@@ -42,6 +44,7 @@
                         item-value="id" item-title="name"
                         variant="underlined"
                         multiple
+                        density="compact"
                         :error-messages="v$.form.studio.value.$errors.map(e => e.$message)"
         />
         <v-autocomplete label="Статус"
@@ -49,6 +52,7 @@
                         :items="form.status.list"
                         item-value="id" item-title="name"
                         variant="underlined"
+                        density="compact"
                         :error-messages="v$.form.status.value.$errors.map(e => e.$message)"
         />
         <v-text-field label="Количество эпизодов"
@@ -72,6 +76,7 @@
                         :items="form.marks.list"
                         item-value="id" item-title="name"
                         variant="underlined"
+                        density="compact"
                         clearable
                         multiple
         />
@@ -237,9 +242,8 @@ export default {
     async saveAnime() {
       const updated = await this.getFormData();
       try {
-        console.log(updated);
-        const response = await axios.put(`/anime/${this.anime.id}`, updated);
-        console.log('Anime успешно сохранено: ', response.data);
+        await axios.put(`/anime/${this.anime.id}`, updated);
+        console.log('Anime успешно сохранено ');
       }
       catch (error) {
         console.error('Ошибка при сохранении Anime: ', error);

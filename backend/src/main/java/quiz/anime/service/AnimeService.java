@@ -1,6 +1,8 @@
 package quiz.anime.service;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import quiz.anime.Anime;
 import quiz.anime.AnimeCreateDTO;
@@ -41,34 +43,42 @@ public class AnimeService {
     private final StudioRepository studioRepository;
     private final LinkService linkService;
 
+    private static final Logger log = LoggerFactory.getLogger(AnimeService.class);
+
     public Long createAnime(AnimeCreateDTO animeCreateDTO) throws IOException {
-        Anime anime = new Anime();
+        try {
+            Anime anime = new Anime();
 
-        anime.setRuName(animeCreateDTO.getRusName());
-        anime.setPosterURL(null);
-        anime.setType(this.typeRepository.findById(animeCreateDTO.getTypeId()).orElse(null));
-        anime.setGenres(this.genreRepository.findAllById(animeCreateDTO.getGenreIds()));
-        anime.setStatus(this.statusRepository.findById(animeCreateDTO.getStatusId()).orElse(null));
-        anime.setEpisodeCount(animeCreateDTO.getEpisodeCount());
-        anime.setEpisodeDuration(animeCreateDTO.getEpisodeDuration());
-        anime.setLinks(animeCreateDTO.getLinkList().stream().map(this.linkService::createNewLink).toList());
-        anime.setMarks(this.markRepository.findAllById(animeCreateDTO.getMarkIds()));
-        anime.setDescription(animeCreateDTO.getDescription());
-        List<LocalDate> period = animeCreateDTO.getPeriod();
-        if (period.isEmpty()) {
-            anime.setStartDate(null);
-            anime.setEndDate(null);
-        }
-        else {
-            anime.setStartDate(period.get(0));
-            anime.setEndDate(period.size() > 1 ? period.get(1) : null);
-        }
+            anime.setRuName(animeCreateDTO.getRusName());
+            anime.setPosterURL(null);
+            anime.setType(this.typeRepository.findById(animeCreateDTO.getTypeId()).orElse(null));
+            anime.setGenres(this.genreRepository.findAllById(animeCreateDTO.getGenreIds()));
+            anime.setStatus(this.statusRepository.findById(animeCreateDTO.getStatusId()).orElse(null));
+            anime.setEpisodeCount(animeCreateDTO.getEpisodeCount());
+            anime.setEpisodeDuration(animeCreateDTO.getEpisodeDuration());
+            anime.setLinks(animeCreateDTO.getLinkList().stream().map(this.linkService::createNewLink).toList());
+            anime.setMarks(this.markRepository.findAllById(animeCreateDTO.getMarkIds()));
+            anime.setDescription(animeCreateDTO.getDescription());
+            List<LocalDate> period = animeCreateDTO.getPeriod();
+            if (period.isEmpty()) {
+                anime.setStartDate(null);
+                anime.setEndDate(null);
+            }
+            else {
+                anime.setStartDate(period.get(0));
+                anime.setEndDate(period.size() > 1 ? period.get(1) : null);
+            }
 
-        anime.setRomajiName(animeCreateDTO.getRomName());
-        anime.setStudios(this.studioRepository.findAllById(animeCreateDTO.getStudioIds()));
-        Long animeId = this.animeRepository.save(anime).getId();
-        setPoster(animeCreateDTO.getPoster(), animeId, null);
-        return animeId;
+            anime.setRomajiName(animeCreateDTO.getRomName());
+            anime.setStudios(this.studioRepository.findAllById(animeCreateDTO.getStudioIds()));
+            Long animeId = this.animeRepository.save(anime).getId();
+            setPoster(animeCreateDTO.getPoster(), animeId, null);
+            return animeId;
+        }
+        catch (Exception e) {
+            log.error("Ошибка при сохранении Аниме: {}", e.getMessage());
+            return null;
+        }
     }
 
     public List<AnimeGetDTO> getAllAnimes() {
@@ -180,20 +190,28 @@ public class AnimeService {
     }
 
     private void setPoster(Image poster, Long animeId, String previousPosterUrl) throws IOException {
-        Path absolutePath = Paths.get("").toAbsolutePath();
-        if (previousPosterUrl != null) {
-            Files.deleteIfExists(Paths.get(absolutePath + "/frontend/" + previousPosterUrl));
+        try {
+            if (poster != null) {
+                Path absolutePath = Paths.get("").toAbsolutePath();
+                if (previousPosterUrl != null) {
+                    Files.deleteIfExists(Paths.get(absolutePath + "/frontend/" + previousPosterUrl));
+                }
+                String directoryPath = absolutePath + "/frontend/src/public/images/poster/anime/" + animeId + "/";
+                String formatName = Utils.getFileExtension(poster.getFileName());
+                String fileName = "poster_" + Utils.generateRandomString() + "." + formatName;
+                Files.createDirectories(Paths.get(directoryPath));
+
+                byte[] fileBytes = java.util.Base64.getDecoder().decode(poster.getBase64Image());
+                String fullPath = directoryPath + fileName;
+                String posterURL = Utils.convertToRelativePath(fullPath);
+                Files.write(Paths.get(fullPath), Utils.resizeImage(fileBytes, formatName, 700));
+
+                this.animeRepository.updatePoster(posterURL, animeId);
+            }
         }
-        String directoryPath = absolutePath + "/frontend/src/public/images/poster/anime/" + animeId + "/";
-        String formatName = Utils.getFileExtension(poster.getFileName());
-        String fileName = "poster_" + Utils.generateRandomString() + "." + formatName;
-        Files.createDirectories(Paths.get(directoryPath));
+        catch (Exception e) {
+            log.info("Ошибка при установке постера: {}", e.getMessage());
+        }
 
-        byte[] fileBytes = java.util.Base64.getDecoder().decode(poster.getBase64Image());
-        String fullPath = directoryPath + fileName;
-        String posterURL = Utils.convertToRelativePath(fullPath);
-        Files.write(Paths.get(fullPath), Utils.resizeImage(fileBytes, formatName, 700));
-
-        this.animeRepository.updatePoster(posterURL, animeId);
     }
 }

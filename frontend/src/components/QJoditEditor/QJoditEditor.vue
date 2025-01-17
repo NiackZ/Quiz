@@ -1,4 +1,5 @@
 <template>
+<!--  TODO поправить прозрачный фон ссылок-->
   <jodit-editor :config="config"
                 v-model="desc"
                 @change="$emit('update:text', $event.target.value)"

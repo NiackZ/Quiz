@@ -30,5 +30,6 @@ public abstract class Title {
     private Integer episodeDuration;
     private LocalDate startDate;
     private LocalDate endDate;
+    @Column(length = 2000)
     private String description;
 }

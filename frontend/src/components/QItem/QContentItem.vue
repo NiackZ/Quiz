@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-if="animeData">
     <v-col cols="12" md="5" lg="4">
       <v-img :src="animeData.posterURL"></v-img>
     </v-col>
@@ -7,6 +7,7 @@
         <div class="fs20pt">
           <span class="rus_name deep-purple" v-text="animeData.ruName"></span> / <span class="rom_name deep-purple" v-text="animeData.romajiName"></span>
         </div>
+
         <div v-if="animeData.type?.name" class="mr2-0">
           <span>Тип:</span>
           <span class="span-tag" v-text="animeData.type.name"></span>
@@ -24,6 +25,11 @@
                 :key="studio.id" class="span-tag" v-text="studio.name"></span>
         </div>
 
+      <div v-if="animeData.status?.name" class="mr2-0">
+        <span>Тип:</span>
+        <span class="span-tag" v-text="animeData.status.name"></span>
+      </div>
+
         <div v-if="animeData.startDate || animeData.endDate" class="mr2-0">
           <span v-text="animeData.endDate ? 'Сезон:' : 'Дата выхода:'"></span>
           <span class="mrl5" v-text="new Date(animeData.startDate).toLocaleDateString() + (animeData.endDate ? ' - ' + new Date(animeData.endDate).toLocaleDateString() : '')">
@@ -37,7 +43,7 @@
               : `${animeData.episodeDuration} мин.`"></span>
         </div>
 
-        <div v-if="animeData.links?.length > 1" class="mr2-0">
+        <div v-if="animeData.links?.length > 0" class="mr2-0">
           <span>Ссылки:</span>
           <span v-for="link in animeData.links"
                 :key="link.id" class="mrl5">
@@ -45,7 +51,7 @@
                 </span>
         </div>
 
-        <div v-if="animeData.marks?.length > 1" class="item_marks">
+        <div v-if="animeData.marks?.length > 0" class="item_marks">
           <span>Метки:</span>
           <span v-for="mark in animeData.marks"
                 :key="mark.id" v-text="mark.name"
@@ -68,17 +74,15 @@ export default {
   },
   data() {
     return {
-      animeData: {}
+      animeData: null
     }
   },
   async mounted() {
     const animeId = this.$props.itemId;
     if (animeId) {
       this.animeData = (await getAnimeInfo(animeId)).data;
-      console.log(this.animeData)
+      document.title = this.animeData.romajiName; // устанавливаем заголовок страницы
     }
-    // TODO Фикс при нажатии назад по навигации выходит название предыдущего тайтла
-    //document.title = `Element #${this.itemId}` // устанавливаем заголовок страницы
   }
 }
 </script>
