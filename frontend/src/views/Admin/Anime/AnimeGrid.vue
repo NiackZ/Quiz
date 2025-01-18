@@ -18,7 +18,10 @@
           />
           <v-card-text class="px-0 pt-1">
             <h3 class="max-line-2">{{anime.rusName}}</h3>
-            <span>{{anime.type.name}} • {{anime.genreList.map(genre => genre.name).join(', ')}}</span>
+            <div class="container">
+              <div class="text-left">{{anime.type.name}}</div>
+              <div class="text-right">{{anime.startDate ? new Date(anime.startDate).getFullYear() : ''}}</div>
+            </div>
           </v-card-text>
         </v-card>
       </router-link>
@@ -74,6 +77,10 @@ export default {
 </script>
 
 <style scoped>
-
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>
 

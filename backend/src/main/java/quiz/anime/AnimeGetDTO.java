@@ -5,6 +5,7 @@ import lombok.Setter;
 import quiz.genres.Genre;
 import quiz.types.Type;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -16,6 +17,7 @@ public class AnimeGetDTO {
     private String posterURL;
     private Type type;
     private List<Genre> genreList;
+    private LocalDate startDate;
 
     public AnimeGetDTO (Anime anime) {
         this.id = anime.getId();
@@ -24,5 +26,6 @@ public class AnimeGetDTO {
         this.posterURL = anime.getPosterURL();
         this.type = anime.getType();
         this.genreList = anime.getGenres();
+        this.startDate = anime.getStartDate();
     }
 }
