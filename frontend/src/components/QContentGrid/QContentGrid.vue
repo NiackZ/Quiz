@@ -3,20 +3,17 @@
     <v-col v-for="(element, index) in elements"
            :key="index"
            :cols="computedColumnCount"
-           :style="{ height: this.cellHeight }"
     >
       <router-link :to="`/${path}/${element.id}`" class="text-decoration-none">
-        <div class="d-flex justify-center grid-cell bg-img-center h-100 "
+        <div class="d-flex justify-center grid-cell bg-img-center"
              :style="{
                 width: cellWidth,
+                height: this.cellHeight,
                 'background-image': `url(${element.posterURL})`
               }"
         >
-<!--          TODO Доделать отображение при наведении-->
-          <div class="short-description">
-            element #{{ element.id }}
-          </div>
         </div>
+        <div class="max-line-2">{{element?.ruName}}</div>
       </router-link>
     </v-col>
   </v-row>

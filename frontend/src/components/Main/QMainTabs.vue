@@ -11,7 +11,7 @@
 
   <v-tabs-window v-model="tab">
 <!--    Подумать над анимацией-->
-    <v-tabs-window-item transition="toggle-slide-y-transition"
+    <v-tabs-window-item transition="disabled"
         v-for="item in this.$props.items"
         :key="item.text"
         :value="item.text"
