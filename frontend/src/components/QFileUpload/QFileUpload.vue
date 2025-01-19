@@ -87,6 +87,8 @@ export default {
   }
 }
 </script>
-<style scoped>
-
+<style>
+.v-field__field {
+  overflow: hidden !important;
+}
 </style>

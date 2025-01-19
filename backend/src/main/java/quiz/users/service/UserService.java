@@ -1,6 +1,8 @@
 package quiz.users.service;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,11 +14,15 @@ import quiz.auth.api.dto.RegistrationUserDto;
 import quiz.roles.services.RoleService;
 import quiz.users.api.dto.UserCreateDTO;
 import quiz.users.api.dto.UserGetDTO;
+import quiz.users.api.dto.UserUpdateDTO;
 import quiz.users.model.User;
 import quiz.users.repository.IUserRepository;
+import quiz.utils.Utils;
+import quiz.utils.model.UpdateImage;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -25,10 +31,11 @@ public class UserService implements UserDetailsService {
   private final IUserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
+  private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
   private UserGetDTO userToUserGetDTO(User user){
     UserGetDTO userGetDTO = new UserGetDTO(user);
-    userGetDTO.setQuizzes(user.getQuizzes());
+//    userGetDTO.setQuizzes(user.getQuizzes());
     return userGetDTO;
   }
 
@@ -65,11 +72,26 @@ public class UserService implements UserDetailsService {
     return this.userRepository.save(user).getId();
   }
 
-  public Long update(@Valid @NotNull UserCreateDTO userData){
-    return add(userData);
+  public Long update(@Valid @NotNull UserUpdateDTO userData) throws IOException {
+    String prevPoserPath = null;
+    try {
+      User user = findById(userData.getId());
+      if (userData.getAvatar() != null) {
+        UpdateImage image = Utils.setPoster(userData.getAvatar(), user.getId(), user.getAvatarURL(), "/images/user/avatar/");
+        prevPoserPath = image.getURL();
+        this.userRepository.updateAvatar(prevPoserPath, image.getId());
+      }
+    }
+    catch (Exception e){
+      if (prevPoserPath != null) {
+        Utils.deletePoster(prevPoserPath);
+      }
+      throw e;
+    }
+    return null;
   }
 
-  public Long delete(@Valid @NotNull UserCreateDTO userData){
+  public Long delete(@Valid @NotNull UserCreateDTO userData) {
     userData.setActive(false);
     return add(userData);
   }

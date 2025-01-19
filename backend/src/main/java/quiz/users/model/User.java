@@ -27,6 +27,9 @@ public class User {
   @Column(nullable = false, unique = true)
   private String email;
 
+  @Column(name = "avatar_url", length = 500)
+  private String avatarURL;
+
   @OneToMany
   @JoinTable(
           name = "user_quiz",

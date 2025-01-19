@@ -21,13 +21,10 @@ import quiz.studios.StudioRepository;
 import quiz.types.Type;
 import quiz.types.TypeRepository;
 import quiz.utils.Utils;
-import quiz.utils.model.Image;
+import quiz.utils.model.UpdateImage;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -72,7 +69,8 @@ public class AnimeService {
             anime.setRomajiName(animeCreateDTO.getRomName());
             anime.setStudios(this.studioRepository.findAllById(animeCreateDTO.getStudioIds()));
             Long animeId = this.animeRepository.save(anime).getId();
-            setPoster(animeCreateDTO.getPoster(), animeId, null);
+            UpdateImage poster = Utils.setPoster(animeCreateDTO.getPoster(), animeId, null, "/images/poster/anime/");
+            this.animeRepository.updatePoster(poster.getURL(), poster.getId());
             return animeId;
         }
         catch (Exception e) {
@@ -179,7 +177,8 @@ public class AnimeService {
 
             // Сохраняем обновленный объект Anime
             animeRepository.save(currentAnime);
-            setPoster(anime.getPoster(), currentAnime.getId(), currentAnime.getPosterURL());
+            UpdateImage poster = Utils.setPoster(anime.getPoster(), currentAnime.getId(), currentAnime.getPosterURL(), "/images/poster/anime/");
+            this.animeRepository.updatePoster(poster.getURL(), poster.getId());
 
             // Удаляем ссылки из базы данных, которые больше не используются
             this.linkService.deleteAll(linksToRemove);
@@ -189,29 +188,4 @@ public class AnimeService {
     public void deleteAnime(Long id) {
     }
 
-    private void setPoster(Image poster, Long animeId, String previousPosterUrl) throws IOException {
-        try {
-            if (poster != null) {
-                Path absolutePath = Paths.get("").toAbsolutePath();
-                if (previousPosterUrl != null) {
-                    Files.deleteIfExists(Paths.get(absolutePath + "/frontend/" + previousPosterUrl));
-                }
-                String directoryPath = absolutePath + "/frontend/src/public/images/poster/anime/" + animeId + "/";
-                String formatName = Utils.getFileExtension(poster.getFileName());
-                String fileName = "poster_" + Utils.generateRandomString() + "." + formatName;
-                Files.createDirectories(Paths.get(directoryPath));
-
-                byte[] fileBytes = java.util.Base64.getDecoder().decode(poster.getBase64Image());
-                String fullPath = directoryPath + fileName;
-                String posterURL = Utils.convertToRelativePath(fullPath);
-                Files.write(Paths.get(fullPath), Utils.resizeImage(fileBytes, formatName, 700));
-
-                this.animeRepository.updatePoster(posterURL, animeId);
-            }
-        }
-        catch (Exception e) {
-            log.info("Ошибка при установке постера: {}", e.getMessage());
-        }
-
-    }
 }

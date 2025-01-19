@@ -1,17 +1,23 @@
 <template>
   <v-row>
-    <v-col cols="4">
-      <QFileUpload :with-preview="file.withPreview"/>
+    <v-col cols="3">
+      <q-file-upload ref="fileUpload"
+                     v-if="user"
+                     :with-preview="true"
+                     :poster-url="user.url" />
     </v-col>
-    <v-col cols="8">
-      <!-- Логин пользователя -->
+    <v-col cols="9">
       <v-text-field v-if="user" label="Логин"
                     v-model="user.username"
                     :disabled="true"
                     variant="underlined"
       />
 
-      <!-- Поля для изменения пароля -->
+      <v-text-field v-if="user" label="Email"
+                    v-model="email"
+                    variant="underlined"
+      />
+
       <v-text-field label="Текущий пароль"
                     type="password"
                     v-model="currentPassword"
@@ -32,18 +38,22 @@
 <script>
 import QFileUpload from "../../components/QFileUpload/QFileUpload.vue";
 import {mapState} from "vuex";
+import {encodeImage, isEmpty, updateUser} from "../../utils/utils.js";
 
 export default {
   name: "Profile",
   components: {QFileUpload},
   data() {
     return {
-      file: {
-        withPreview: true,
-      },
-      currentPassword: "",
-      newPassword: "",
+      currentPassword: null,
+      newPassword: null,
+      email: null
     };
+  },
+  mounted() {
+    if (this.user) {
+      this.email = this.user.email;
+    }
   },
   computed: {
     ...mapState({
@@ -51,12 +61,23 @@ export default {
     })
   },
   methods: {
-    saveChanges() {
-      // Реализация сохранения изменений
+    async saveChanges() {
+      console.log("save");
+      const file = this.$refs.fileUpload.getFile();
+
+      await updateUser({
+        id: this.user.id,
+        password: this.currentPassword,
+        newPassword: this.newPassword,
+        email: this.email,
+        avatar: await encodeImage(file)
+      });
     },
   }
 }
 </script>
 <style scoped>
-
+.v-input__control {
+  overflow: hidden !important;
+}
 </style>

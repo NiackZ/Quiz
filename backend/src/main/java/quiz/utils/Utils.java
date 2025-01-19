@@ -1,11 +1,14 @@
 package quiz.utils;
 
+import quiz.utils.model.UpdateImage;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
@@ -23,8 +26,8 @@ public class Utils {
 
     public static boolean listContainsValues(List<String> srcList, List<String> secondList, boolean ignoreCase) {
         return ignoreCase
-               ? secondList.stream().allMatch(item -> srcList.stream().anyMatch(e -> e.equalsIgnoreCase(item)))
-               : new HashSet<>(srcList).containsAll(secondList);
+                ? secondList.stream().allMatch(item -> srcList.stream().anyMatch(e -> e.equalsIgnoreCase(item)))
+                : new HashSet<>(srcList).containsAll(secondList);
     }
 
     public static String getFileExtension(String fileName) {
@@ -92,4 +95,42 @@ public class Utils {
             return outputStream.toByteArray();
         }
     }
+
+    public static UpdateImage setPoster(quiz.utils.model.Image poster, Long id, String previousPosterUrl, String imgPath) throws IOException {
+        try {
+            if (poster != null) {
+                Path absolutePath = Paths.get("").toAbsolutePath();
+                String frontUrl = "/frontend/";
+                //TODO переделать на deletePoster
+                if (previousPosterUrl != null) {
+                    Files.deleteIfExists(Paths.get(absolutePath + frontUrl + previousPosterUrl));
+                }
+                String directoryPath = absolutePath + frontUrl + "src/public" + imgPath + id + "/";
+                String formatName = Utils.getFileExtension(poster.getFileName());
+                Files.createDirectories(Paths.get(directoryPath));
+
+                byte[] fileBytes = java.util.Base64.getDecoder().decode(poster.getBase64Image());
+                String fullPath = directoryPath + Utils.generateRandomString() + "." + formatName;
+                String url = Utils.convertToRelativePath(fullPath);
+                Files.write(Paths.get(fullPath), Utils.resizeImage(fileBytes, formatName, 700));
+                return new UpdateImage(id, url);
+            }
+        }
+        catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
+        return null;
+    }
+    public static void deletePoster(String previousPosterUrl) throws IOException {
+        try {
+            if (previousPosterUrl != null) {
+                Files.deleteIfExists(Paths.get(Paths.get("").toAbsolutePath() + "/frontend/" + previousPosterUrl));
+            }
+        }
+        catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+
+
 }

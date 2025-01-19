@@ -3,9 +3,11 @@ package quiz.users.api;
 import org.springframework.web.bind.annotation.*;
 import quiz.users.api.dto.UserCreateDTO;
 import quiz.users.api.dto.UserGetDTO;
+import quiz.users.api.dto.UserUpdateDTO;
 import quiz.users.service.UserService;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,8 +36,7 @@ public class UserController {
   }
 
   @PutMapping("{id}")
-  public Long update(@PathVariable @NotNull Long id, @RequestBody @NotNull UserCreateDTO userDTO){
-    userDTO.setId(id);
+  public Long update(@RequestBody @NotNull UserUpdateDTO userDTO) throws IOException {
     return this.userService.update(userDTO);
   }
 

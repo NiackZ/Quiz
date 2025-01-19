@@ -28,6 +28,10 @@ export async function getAnimeInfo(id) {
     return await axios.get(`/anime/${id}`);
 }
 
+export async function updateUser(data) {
+    return await axios.put(`/users/${data.id}`, data);
+}
+
 export function isEmpty(obj) {
     return obj === null || obj === undefined;
 }
