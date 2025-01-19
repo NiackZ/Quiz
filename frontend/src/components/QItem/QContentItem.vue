@@ -1,9 +1,9 @@
 <template>
   <v-row v-if="animeData">
-    <v-col cols="12" md="5" lg="4">
+    <v-col cols="12" lg="4" xl="3">
       <v-img :src="animeData.posterURL"></v-img>
     </v-col>
-    <v-col cols="12" md="7" lg="8" class="ff-verdana fs11pt">
+    <v-col cols="12" lg="8" xl="9" class="ff-verdana fs11pt">
         <div class="fs20pt">
           <span class="rus_name deep-purple" v-text="animeData.ruName"></span> / <span class="rom_name deep-purple" v-text="animeData.romajiName"></span>
         </div>
