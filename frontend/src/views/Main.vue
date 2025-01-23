@@ -39,8 +39,8 @@ export default {
         }
 
         anime.list = (await animePromise).data;
-        manga.list = (await animePromise).data;//todo
-        ranobe.list = (await animePromise).data;//todo
+        //manga.list = (await animePromise).data;//todo
+        //ranobe.list = (await animePromise).data;//todo
 
         this.items = [anime, manga, ranobe];
       } catch (error) {

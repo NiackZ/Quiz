@@ -1,3 +1,5 @@
+export const SITE_NAME = "NekoTaku";
+
 export const PATH = {
     ANIME: 'anime',
     MANGA: 'manga',

@@ -4,7 +4,8 @@
       <v-toolbar-title class="dp__pointer d-content">
         <router-link to="/"
                      style="text-decoration: none; color: inherit; flex: 0 1 auto;"
-        >Home</router-link>
+                     v-text="getSiteName"
+        ></router-link>
       </v-toolbar-title>
       <v-text-field
           class="pa-2"
@@ -47,6 +48,7 @@ import axios from '/src/axios/http-common'
 import {mapActions, mapMutations, mapState} from "vuex";
 import QNavbarUserAvatar from "./QNavbarUserAvatar.vue";
 import QLogin from "./QLogin.vue";
+import {SITE_NAME} from "../../constants/constants.js";
 
 export default {
   name: 'QNavbar',
@@ -105,6 +107,9 @@ export default {
     }
   },
   computed: {
+    getSiteName() {
+      return SITE_NAME;
+    },
     ...mapState({
       isAuth: state => state.auth.isAuth,
       error: state => state.auth.error
