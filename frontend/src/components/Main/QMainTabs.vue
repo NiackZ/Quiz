@@ -10,13 +10,14 @@
   </v-tabs>
 
   <v-tabs-window v-model="tab">
-<!--    Подумать над анимацией-->
     <v-tabs-window-item transition="disabled"
-        v-for="item in this.$props.items"
-        :key="item.text"
-        :value="item.text"
+                        v-if="this.$props.items?.length > 0"
+                        v-for="item in this.$props.items"
+                        :key="item.text"
+                        :value="item.text"
     >
-      <q-content-grid :elements="item.list" :path="item.path"/>
+      <q-content-grid v-if="item.list?.length > 0" :elements="item.list" :path="item.path"/>
+      <span v-else>Данные не найдены</span>
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
