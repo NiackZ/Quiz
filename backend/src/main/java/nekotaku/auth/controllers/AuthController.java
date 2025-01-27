@@ -27,7 +27,7 @@ import static nekotaku.config.JwtRequestFilter.BEARER_STR;
 public class AuthController {
 
     private final AuthService authService;
-    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
+    private final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("login")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {

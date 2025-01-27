@@ -24,10 +24,10 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
+    private final Logger log = LoggerFactory.getLogger(JwtUtil.class);
     private final SecretKey jwtAccessSecret;
     private final SecretKey jwtRefreshSecret;
-    private final static String ROLE_LIST_NAME = "roles";
+    private final String ROLE_LIST_NAME = "roles";
 
     public JwtUtil(
             @Value("${jwt.secret.access}") String jwtAccessSecret,

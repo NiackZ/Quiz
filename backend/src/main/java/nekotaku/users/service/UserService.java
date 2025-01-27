@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
   private final IUserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
-  private static final Logger log = LoggerFactory.getLogger(UserService.class);
+  private final Logger log = LoggerFactory.getLogger(UserService.class);
 
   private UserGetDTO userToUserGetDTO(User user){
     UserGetDTO userGetDTO = new UserGetDTO(user);

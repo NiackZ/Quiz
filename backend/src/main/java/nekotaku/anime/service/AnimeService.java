@@ -40,9 +40,9 @@ public class AnimeService {
     private final StudioRepository studioRepository;
     private final LinkService linkService;
 
-    private static final Logger log = LoggerFactory.getLogger(AnimeService.class);
+    private final Logger log = LoggerFactory.getLogger(AnimeService.class);
 
-    public Long createAnime(AnimeCreateDTO animeCreateDTO) throws IOException {
+    public Long createAnime(AnimeCreateDTO animeCreateDTO) {
         try {
             Anime anime = new Anime();
 

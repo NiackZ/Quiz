@@ -13,7 +13,7 @@ public class StatusService {
 
     private final StatusRepository repository;
 
-    private static final String NOT_FOUND = "Статус не найден. ID = ";
+    private final String NOT_FOUND = "Статус не найден. ID = ";
 
     public List<Status> findAll() {
         return IteratorUtils.toList(this.repository.findAll().iterator());

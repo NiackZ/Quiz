@@ -31,7 +31,7 @@ public class QuestionService {
     return questionGetDTO;
   }
 
-  public Question findById(@NotNull Long id){
+  public Question findById(@NotNull Long id) {
     return this.questionRepository.findById(id).orElseThrow(
         () -> new RuntimeException(String.format("Вопрос с ИД %d не найден", id))
     );

@@ -13,8 +13,8 @@ import java.util.List;
 public class TypeService {
 
     private final TypeRepository repository;
-    private static final String NOT_FOUND = "Тип не найден. ID = ";
-    private static final String EXIST = "Тип с таким именем уже существует.";
+    private final String NOT_FOUND = "Тип не найден. ID = ";
+    private final String EXIST = "Тип с таким именем уже существует.";
 
     public List<Type> findAll() {
         return IteratorUtils.toList(this.repository.findAll().iterator());

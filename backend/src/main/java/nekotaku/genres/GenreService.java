@@ -12,7 +12,7 @@ import java.util.List;
 public class GenreService {
 
     private final GenreRepository repository;
-    private static final String NOT_FOUND = "Жанр не найден. ID = ";
+    private final String NOT_FOUND = "Жанр не найден. ID = ";
 
     public List<Genre> findAll() {
         return IteratorUtils.toList(this.repository.findAll().iterator());

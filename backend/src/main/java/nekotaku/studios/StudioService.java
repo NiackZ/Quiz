@@ -13,7 +13,7 @@ public class StudioService {
 
     private final StudioRepository repository;
 
-    private static final String NOT_FOUND = "Студия не найден. ID = ";
+    private final String NOT_FOUND = "Студия не найден. ID = ";
 
     public List<Studio> findAll() {
         return IteratorUtils.toList(this.repository.findAll().iterator());
