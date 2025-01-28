@@ -1,11 +1,11 @@
 package nekotaku.questions.model;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import nekotaku.answers.model.Answer;
 import nekotaku.quizzes.model.Quiz;
+import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
 import java.util.List;
 
 @NoArgsConstructor

@@ -2,7 +2,7 @@ package nekotaku.quizzes.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import nekotaku.questions.api.dto.QuestionGetDTO;
 import nekotaku.questions.model.Question;
 import nekotaku.quizzes.model.Quiz;

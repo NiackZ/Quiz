@@ -10,7 +10,7 @@ import nekotaku.anime.AnimeGetDTO;
 import nekotaku.anime.AnimeGetShortDTO;
 import nekotaku.anime.service.AnimeService;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 

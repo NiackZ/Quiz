@@ -1,11 +1,11 @@
 package nekotaku.roles.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import nekotaku.utils.model.LongString;
-
-import javax.persistence.*;
 
 
 @Entity

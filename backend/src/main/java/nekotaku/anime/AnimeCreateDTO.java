@@ -7,7 +7,7 @@ import lombok.Setter;
 import nekotaku.links.Link;
 import nekotaku.utils.model.Image;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 

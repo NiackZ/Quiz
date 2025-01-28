@@ -1,9 +1,8 @@
 package nekotaku.answers.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 import nekotaku.questions.model.Question;
-
-import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor

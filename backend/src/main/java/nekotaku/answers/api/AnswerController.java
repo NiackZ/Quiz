@@ -6,7 +6,7 @@ import nekotaku.answers.api.dto.AnswerCreateDTO;
 import nekotaku.answers.api.dto.AnswerGetDTO;
 import nekotaku.answers.service.AnswerService;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController

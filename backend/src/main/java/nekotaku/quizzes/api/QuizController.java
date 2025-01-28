@@ -6,7 +6,7 @@ import nekotaku.quizzes.api.dto.QuizCreateDTO;
 import nekotaku.quizzes.api.dto.QuizGetDTO;
 import nekotaku.quizzes.service.QuizService;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController

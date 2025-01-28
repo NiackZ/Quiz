@@ -1,5 +1,6 @@
 package nekotaku.anime;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,7 +10,6 @@ import nekotaku.marks.Mark;
 import nekotaku.studios.Studio;
 import nekotaku.title.model.Title;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Getter

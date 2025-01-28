@@ -7,6 +7,21 @@
                      :poster-url="user.url" />
     </v-col>
     <v-col cols="9">
+      <v-form validate-on="submit lazy" @submit.prevent="submit">
+        <v-text-field
+            v-model="userName"
+            :rules="rules"
+            label="User name"
+        ></v-text-field>
+
+        <v-btn
+            :loading="loading"
+            class="mt-2"
+            text="Submit"
+            type="submit"
+            block
+        ></v-btn>
+      </v-form>
       <v-text-field v-if="user" label="Логин"
                     v-model="user.username"
                     :disabled="true"
@@ -16,6 +31,7 @@
       <v-text-field v-if="user" label="Email"
                     v-model="email"
                     variant="underlined"
+                    :rules="[rules.required]"
       />
 
       <v-text-field label="Текущий пароль"
@@ -34,6 +50,16 @@
       <v-btn @click="saveChanges">Сохранить</v-btn>
     </v-col>
   </v-row>
+  <v-alert
+      v-model="alert"
+      type="error"
+      title="Ошибка"
+      icon="false"
+      density="compact"
+  >
+    <template v-slot:prepend></template>
+    <template v-slot:text>{{alert.text}}</template>
+  </v-alert>
 </template>
 <script>
 import QFileUpload from "../../components/QFileUpload/QFileUpload.vue";
@@ -45,6 +71,12 @@ export default {
   components: {QFileUpload},
   data() {
     return {
+      alert: {
+        text: '123123'
+      },
+      rules: {
+        required: value => !!value || 'Заполните поле',
+      },
       currentPassword: null,
       newPassword: null,
       email: null
@@ -61,16 +93,27 @@ export default {
     })
   },
   methods: {
-    async saveChanges() {
-      console.log("save");
-      const file = this.$refs.fileUpload.getFile();
+    async submit() {
 
+    },
+    async saveChanges() {
+      let passRequeired = false;
+      if (isEmpty(this.email)) {
+        this.alert.text = '';
+      }
+      if (this.user.email !== this.email) {
+        passRequeired = true;
+      }
+      if (passRequeired){
+
+        return;
+      }
       await updateUser({
         id: this.user.id,
         password: this.currentPassword,
         newPassword: this.newPassword,
         email: this.email,
-        avatar: await encodeImage(file)
+        avatar: await encodeImage(this.$refs.fileUpload.getFile())
       });
     },
   }

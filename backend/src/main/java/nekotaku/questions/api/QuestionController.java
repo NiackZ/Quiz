@@ -1,7 +1,7 @@
 package nekotaku.questions.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 import nekotaku.answers.service.AnswerService;
 import nekotaku.questions.api.dto.QuestionCreateDTO;

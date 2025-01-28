@@ -1,9 +1,7 @@
 package nekotaku.anime.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import nekotaku.anime.Anime;
 import nekotaku.anime.AnimeCreateDTO;
 import nekotaku.anime.AnimeGetDTO;
@@ -22,8 +20,10 @@ import nekotaku.types.Type;
 import nekotaku.types.TypeRepository;
 import nekotaku.utils.Utils;
 import nekotaku.utils.model.UpdateImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;

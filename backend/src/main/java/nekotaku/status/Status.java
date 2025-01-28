@@ -1,10 +1,10 @@
 package nekotaku.status;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
 import nekotaku.utils.model.LongString;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
 @RequiredArgsConstructor

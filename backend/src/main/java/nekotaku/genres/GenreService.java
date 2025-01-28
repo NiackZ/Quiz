@@ -1,10 +1,10 @@
 package nekotaku.genres;
 
-import liquibase.repackaged.org.apache.commons.collections4.IteratorUtils;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service

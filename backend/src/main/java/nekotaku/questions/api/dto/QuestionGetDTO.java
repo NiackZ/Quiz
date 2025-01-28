@@ -6,7 +6,7 @@ import nekotaku.answers.api.dto.AnswerGetDTO;
 import nekotaku.answers.model.Answer;
 import nekotaku.questions.model.Question;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter

@@ -1,17 +1,16 @@
 package nekotaku.questions.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import nekotaku.answers.model.Answer;
 import nekotaku.questions.api.dto.QuestionCreateDTO;
 import nekotaku.questions.api.dto.QuestionGetDTO;
 import nekotaku.questions.model.Question;
 import nekotaku.questions.repository.IQuestionRepository;
 import nekotaku.quizzes.service.QuizService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 

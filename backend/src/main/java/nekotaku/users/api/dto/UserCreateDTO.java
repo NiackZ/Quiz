@@ -2,7 +2,7 @@ package nekotaku.users.api.dto;
 
 import lombok.*;
 import nekotaku.users.model.User;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @Getter
 @Setter

@@ -1,13 +1,13 @@
 package nekotaku.users.model;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import nekotaku.quizzes.model.Quiz;
 import nekotaku.rights.model.Right;
 import nekotaku.roles.model.Role;
 import nekotaku.users.api.dto.UserCreateDTO;
+import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
 import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor

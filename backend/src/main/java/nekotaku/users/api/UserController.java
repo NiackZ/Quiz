@@ -6,7 +6,7 @@ import nekotaku.users.api.dto.UserGetDTO;
 import nekotaku.users.api.dto.UserUpdateDTO;
 import nekotaku.users.service.UserService;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 
