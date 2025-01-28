@@ -2,7 +2,6 @@ package nekotaku.users.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nekotaku.quizzes.model.Quiz;
 import nekotaku.rights.model.Right;
 import nekotaku.roles.model.Role;
 import nekotaku.users.api.dto.UserCreateDTO;
@@ -29,14 +28,6 @@ public class User {
 
   @Column(name = "avatar_url", length = 500)
   private String avatarURL;
-
-  @OneToMany
-  @JoinTable(
-          name = "user_quiz",
-          joinColumns = @JoinColumn(name = "user_id"),
-          inverseJoinColumns = @JoinColumn(name = "quiz_id")
-  )
-  private List<Quiz> quizzes;
 
   @Column(nullable = false)
   private String password;

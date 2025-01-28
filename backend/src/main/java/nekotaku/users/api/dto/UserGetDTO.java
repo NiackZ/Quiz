@@ -25,8 +25,6 @@ public class UserGetDTO {
 
   private String url;
 
-  //private List<QuizGetDTO> quizzes = new ArrayList<>();
-
   private boolean isActive;
 
   public UserGetDTO(User user) {
@@ -35,14 +33,6 @@ public class UserGetDTO {
     this.email = user.getEmail();
     this.isActive = user.isActive();
     this.url = user.getAvatarURL();
-    //this.quizzes = null;
   }
 
-//  public void setQuizzes(List<Quiz> quizzes) {
-//    this.quizzes = quizzes.stream().map(quiz -> {
-//      QuizGetDTO quizGetDTO = new QuizGetDTO(quiz);
-//      quizGetDTO.setQuestions(quiz.getQuestions());
-//      return quizGetDTO;
-//    }).toList();
-//  }
 }
