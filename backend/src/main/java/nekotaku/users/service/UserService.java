@@ -1,5 +1,6 @@
 package nekotaku.users.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -41,7 +42,7 @@ public class UserService implements UserDetailsService {
 
   public User findById(@NotNull Long id){
     return this.userRepository.findById(id).orElseThrow(
-        () -> new RuntimeException(String.format("Пользователь с ИД %d не найден", id))
+        () -> new EntityNotFoundException(String.format("Пользователь с ИД %d не найден", id))
     );
   }
 
