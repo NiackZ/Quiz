@@ -19,15 +19,13 @@ import nekotaku.studios.StudioRepository;
 import nekotaku.types.Type;
 import nekotaku.types.TypeRepository;
 import nekotaku.utils.Utils;
-import nekotaku.utils.model.UpdateImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -69,8 +67,11 @@ public class AnimeService {
             anime.setRomajiName(animeCreateDTO.getRomName());
             anime.setStudios(this.studioRepository.findAllById(animeCreateDTO.getStudioIds()));
             Long animeId = this.animeRepository.save(anime).getId();
-            UpdateImage poster = Utils.setPoster(animeCreateDTO.getPoster(), animeId, null, "/images/poster/anime/");
-            this.animeRepository.updatePoster(poster.getURL(), poster.getId());
+
+            this.animeRepository.updatePoster(
+                    Utils.setPoster(animeCreateDTO.getPoster(), animeId, null, "/images/poster/anime/"),
+                    animeId
+            );
             return animeId;
         }
         catch (Exception e) {
@@ -177,8 +178,12 @@ public class AnimeService {
 
             // Сохраняем обновленный объект Anime
             animeRepository.save(currentAnime);
-            UpdateImage poster = Utils.setPoster(anime.getPoster(), currentAnime.getId(), currentAnime.getPosterURL(), "/images/poster/anime/");
-            this.animeRepository.updatePoster(poster.getURL(), poster.getId());
+
+            this.animeRepository.updatePoster(
+                    Utils.setPoster(
+                            anime.getPoster(), currentAnime.getId(), currentAnime.getPosterURL(), "/images/poster/anime/"
+                    ), currentAnime.getId()
+            );
 
             // Удаляем ссылки из базы данных, которые больше не используются
             this.linkService.deleteAll(linksToRemove);

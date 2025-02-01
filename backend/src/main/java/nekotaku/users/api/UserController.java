@@ -21,17 +21,17 @@ public class UserController {
   }
 
   @GetMapping()
-  public List<UserGetDTO> getAll(){
+  public List<UserGetDTO> getAll() {
     return this.userService.findAll();
   }
 
   @GetMapping("{id}")
-  public UserGetDTO getById(@PathVariable @NotNull Long id){
+  public UserGetDTO getById(@PathVariable @NotNull Long id) {
     return this.userService.getById(id);
   }
 
   @PostMapping("/registration")
-  public Long create(@RequestBody @NotNull UserCreateDTO userDTO){
+  public Long create(@RequestBody @NotNull UserCreateDTO userDTO) {
     return this.userService.add(userDTO);
   }
 
@@ -41,7 +41,7 @@ public class UserController {
   }
 
   @DeleteMapping("{id}")
-  public Long delete(@PathVariable @NotNull Long id, @RequestBody @NotNull UserCreateDTO userDTO){
+  public Long delete(@PathVariable @NotNull Long id, @RequestBody @NotNull UserCreateDTO userDTO) {
     userDTO.setId(id);
     return this.userService.delete(userDTO);
   }

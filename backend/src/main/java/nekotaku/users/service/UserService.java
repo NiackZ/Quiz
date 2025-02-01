@@ -12,9 +12,6 @@ import nekotaku.users.api.dto.UserUpdateDTO;
 import nekotaku.users.model.User;
 import nekotaku.users.repository.IUserRepository;
 import nekotaku.utils.Utils;
-import nekotaku.utils.model.UpdateImage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,12 +29,9 @@ public class UserService implements UserDetailsService {
   private final IUserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
-  private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-  private UserGetDTO userToUserGetDTO(User user){
-    UserGetDTO userGetDTO = new UserGetDTO(user);
-//    userGetDTO.setQuizzes(user.getQuizzes());
-    return userGetDTO;
+  private UserGetDTO userToUserGetDTO(User user) {
+      return new UserGetDTO(user);
   }
 
   public User findById(@NotNull Long id){
@@ -50,15 +44,15 @@ public class UserService implements UserDetailsService {
     return this.userRepository.findByUsername(username);
   }
 
-  public UserGetDTO getById(@NotNull Long id){
+  public UserGetDTO getById(@NotNull Long id) {
     return userToUserGetDTO(findById(id));
   }
 
-  public UserGetDTO getByUserName(@NotNull String username){
+  public UserGetDTO getByUserName(@NotNull String username) {
     return userToUserGetDTO(findByUserName(username));
   }
 
-  public List<UserGetDTO> findAll(){
+  public List<UserGetDTO> findAll() {
     return this.userRepository.findAll().stream().map(this::userToUserGetDTO).toList();
   }
 
@@ -78,9 +72,7 @@ public class UserService implements UserDetailsService {
     try {
       User user = findById(userData.getId());
       if (userData.getAvatar() != null) {
-        UpdateImage image = Utils.setPoster(userData.getAvatar(), user.getId(), user.getAvatarURL(), "/images/user/avatar/");
-        prevPoserPath = image.getURL();
-        this.userRepository.updateAvatar(prevPoserPath, image.getId());
+        this.userRepository.updateAvatar(Utils.setPoster(userData.getAvatar(), user.getId(), user.getAvatarURL(), "/images/user/avatar/"), user.getId());
       }
     }
     catch (Exception e){
@@ -102,7 +94,7 @@ public class UserService implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     User user = findByUserName(username);
     if (user == null) {
-      throw new UsernameNotFoundException(String.format("Пользователь '%s' не найден", username));
+      throw new EntityNotFoundException(String.format("Пользователь '%s' не найден", username));
     }
     return new org.springframework.security.core.userdetails.User(
             user.getUsername(),

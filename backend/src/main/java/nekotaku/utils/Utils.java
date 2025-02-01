@@ -1,7 +1,5 @@
 package nekotaku.utils;
 
-import nekotaku.utils.model.UpdateImage;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -96,7 +94,7 @@ public class Utils {
         }
     }
 
-    public static UpdateImage setPoster(nekotaku.utils.model.Image poster, Long id, String previousPosterUrl, String imgPath) throws IOException {
+    public static String setPoster(nekotaku.utils.model.Image poster, Long id, String previousPosterUrl, String imgPath) throws IOException {
         try {
             if (poster != null) {
                 Path absolutePath = Paths.get("").toAbsolutePath();
@@ -111,9 +109,8 @@ public class Utils {
 
                 byte[] fileBytes = java.util.Base64.getDecoder().decode(poster.getBase64Image());
                 String fullPath = directoryPath + Utils.generateRandomString() + "." + formatName;
-                String url = Utils.convertToRelativePath(fullPath);
                 Files.write(Paths.get(fullPath), Utils.resizeImage(fileBytes, formatName, 700));
-                return new UpdateImage(id, url);
+                return Utils.convertToRelativePath(fullPath);
             }
         }
         catch (Exception e) {
@@ -121,6 +118,7 @@ public class Utils {
         }
         return null;
     }
+
     public static void deletePoster(String previousPosterUrl) throws IOException {
         try {
             if (previousPosterUrl != null) {
