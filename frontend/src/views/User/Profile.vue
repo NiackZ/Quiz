@@ -7,51 +7,34 @@
                      :poster-url="user.url" />
     </v-col>
     <v-col cols="9">
-      <v-form validate-on="submit lazy" @submit.prevent="submit">
-        <v-text-field
-            v-model="userName"
-            :rules="rules"
-            label="User name"
-        ></v-text-field>
-
-        <v-btn
-            :loading="loading"
-            class="mt-2"
-            text="Submit"
-            type="submit"
-            block
-        ></v-btn>
+      <v-form v-if="user" validate-on="submit lazy" @submit.prevent="submit">
+        <v-text-field label="Логин"
+                      v-model="user.username"
+                      :disabled="true"
+                      variant="underlined"
+        />
+        <v-text-field label="Email"
+                      v-model="email"
+                      variant="underlined"
+                      :rules="[rules.required]"
+        />
+        <v-text-field label="Текущий пароль"
+                      type="password"
+                      v-model="currentPassword"
+                      variant="underlined"
+        />
+        <v-text-field label="Новый пароль"
+                      type="password"
+                      v-model="newPassword"
+                      variant="underlined"
+        />
+        <v-btn @click="saveChanges" type="submit" v-text="'Сохранить'"/>
       </v-form>
-      <v-text-field v-if="user" label="Логин"
-                    v-model="user.username"
-                    :disabled="true"
-                    variant="underlined"
-      />
-
-      <v-text-field v-if="user" label="Email"
-                    v-model="email"
-                    variant="underlined"
-                    :rules="[rules.required]"
-      />
-
-      <v-text-field label="Текущий пароль"
-                    type="password"
-                    v-model="currentPassword"
-                    variant="underlined"
-      />
-
-      <v-text-field label="Новый пароль"
-                    type="password"
-                    v-model="newPassword"
-                    variant="underlined"
-      />
-
-      <!-- Кнопка для сохранения изменений -->
-      <v-btn @click="saveChanges">Сохранить</v-btn>
     </v-col>
   </v-row>
   <v-alert
-      v-model="alert"
+      v-if="alert.show"
+      v-model="alert.text"
       type="error"
       title="Ошибка"
       icon="false"
@@ -72,7 +55,8 @@ export default {
   data() {
     return {
       alert: {
-        text: '123123'
+        show: false,
+        text: true
       },
       rules: {
         required: value => !!value || 'Заполните поле',
