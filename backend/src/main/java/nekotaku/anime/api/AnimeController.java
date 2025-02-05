@@ -64,7 +64,7 @@ public class AnimeController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Anime>> search(@RequestBody @NotNull String text) throws InterruptedException {
+    public ResponseEntity<List<AnimeGetShortDTO>> search(@RequestBody @NotNull String text) throws InterruptedException {
         Thread.sleep(500);// имитация долгого поиска
         return new ResponseEntity<>(this.animeService.searchAnime(text), HttpStatus.OK);
     }

@@ -192,9 +192,11 @@ public class AnimeService {
     public void deleteAnime(Long id) {
     }
 
-    public List<Anime> searchAnime(String text) {
+    public List<AnimeGetShortDTO> searchAnime(String text) {
         Specification<Anime> spec = AnimeSpecification.search(clearTitle(text));
-        return this.animeRepository.findAll(spec);
+        return this.animeRepository.findAll(spec).stream()
+                .map(AnimeGetShortDTO::new)
+                .toList();
     }
 
     private String clearTitle(String title) {
