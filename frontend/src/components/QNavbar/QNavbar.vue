@@ -135,34 +135,10 @@ export default {
       else return "mb-4";
     }
   },
-  async mounted() {
-    // try{
-    //   const response = await axios.get('/users');
-    //   console.log('OK', response.data);
-    // }
-    // catch (error) {
-    //   console.log('ERROR', error);
-    // }
-  },
   methods: {
     ...mapActions('auth', ['enter']),
     ...mapMutations(['auth/setErrorState']),
     ...mapActions('search', ['searchAnime']),
-    async registration() {
-      try{
-        const data = {
-          username: this.registrationForm.username,
-          email: this.registrationForm.email,
-          password: this.registrationForm.password
-        }
-        console.log(data);
-        const response = await axios.post('/auth/registration', data);
-        console.log('OK', response.data);
-      } catch (error) {
-        const response = error.response.data;
-        console.log('ERROR', response);
-      }
-    },
     async searchData() {
       try {
         this.search.loading = true;

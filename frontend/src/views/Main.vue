@@ -14,9 +14,7 @@ export default {
   data() {
     return {
       items: [
-        { text: "Аниме", path: PATH.ANIME, list: [] },
-        { text: "Манга", path: PATH.MANGA, list: [] },
-        { text: "Ранобэ", path: PATH.RANOBE, list: [] },
+        { text: "Аниме", path: PATH.ANIME, list: [] }
       ],
     };
   },
