@@ -7,53 +7,39 @@ import QComponentGrid from "../components/QContentGrid/QContentGrid.vue";
 import {getAnimeInfoForGrid} from "../utils/utils.js";
 import QMainTabs from "../components/Main/QMainTabs.vue";
 import {PATH} from "../constants/constants.js";
+import {mapGetters} from "vuex";
 
 export default {
-  computed: {
-  },
   components: {QMainTabs, QComponentGrid},
   data() {
     return {
-      items: []
+      items: [
+        { text: "Аниме", path: PATH.ANIME, list: [] },
+        { text: "Манга", path: PATH.MANGA, list: [] },
+        { text: "Ранобэ", path: PATH.RANOBE, list: [] },
+      ],
     };
+  },
+  computed: {
+    ...mapGetters("search", ["getAnimeResults"]),
+  },
+  watch: {
+    getAnimeResults(newResults) {
+      this.items[0].list = newResults;
+    },
   },
   methods: {
     async fetchItems() {
       try {
-        const animePromise = getAnimeInfoForGrid();
-
-        const anime = {
-          text: "Аниме",
-          path: PATH.ANIME,
-          list: null
-        }
-        const manga = {
-          text: "Манга",
-          path: PATH.MANGA,
-          list: null
-        }
-        const ranobe = {
-          text: "Ранобэ",
-          path: PATH.RANOBE,
-          list: null
-        }
-
-        anime.list = (await animePromise).data;
-        //manga.list = (await animePromise).data;//todo
-        //ranobe.list = (await animePromise).data;//todo
-
-        this.items = [anime, manga, ranobe];
+        const animeData = await getAnimeInfoForGrid();
+        this.items[0].list = animeData.data;
       } catch (error) {
-        console.error("Error in fetchItems:", error);
+        console.error("Ошибка в fetchItems:", error);
       }
     },
   },
   async created() {
     await this.fetchItems();
-  }
+  },
 };
 </script>
-
-<style scoped>
-
-</style>

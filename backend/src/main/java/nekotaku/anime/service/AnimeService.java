@@ -2,10 +2,7 @@ package nekotaku.anime.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import nekotaku.anime.Anime;
-import nekotaku.anime.AnimeCreateDTO;
-import nekotaku.anime.AnimeGetDTO;
-import nekotaku.anime.AnimeGetShortDTO;
+import nekotaku.anime.*;
 import nekotaku.anime.repository.AnimeRepository;
 import nekotaku.genres.Genre;
 import nekotaku.genres.GenreRepository;
@@ -21,11 +18,13 @@ import nekotaku.types.TypeRepository;
 import nekotaku.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -177,7 +176,7 @@ public class AnimeService {
             }
 
             // Сохраняем обновленный объект Anime
-            animeRepository.save(currentAnime);
+            this.animeRepository.save(currentAnime);
 
             this.animeRepository.updatePoster(
                     Utils.setPoster(
@@ -191,6 +190,19 @@ public class AnimeService {
     }
 
     public void deleteAnime(Long id) {
+    }
+
+    public List<Anime> searchAnime(String text) {
+        Specification<Anime> spec = AnimeSpecification.search(clearTitle(text));
+        return this.animeRepository.findAll(spec);
+    }
+
+    private String clearTitle(String title) {
+        if (title == null) return null;
+        return title.trim() // Убираем пробелы по краям
+                .replaceAll("[^\\p{L}\\d\\s-]", "") // Убираем лишние символы, оставляем буквы, цифры, пробелы и дефисы
+                .replaceAll("\\s+", " ") // Меняем несколько пробелов на один
+                .toLowerCase(); // Делаем регистронезависимым
     }
 
 }

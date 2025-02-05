@@ -33,7 +33,7 @@ export async function updateUser(data) {
 }
 
 export function isEmpty(obj) {
-    return obj === null || obj === undefined;
+    return obj === null || obj === undefined || obj?.length === 0;
 }
 
 export function isNotEmpty(obj) {

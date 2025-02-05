@@ -59,8 +59,14 @@ public class AnimeController {
     // Удалить аниме
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAnime(@PathVariable Long id) {
-        animeService.deleteAnime(id);
+        this.animeService.deleteAnime(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Anime>> search(@RequestBody @NotNull String text) throws InterruptedException {
+        Thread.sleep(500);// имитация долгого поиска
+        return new ResponseEntity<>(this.animeService.searchAnime(text), HttpStatus.OK);
     }
 
 }

@@ -10,7 +10,8 @@
       <v-text-field
           class="pa-2"
           type="text"
-          :loading="false"
+          v-model="search.text"
+          :loading="search.loading"
           density="compact"
           variant="outlined"
           label="Поиск"
@@ -18,8 +19,16 @@
           single-line
           hide-details
           clearable
-          @click:append-inner="onClick"
-      />
+          @update:model-value="handleInput"
+          @click:append-inner="searchData"
+      >
+        <template v-slot:loader v-if="search.loading">
+          <v-progress-linear height="4"
+                             indeterminate
+                             color="dark"
+          ></v-progress-linear>
+        </template>
+      </v-text-field>
       <v-btn icon @click="toggleTheme">
         <v-icon>{{theme.current.value.dark ? 'mdi-weather-night' : 'mdi-weather-sunny'}}</v-icon>
         <v-tooltip
@@ -44,7 +53,7 @@
 
 <script>
 import { useTheme } from "vuetify";
-import axios from '/src/axios/http-common'
+import axios from '../../../src/axios/http-common.js';
 import {mapActions, mapMutations, mapState} from "vuex";
 import QNavbarUserAvatar from "./QNavbarUserAvatar.vue";
 import QLogin from "./QLogin.vue";
@@ -75,10 +84,14 @@ export default {
         password: "",
         confirmPassword: ""
       },
+      search: {
+        loading: false,
+        text: null
+      },
       dialog: false,
-      loaded: false,
       authLoading: true,
-      currentTheme: 1
+      currentTheme: 1,
+      timeout: null
     }
   },
   props: {
@@ -134,6 +147,7 @@ export default {
   methods: {
     ...mapActions('auth', ['enter']),
     ...mapMutations(['auth/setErrorState']),
+    ...mapActions('search', ['searchAnime']),
     async registration() {
       try{
         const data = {
@@ -149,12 +163,19 @@ export default {
         console.log('ERROR', response);
       }
     },
-    onClick () {
-      this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        this.loaded = true
-      }, 2000)
+    async searchData() {
+      try {
+        this.search.loading = true;
+        await this.searchAnime(this.search.text)
+      }
+      catch (e) {
+        console.error(e);
+      }
+      this.search.loading = false;
+    },
+    handleInput() {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(this.searchData, 500);
     },
     clearModal() {
       this.loginForm.username = '';
