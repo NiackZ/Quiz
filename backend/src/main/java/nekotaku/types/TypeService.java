@@ -28,16 +28,19 @@ public class TypeService {
     }
 
     public Type update(Long id, Type updatedType) {
-        if (repository.existsByName(updatedType.getName())) {
+        Type existingType = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+        boolean isNameChanged = !existingType.getName().equalsIgnoreCase(updatedType.getName());
+
+        if (isNameChanged && repository.existsByName(updatedType.getName())) {
             throw new EntityExistsException(EXIST);
         }
-        return repository.findById(id)
-                .map(item -> {
-                    item.setName(updatedType.getName());
-                    item.setDeleted(updatedType.isDeleted());
-                    return repository.save(item);
-                })
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+        existingType.setName(updatedType.getName());
+        existingType.setDeleted(updatedType.isDeleted());
+
+        return repository.save(existingType);
     }
 
     public void deleteById(Long id) {

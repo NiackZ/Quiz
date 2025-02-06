@@ -1,5 +1,6 @@
 package nekotaku.studios;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.IteratorUtils;
@@ -14,6 +15,7 @@ public class StudioService {
     private final StudioRepository repository;
 
     private final String NOT_FOUND = "Студия не найден. ID = ";
+    private final String EXIST = "Студия с таким именем уже существует.";
 
     public List<Studio> findAll() {
         return IteratorUtils.toList(this.repository.findAll().iterator());
@@ -24,13 +26,20 @@ public class StudioService {
     }
 
     public Studio update(Long id, Studio updatedStudio) {
-        return repository.findById(id)
-                .map(item -> {
-                    item.setName(updatedStudio.getName());
-                    item.setDeleted(updatedStudio.isDeleted());
-                    return repository.save(item);
-                })
+        Studio studio = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+        boolean isNameChanged = !studio.getName().equalsIgnoreCase(updatedStudio.getName());
+
+        if (isNameChanged && repository.existsByName(updatedStudio.getName())) {
+            throw new EntityExistsException(EXIST);
+        }
+
+        studio.setName(updatedStudio.getName());
+        studio.setDeleted(updatedStudio.isDeleted());
+
+        return repository.save(studio);
+
     }
 
     public void deleteById(Long id) {

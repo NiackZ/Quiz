@@ -53,7 +53,6 @@
 
 <script>
 import { useTheme } from "vuetify";
-import axios from '../../../src/axios/http-common.js';
 import {mapActions, mapMutations, mapState} from "vuex";
 import QNavbarUserAvatar from "./QNavbarUserAvatar.vue";
 import QLogin from "./QLogin.vue";
