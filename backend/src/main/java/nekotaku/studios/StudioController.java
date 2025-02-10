@@ -38,9 +38,7 @@ public class StudioController {
             Studio saved = service.update(id, studio);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при сохранении жанра \"%s\" с ИД = %d", studio.getName(), id)
-            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format(ex.getLocalizedMessage()));
         }
     }
 

@@ -52,7 +52,6 @@
                   </v-row>
                 </v-container>
               </v-card-text>
-
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red"
@@ -129,6 +128,10 @@ export default {
       editedItem: {
         id: null,
         name: null
+      },
+      alert: {
+        show: false,
+        text: ''
       }
     }
   },
@@ -206,12 +209,16 @@ export default {
     },
     async save() {
       try {
+        this.alert.text = '';
+        this.alert.show = false;
         await saveStudio(this.editedItem.id, this.editedItem);
         await this.reloadList();
         this.close();
       }
       catch (e) {
         console.error(e.response.data);
+        this.alert.text = e.response.data;
+        this.alert.show = true;
       }
     }
   }
@@ -219,5 +226,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
