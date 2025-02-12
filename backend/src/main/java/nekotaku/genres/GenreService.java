@@ -30,11 +30,11 @@ public class GenreService {
     }
 
     @CachePut(value = CACHE_NAME, key = "#result.id")
-    public nekotaku.genres.Genre save(nekotaku.genres.Genre genre) {
+    public Genre save(Genre genre) {
         if (repository.existsByName(genre.getName())) {
             throw new EntityExistsException(EXIST);
         }
-        nekotaku.genres.Genre savedGenre = repository.save(genre);
+        Genre savedGenre = repository.save(genre);
         redisTemplate.opsForValue().set(CACHE_KEY + savedGenre.getId(), savedGenre, TTL, TIME_UNIT);
         return savedGenre;
     }
