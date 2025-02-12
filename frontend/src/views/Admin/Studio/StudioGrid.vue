@@ -216,6 +216,7 @@ export default {
         this.close();
       }
       catch (e) {
+        //todo сделать красивый алёрт
         console.error(e.response.data);
         this.alert.text = e.response.data;
         this.alert.show = true;
