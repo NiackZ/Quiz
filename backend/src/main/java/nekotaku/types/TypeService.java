@@ -31,6 +31,7 @@ public class TypeService {
 
     @CachePut(value = CACHE_NAME, key = "#result.id")
     public Type save(Type type) {
+        //todo убрать дублирование кода в других классах
         if (repository.existsByName(type.getName())) {
             throw new EntityExistsException(EXIST);
         }
