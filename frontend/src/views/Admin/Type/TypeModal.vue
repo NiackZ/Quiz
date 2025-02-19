@@ -32,7 +32,6 @@
         class="alert-container"
         :text="alertText"
         type="error"
-        variant="outlined"
         density="compact"
         v-model="showAlert"
       ></v-alert>
@@ -75,20 +74,19 @@ export default {
     async saveOrCreate() {
       try {
         if (this.editedItem.id === null) {
-          await createType(this.editedItem);
-          this.$emit("created");
+          const newType = await createType({ name: this.editedItem.name }); // Создание нового типа
+          this.$emit("created", newType.data);
         } else {
-          await saveType(this.editedItem.id, this.editedItem);
+          await saveType(this.editedItem.id, { name: this.editedItem.name }); // Обновление существующего типа
           this.$emit("saved");
         }
         this.close();
       } catch (e) {
-        this.alertText = e.response.data;
+        this.alertText = e.response?.data || "Произошла ошибка";
         this.showAlert = true;
-        const _this = this;
-        setTimeout(() => (_this.showAlert = false), 5000);
+        setTimeout(() => (this.showAlert = false), 5000);
       }
-    },
+    }
   },
 };
 </script>

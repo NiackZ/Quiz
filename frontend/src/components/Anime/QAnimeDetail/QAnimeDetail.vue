@@ -6,8 +6,8 @@
     </v-col>
     <v-col cols="12" md="7" lg="8" class="ff-verdana">
       <v-form>
-        <v-text-field v-if="this.anime?.id" label="ИД"
-                      v-model="this.anime.id"
+        <v-text-field v-if="anime?.id" label="ИД"
+                      v-model="anime.id"
                       variant="underlined"
                       disabled
         />
@@ -23,12 +23,22 @@
         />
         <v-autocomplete label="Тип"
                         v-model="form.type.value"
-                        :items="form.type.list"
+                        :items="enchantedTypeList"
                         item-value="id" item-title="name"
                         variant="underlined"
                         density="compact"
                         :error-messages="v$.form.type.value.$errors.map(e => e.$message)"
-        />
+                        @update:modelValue="handleTypeSelection"
+        >
+          <template v-slot:item="{ props, item }">
+            <v-list-item
+                v-bind="props"
+                :title="item.raw.name"
+                :prepend-icon="item.raw.id === 'add-new' ? 'mdi-plus' : ''"
+                :class="{ 'text-primary': item.raw.id === 'add-new' }"
+            />
+          </template>
+        </v-autocomplete>
         <v-autocomplete label="Жанр"
                         v-model="form.genre.value"
                         :items="form.genre.list"
@@ -92,6 +102,12 @@
           </v-btn>
         </div>
       </v-form>
+      <TypeModal
+          v-model="dialogVisible"
+          :edited-item="editedItem"
+          @saved="onSaved"
+          @created="onCreated"
+      />
     </v-col>
   </v-row>
 </template>
@@ -106,10 +122,14 @@ import QFileUpload from "../../QFileUpload/QFileUpload.vue";
 import {encodeImage, getMarks, getStatuses, getStudios, getTypes, isNotEmpty} from "../../../utils/utils.js";
 import {getGenres} from "../../../axios/api/genres.js";
 import axios from '/src/axios/http-common'
+import TypeModal from "../../../views/Admin/Type/TypeModal.vue";
 
 export default {
   name: 'QAnimeDetail',
-  components: {QFileUpload, QVueDatePicker, QJoditEditor, QLinkField},
+  components: {TypeModal, QFileUpload, QVueDatePicker, QJoditEditor, QLinkField},
+  props: {
+    id: Number
+  },
   data() {
     return {
       form: {
@@ -142,11 +162,19 @@ export default {
         description: ''
       },
       anime: null,
-      v$: useVuelidate({$scope: 'form'})
+      v$: useVuelidate({$scope: 'form'}),
+      dialogVisible: false, // Состояние модального окна
+      editedItem: { id: null, name: '' }, // Данные для редактирования/создания типа
     }
   },
-  props: {
-    id: Number
+  computed: {
+    enchantedTypeList() {
+      //todo сделать подобное для других полей и убрать дублирование кода
+      return [
+        { id: 'add-new', name: 'Добавить новый' },
+        ...this.form.type.list,
+      ];
+    }
   },
   async created() {
     const animeId = this.$props.id;
@@ -195,6 +223,29 @@ export default {
     document.title = this.$props.id ? 'Редактирование аниме' : 'Добавление нового аниме';
   },
   methods: {
+    handleTypeSelection(value) {
+      if (value === 'add-new') {
+        this.openTypeModal(); // Открываем модалку
+        this.form.type.value = null; // Очищаем текущее значение
+      } else {
+        console.log('Выбран тип:', value);
+      }
+    },
+    openTypeModal() {
+      this.editedItem = { id: null, name: '' }; // Подготавливаем пустой объект для создания нового типа
+      this.dialogVisible = true; // Открываем модалку
+    },
+    onSaved(newType) {
+      // Добавляем сохранённый тип в список
+      this.form.type.list.push(newType);
+      this.dialogVisible = false; // Закрываем модалку
+    },
+    onCreated(newType) {
+      // Добавляем созданный тип в список
+      this.form.type.list.push(newType);
+      this.form.type.value = newType.id; // Устанавливаем выбранным новый тип
+      this.dialogVisible = false; // Закрываем модалку
+    },
     updateDate(newValue) {
       this.form.period = newValue;
     },
