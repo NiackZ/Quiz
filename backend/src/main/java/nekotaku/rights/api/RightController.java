@@ -24,7 +24,7 @@ public class RightController {
   public boolean checkRights(@RequestBody CheckRightsDTO requestData) {
     Long userId = requestData.getUserId();
     List<String> rights = requestData.getRights();
-    return this.rightService.checkRights(userId, rights);
+    return rightService.checkRights(userId, rights);
   }
 
 }

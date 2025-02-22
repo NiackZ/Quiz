@@ -21,31 +21,18 @@ public class GenreController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Genre genre) {
-        try {
-            Genre savedGenre = service.save(genre);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedGenre);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при добавлении жанра \"%s\"", genre.getName())
-            );
-        }
+    public ResponseEntity<Genre> create(@RequestBody Genre genre) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(genre));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Genre genre) {
-        try {
-            Genre savedGenre = service.update(id, genre);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedGenre);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при сохранении жанра \"%s\" с ИД = %d", genre.getName(), id)
-            );
-        }
+    public ResponseEntity<Genre> update(@PathVariable Long id, @RequestBody Genre genre) {
+        return ResponseEntity.ok(service.update(id, genre));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

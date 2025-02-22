@@ -20,28 +20,19 @@ public class TypeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Type type) {
-        try {
-            Type saved = service.save(type);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getLocalizedMessage());
-        }
+    public ResponseEntity<Type> create(@RequestBody Type type) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(type));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Type type) {
-        try {
-            Type saved = service.update(id, type);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getLocalizedMessage());
-        }
+    public ResponseEntity<Type> update(@PathVariable Long id, @RequestBody Type type) {
+        return ResponseEntity.ok(service.update(id, type));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

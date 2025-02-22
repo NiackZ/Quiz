@@ -1,6 +1,5 @@
 package nekotaku.marks;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,7 @@ public class MarkController {
 
     @GetMapping
     public List<Mark> getAll() {
-        return this.markService.findAll();
+        return markService.findAll();
     }
 
 }

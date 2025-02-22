@@ -1,6 +1,5 @@
 package nekotaku.links;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,7 @@ public class LinkController {
 
     @GetMapping
     public List<Link> getAll() {
-        return this.linkService.findAll();
+        return linkService.findAll();
     }
 
 }

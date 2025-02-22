@@ -1,7 +1,7 @@
 package nekotaku.status;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StatusRepository extends CrudRepository<Status, Long> {
+public interface StatusRepository extends JpaRepository<Status, Long> {
     boolean existsByName(String name);
 }

@@ -8,9 +8,9 @@ import nekotaku.roles.repositories.IRoleRepository;
 @Service
 @RequiredArgsConstructor
 public class RoleService {
-    private final IRoleRepository IRoleRepository;
+    private final IRoleRepository roleRepository;
 
     public Role getUserRole() {
-        return IRoleRepository.findByName("USER");
+        return roleRepository.findByName("USER");
     }
 }

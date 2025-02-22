@@ -1,7 +1,6 @@
 package nekotaku.links;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,7 @@ public class LinkService {
     private final LinkRepository linkRepository;
 
     public List<Link> findAll() {
-        return IteratorUtils.toList(this.linkRepository.findAll().iterator());
+        return linkRepository.findAll();
     }
 
     public Link createNewLink(Link link) {

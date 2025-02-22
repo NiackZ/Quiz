@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import nekotaku.utils.model.LongString;
 
-
-
 @Entity
 @Getter
 @Setter

@@ -1,6 +1,5 @@
 package nekotaku.studios;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,29 +20,18 @@ public class StudioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Studio studio) {
-        try {
-            Studio saved = service.save(studio);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при добавлении жанра \"%s\"", studio.getName())
-            );
-        }
+    public ResponseEntity<Studio> create(@RequestBody Studio studio) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(studio));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Studio studio) {
-        try {
-            Studio saved = service.update(id, studio);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format(ex.getLocalizedMessage()));
-        }
+    public ResponseEntity<Studio> update(@PathVariable Long id, @RequestBody Studio studio) {
+        return ResponseEntity.ok(service.update(id, studio));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

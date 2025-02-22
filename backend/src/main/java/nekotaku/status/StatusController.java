@@ -1,6 +1,5 @@
 package nekotaku.status;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,32 +20,19 @@ public class StatusController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Status status) {
-        try {
-            Status saved = service.save(status);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при добавлении жанра \"%s\"", status.getName())
-            );
-        }
+    public ResponseEntity<Status> create(@RequestBody Status status) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(status));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Status status) {
-        try {
-            Status saved = service.update(id, status);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    String.format("Ошибка при сохранении жанра \"%s\" с ИД = %d", status.getName(), id)
-            );
-        }
+    public ResponseEntity<Status> update(@PathVariable Long id, @RequestBody Status status) {
+        return ResponseEntity.ok(service.update(id, status));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
