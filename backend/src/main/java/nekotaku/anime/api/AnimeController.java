@@ -20,53 +20,43 @@ import java.util.List;
 public class AnimeController {
     private final AnimeService animeService;
 
-    //Получение всех аниме
-    @GetMapping
+      @GetMapping
     public ResponseEntity<List<AnimeGetDTO>> getAll() {
-        List<AnimeGetDTO> animes = this.animeService.getAllAnimes();
-        return new ResponseEntity<>(animes, HttpStatus.OK);
+        return ResponseEntity.ok(animeService.getAllAnimes());
     }
 
-    // Укороченная информация
     @GetMapping("/short")
     public ResponseEntity<List<AnimeGetShortDTO>> getAllShortInfo() {
-        List<AnimeGetShortDTO> animes = this.animeService.getAllAnimesShort();
-        return new ResponseEntity<>(animes, HttpStatus.OK);
+        return ResponseEntity.ok(animeService.getAllAnimesShort());
     }
 
-    // Получить одно аниме по ID
     @GetMapping("/{id}")
     public ResponseEntity<Anime> getAnimeById(@PathVariable Long id) {
-        Anime anime = this.animeService.getAnimeById(id);
-        return new ResponseEntity<>(anime, HttpStatus.OK);
+        return ResponseEntity.ok(animeService.getAnimeById(id));
     }
 
-    // Создать новое аниме
     @PostMapping
     public ResponseEntity<Long> createAnime(@RequestBody @NotNull AnimeCreateDTO anime) throws IOException {
-        Long createdAnimeId = this.animeService.createAnime(anime);
-        return new ResponseEntity<>(createdAnimeId, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(animeService.createAnime(anime));
     }
 
-    // Обновить существующее аниме
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAnime(@PathVariable Long id, @RequestBody AnimeCreateDTO anime) throws InterruptedException, IOException {
-        this.animeService.updateAnime(id, anime);
-        Thread.sleep(2000);// имитация долгой обработки
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> updateAnime(@PathVariable Long id, @RequestBody AnimeCreateDTO anime) throws IOException {
+        animeService.updateAnime(id, anime);
+        return ResponseEntity.ok().build();
     }
 
-    // Удалить аниме
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAnime(@PathVariable Long id) {
-        this.animeService.deleteAnime(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        animeService.deleteAnime(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<AnimeGetShortDTO>> search(@RequestBody @NotNull String text) throws InterruptedException {
-        Thread.sleep(500);// имитация долгого поиска
-        return new ResponseEntity<>(this.animeService.searchAnime(text), HttpStatus.OK);
+    public ResponseEntity<List<AnimeGetShortDTO>> search(@RequestBody @NotNull String text)
+            throws InterruptedException {
+        return ResponseEntity.ok(animeService.searchAnime(text));
     }
 
 }

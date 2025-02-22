@@ -12,5 +12,4 @@ public interface AnimeRepository extends JpaRepository<Anime, Long>, JpaSpecific
     @Modifying
     @Query("update Anime a set a.posterURL = ?1 where a.id = ?2")
     void updatePoster(String posterURL, Long id);
-
 }
